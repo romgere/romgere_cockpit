@@ -10,7 +10,7 @@ Arduino library for building "real" cockpit/panel with X-Plane and arduino board
 # Basic example
 
 ```
-//Declare an "Toggle Switch" on PIN 40, 41 to send "Nav light ON/OFF" command to x-plane
+//Declare an "3 positions Toggle Switch" on PIN 40, 41 to select auto pilot source (Nav1, nav2 or GPS)
 cockpitApp->DeclareInputControl(     new ArduinoThreePosToggleSwitchControl(40,41),
                                     new XPlaneSimpleCommand("sim/autopilot/hsi_select_nav_1"),
                                     new XPlaneSimpleCommand("sim/autopilot/hsi_select_nav_2"),
@@ -34,6 +34,7 @@ For more example, please see `Carte1` folder.
 - [ ] Write doc and Readme
 - [ ] Try to create some complete example
 - [ ] Add some "todos" and/or open issues
+- [ ] X-plane 11 support
 
 # Various link to add to readme/doc
 
@@ -41,26 +42,6 @@ infos divers à mettre dans la doc
 
 - [Arduino dans VS] (http://www.visualmicro.com/)
 - [Liste des commande] (https://siminnovations.com/wiki/index.php?title=Xplane_commandrefs) (or see in `Resources/plugins/Commands.txt`)
-
-// ou Xplane
-
-//Liste DREF
-//http://xplane.anzui.de/dataref-search/
-//http://www.xsquawkbox.net/xpsdk/docs/DataRefs.txt
-//http://crewchief.aero.calpoly.edu/svn/crewrep/Pheagle/branches/RudderProject/Model/udpdata.txt
-
-
-
-/*
-    //Déclare un "Toggle Switch" sur le PIN 35 qui envoi la commande Nav light ON ou OFF
-    cockpitApp->DeclareInputControl(     new ArduinoThreePosToggleSwitchControl(40,41),
-                                        new XPlaneSimpleCommand("sim/autopilot/hsi_select_nav_1"),
-                                        new XPlaneSimpleCommand("sim/autopilot/hsi_select_nav_2"),
-                                        new XPlaneSimpleCommand("sim/autopilot/hsi_select_gps")
-                                    );
-
-
-     cockpitApp->DeclareInputControl(     new ArduinoRotaryEncoderControl(30,31, ArduinoRotaryEncoderControl::Type3Encoder),
-                                        new XPlaneSimpleCommand("sim/instruments/barometer_down"),
-                                        new XPlaneSimpleCommand("sim/instruments/barometer_up"));
-*/
+- [Liste DREF] http://xplane.anzui.de/dataref-search/
+- [Liste DREF] http://www.xsquawkbox.net/xpsdk/docs/DataRefs.txt
+- [Liste DREF] http://crewchief.aero.calpoly.edu/svn/crewrep/Pheagle/branches/RudderProject/Model/udpdata.txt
