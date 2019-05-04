@@ -15,7 +15,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-// include queue library header (from http://playground.arduino.cc/Code/QueueArray)
+//Queue library header (from http://playground.arduino.cc/Code/QueueArray)
 #include "../Misc/QueueArray.h"
 
 #include "../Misc/MasterToSlaveCommand.h"
@@ -29,13 +29,13 @@ class SlaveBoardApplication{
 
         uint8_t BoardI2CAdresse;
 
-        MasterToSlaveCommand* lastPinForValueSend;    //Dernière commande de type get envoyée
+        MasterToSlaveCommand* lastPinForValueSend;    //Last "GetPINValue" command informations
 
-        //Pile de commande reçue. Permet de stocker les commandes reçues par I²C sans faire d'interraction
-        //sur les entrée/sortie arduino pour libérer plus vite le I²C.
-        //Les commandes sont ensuite dépilées par le programme principal via la méthode loop.
+        //Queue of received command from master. Allows keep commands received from I2C without doing any write/read
+        //operations to free the I2C bus quickly.
+        //Command are unqueue later by the main app loop.
         //
-        //Voir http://playground.arduino.cc/Code/QueueArray
+        //See http://playground.arduino.cc/Code/QueueArray
         QueueArray <MasterToSlaveCommand*> commandQueue;
 
     public :
@@ -43,22 +43,23 @@ class SlaveBoardApplication{
         SlaveBoardApplication( uint8_t adresse );
         ~SlaveBoardApplication();
 
-        //S'enregistre sur le port I²C et commence à recevoir les messages du master
+        //Init and register board on I2C bus
         void RegisterI2C();
 
-        //A appeler dans la loop du programme principal pour dépiler les action (write/read/init sur les input/output arduino)
-        //Permet de sortir ces actions des événements (interruption) I²C
+        //Main slave board app loop :
+        // - dequeue command from master board
+        // - do action (init/read) on pin
         void loop();
 
-        //On reçoi des données du Maitre
+        //Received data from master
         void receivedData( int dataSize);
 
-        //Le master fait une demande (pour une valeur)
+        //Master board request a value
         void requestEvent();
 
     private :
 
-        //On parse les données reçues
+        //Parse data from master Board
         void parseDataFromMaster( byte* data);
 
 };

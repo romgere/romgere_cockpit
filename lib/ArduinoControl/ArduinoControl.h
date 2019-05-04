@@ -10,75 +10,76 @@
 
 #include "../Config/MainConfig.h"
 
-///////////////////////////////////////////////////////////
-//Classe mere pour la gestion des contrôles d'entrée/sortie de la carte Arduino
-//Classe Virtuelle, non implémentable
-///////////////////////////////////////////////////////////
+//Parent class for ALL Arduino input/output control
+//Virtual class
 class ArduinoControl{
 
 public :
 
-    //Type de contrôle
+    //Control type (Analog/digital input/outpu)
     typedef enum{
-        AnalogControl = 0,  //Entrée/sortie analogique
-        DigitalControl      //Entrée/sortie digital
+        AnalogControl = 0,
+        DigitalControl
     }ArduinoControlType;
 
 
 protected :
 
-    //Direction de contrôle
+    //Control direction
     typedef enum{
-        InputControl = 0,  //Entrée (switch, encoder, ...)
-        OutputControl      //Sortie (LED, Servo, ...)
+        InputControl = 0,  //switch, rotary encoder, ...
+        OutputControl      //LED, Servo, ...
     }ArduinoControlDir;
 
 private :
 
-    ArduinoControlDir   ControlDir;     //Direction du contrôle
-    ArduinoControlType  ControlType;    //Type de contrôle
+    //Definition of type and direction
+    ArduinoControlDir   ControlDir;
+    ArduinoControlType  ControlType;
 
 
 public :
 
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-    ArduinoControl( ArduinoControlDir dir, ArduinoControlType type, bool onSlaveBoard, uint8_t boardAdresse) : ControlDir(dir), ControlType( type), ControleOnSlaveBoard( onSlaveBoard), SlaveBoardAddress(boardAdresse){};
+    ArduinoControl( ArduinoControlDir dir, ArduinoControlType type, bool onSlaveBoard, uint8_t boardAdresse) : ControlDir(dir), ControlType(type), ControleOnSlaveBoard(onSlaveBoard), SlaveBoardAddress(boardAdresse){};
 #else
-    ArduinoControl( ArduinoControlDir dir, ArduinoControlType type) : ControlDir(dir), ControlType( type){};
+    ArduinoControl( ArduinoControlDir dir, ArduinoControlType type) : ControlDir(dir), ControlType(type){};
 #endif
 
     virtual ~ArduinoControl(){};
 
-	ArduinoControlType getType(){ return ControlType; };
+	  ArduinoControlType getType(){ return ControlType; };
 
-    //Lis l'état u contrôle et renvoi true si le contrôle necessite l'envoi d'une commande (input)
+    //Read input state. Return true if control need to send command (value changed)
     virtual bool ReadInput() = 0;
 
-    //Met à jour le controle en fonction de la valeur (output)
+    //Write on output PIN according to it's current value
     virtual void WriteOutput() = 0;
 
-    //Retourne des valeurs issuent de l'état du contrôle (input)
-    //val : pointeur vers un tableau de valeur
-    //retour : Nombre d'élement du tableu de valeur retourné
-	virtual float getValue(){ return 0; };
+    //Get current for control
+    virtual float getValue(){ return 0; };
 
-	//Définit une valeur pour le contrôle (output) (retourne TRUE si la valeur a été modifiée, FALSE sinon)
-	virtual bool setValue(float val){ return false; };
+	  //Set value for control (return true if value was modified, FALSE otherwise)
+	  virtual bool setValue(float val){ return false; };
 
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
 
 private :
 
-    bool    ControleOnSlaveBoard;   //contrôle est-il situé sur une carte esclave I2C
-    uint8_t SlaveBoardAddress;      //Adresse de l'esclave sur le I2C
+    bool    ControleOnSlaveBoard;
+    uint8_t SlaveBoardAddress;
 
 public :
-    //Permet de savoir si le contrôle est situé sur une carte esclave
+
+    //True if control is on slave board, false otherwise
     bool isOnSlaveBoard(){ return ControleOnSlaveBoard; };
 
     //Ici on va définir les méthode permettant de lire/ecrire les entrée Arduino
     //Permet de s'affranchir dans les classes de controles dérivée de la façon dont ces actions sont faites
     //(Par exemple pour une carte Esclave en I2C, cette méthode ne va pas appelée directement les fonction Arduino classique analogRead, analogWrite...)
+
+    //These methods are used to read/write on PIN with slave/master board abstraction
+    //Direct call to arduino read/write for input/output on master board, and use I2C bus to write/read on slave board input/output
     void    _pinMode(uint8_t p, uint8_t m);
     void    _digitalWrite(uint8_t p, uint8_t v);
     int     _digitalRead(uint8_t p);
@@ -88,6 +89,7 @@ public :
 
 };
 
+//Don't use above methods if multi arduino board not enable
 #ifndef ACTIVE_MULTI_ARDUINO_BOARD_MODE
     #define _pinMode( a, b) pinMode( a, b)
     #define _digitalWrite( a, b) digitalWrite( a, b)
@@ -98,16 +100,13 @@ public :
 
 
 
-/*******************************/
-/* CLASS DE BASE INPUT CONTROL */
-/*******************************/
-
+//Parent class for ALL INPUT control
 class ArduinoInputControl : public ArduinoControl{
 
 
     public :
 
-        //Type de contrôle input
+        //Input control type
         typedef enum{
             ITypePushButton = 0,
             ITypeToggleSwitch,
@@ -133,18 +132,15 @@ class ArduinoInputControl : public ArduinoControl{
 };
 
 
-/********************************/
-/* CLASS DE BASE OUTPUT CONTROL */
-/********************************/
-
+//Parent class for ALL OUTPUT control
 class ArduinoOutputControl : public ArduinoControl{
 
     public :
 
-        //Type de contrôle input
+        //Output control type
         typedef enum{
             OTypeLed = 0,
-            OTypeServo,
+            OTypeServo, //Not yet implemented
         }ArduinoOutputControlType;
 
     private :

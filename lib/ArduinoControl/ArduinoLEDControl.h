@@ -11,9 +11,7 @@
 #include "../Config/MainConfig.h"
 #include "ArduinoControl.h"
 
-///////////////////////////////////////////////////////////
-//Permet de controler une LED
-///////////////////////////////////////////////////////////
+//Allows use of LED
 class ArduinoLEDControl : public ArduinoOutputControl{
 
     private :
@@ -35,6 +33,6 @@ class ArduinoLEDControl : public ArduinoOutputControl{
 };
 
 
-/* TODO: class de type LED analogique */
+/* TODO: Analogique LED control ? */
 
 #endif // ARDUINOLEDCLASS_H_INCLUDED

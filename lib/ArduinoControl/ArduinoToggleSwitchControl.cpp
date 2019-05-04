@@ -24,12 +24,12 @@ ArduinoToggleSwitchControl::ArduinoToggleSwitchControl( uint8_t pin) : ArduinoIn
 ArduinoToggleSwitchControl::~ArduinoToggleSwitchControl() {}
 
 bool ArduinoToggleSwitchControl::ReadInput(){
-    //On garde une sauvegarde de l'état avant MAJ
+
+    //Keep current value as old, and read new one
     uint8_t last = this->LastPinStatus;
-    //On Met à jour l'état du contrôle
     this->LastPinStatus = _digitalRead( this->Pin1);
 
-    #ifdef DEBUG_CONTROL_STAT
+#ifdef DEBUG_CONTROL_STAT
     Serial.print("Control Debug : Read ToggleSwitch[");
     Serial.print(this->Pin1);
     Serial.print("] Stat : ");
@@ -37,9 +37,9 @@ bool ArduinoToggleSwitchControl::ReadInput(){
     Serial.print(", Value : ");
     Serial.print(this->LastPinStatus);
     Serial.println(".");
-	#endif
+#endif
 
-    //Retourne TRUE si le controle à changé d'état...
+    //Value changed ?
     return this->LastPinStatus != last;
 }
 

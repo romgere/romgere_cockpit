@@ -28,8 +28,10 @@ For more example, please see `Carte1` folder.
 # Todos
 
 - [ ] Translate comment and other text
-- [ ] Change all file header
+- [x] Change all file header
 - [x] Modify folder and tree to something like lib / test / example / doc...
+- [ ] Add "this->" on somes methods calls
+- [ ] Re-indent all pre-compilation conditional blocks
 - [ ] Change example and delete all FSX references
 - [ ] Write doc and Readme
 - [ ] Try to create some complete example

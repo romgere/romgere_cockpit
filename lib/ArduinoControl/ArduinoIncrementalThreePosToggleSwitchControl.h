@@ -11,12 +11,11 @@
 #include "../Config/MainConfig.h"
 #include "ArduinoControl.h"
 
-///////////////////////////////////////////////////////////
-//Permet de controler des toggle switchs à 3 positions
-//avec commande incrémentiel (UP/DOWN)
-///////////////////////////////////////////////////////////
 #define INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX 0
 #define INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX 1
+
+//Allows use of 3 positions toggle switch with 2 incremental commands
+//The command sent when the toggle is switch to middle position is deduce by previous position
 class ArduinoIncrementalThreePosToggleSwitchControl : public ArduinoInputControl{
 
   public :

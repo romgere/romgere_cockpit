@@ -7,25 +7,20 @@
 #include "ArduinoControl.h"
 #include "../Config/MainConfig.h"
 
-/*********************************************************************************************************************/
-/*************************************************   CONTROLE OUTPUT *************************************************/
-/*********************************************************************************************************************/
-
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
 
 #include "../Misc/MasterToSlaveCommand.h"
 
 void    ArduinoControl::_pinMode(uint8_t p, uint8_t m){
 
-    if( ControleOnSlaveBoard ){
+    if( this->ControleOnSlaveBoard ){
 
-        //On créer la commande I2C
+        //Create and send I2C command to init PIN on slave board
         MasterToSlaveCommand slaveCMD(  MasterToSlaveCommand::TypeCommandInitialisation,
                                         (m == INPUT ? MasterToSlaveCommand::PINModeInput : (m == OUTPUT ? MasterToSlaveCommand::PINModeOutput : MasterToSlaveCommand::PINModeIntputPullUp)),
-                                        MasterToSlaveCommand::RWModeNotSet,
+                                        MasterToSlaveCommand::RWModeNotUsed,
                                         p,
                                         0 );
-        //Puis on envoi
         slaveCMD.SendDataToIC2( SlaveBoardAddress);
 
     }
@@ -38,13 +33,12 @@ void    ArduinoControl::_digitalWrite(uint8_t p, uint8_t v){
 
     if( ControleOnSlaveBoard ){
 
-        //On créer la commande I2C
+        //Create and send I2C command to write PIN on slave board
         MasterToSlaveCommand slaveCMD(  MasterToSlaveCommand::TypeCommandSetPINValue,
-                                        MasterToSlaveCommand::PINModeNotSet,
+                                        MasterToSlaveCommand::PINModeNotUsed,
                                         MasterToSlaveCommand::RWModeDigital,
                                         p,
                                         v);
-        //Puis on envoi
         slaveCMD.SendDataToIC2( SlaveBoardAddress);
 
     }
@@ -56,14 +50,14 @@ void    ArduinoControl::_digitalWrite(uint8_t p, uint8_t v){
 int     ArduinoControl::_digitalRead(uint8_t p){
     if( ControleOnSlaveBoard ){
 
-        //On créer la commande I2C
+        //Create I2C command to request a PIN read on slave board
         MasterToSlaveCommand slaveCMD(  MasterToSlaveCommand::TypeCommandGetPINValue,
-                                        MasterToSlaveCommand::PINModeNotSet,
+                                        MasterToSlaveCommand::PINModeNotUsed,
                                         MasterToSlaveCommand::RWModeDigital,
                                         p,
                                         0);
 
-        //Puis on envoi la requête et on attend la réponse
+        //Send command and wait for the answer
         return slaveCMD.RequestDataFromIC2( SlaveBoardAddress);
     }
     else{
@@ -74,14 +68,14 @@ int     ArduinoControl::_digitalRead(uint8_t p){
 int     ArduinoControl::_analogRead(uint8_t p){
 
     if( ControleOnSlaveBoard ){
-        //On créer la commande I2C
+        //Create I2C command to request a PIN read on slave board
         MasterToSlaveCommand slaveCMD(  MasterToSlaveCommand::TypeCommandGetPINValue,
-                                        MasterToSlaveCommand::PINModeNotSet,
+                                        MasterToSlaveCommand::PINModeNotUsed,
                                         MasterToSlaveCommand::RWModeAnalog,
                                         p,
                                         0);
 
-        //Puis on envoi la requête et on attend la réponse
+        //Send command and wait for the answer
         return slaveCMD.RequestDataFromIC2( SlaveBoardAddress);
 
     }
@@ -93,13 +87,12 @@ int     ArduinoControl::_analogRead(uint8_t p){
 void    ArduinoControl::_analogWrite(uint8_t p, int v){
 
      if( ControleOnSlaveBoard ){
-        //On créer la commande I2C
+        //Create and send I2C command to write PIN on slave board
         MasterToSlaveCommand slaveCMD(  MasterToSlaveCommand::TypeCommandSetPINValue,
-                                        MasterToSlaveCommand::PINModeNotSet,
+                                        MasterToSlaveCommand::PINModeNotUsed,
                                         MasterToSlaveCommand::RWModeAnalog,
                                         p,
                                         v);
-        //Puis on envoi
         slaveCMD.SendDataToIC2( SlaveBoardAddress);
 
     }

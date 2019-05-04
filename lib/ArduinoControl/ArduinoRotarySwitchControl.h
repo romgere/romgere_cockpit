@@ -12,9 +12,7 @@
 #include "ArduinoControl.h"
 
 
-//////////////////////////////////////////////////////////////
-//Permet de controler des switch rotatif sur port Analogique
-//////////////////////////////////////////////////////////////
+//Allows use of rotary switch on analog PIN
 class ArduinoRotarySwitchControl : public ArduinoInputControl{
 
     private :
@@ -27,7 +25,8 @@ class ArduinoRotarySwitchControl : public ArduinoInputControl{
 
         uint8_t LastVal;
 
-        bool RepeatCmd[MAX_COMMAND_FOR_ONE_CONTROLE]; //PErmet de définir si la commande doit être répété pour une position donnée
+        //Allow one or more command to be repeat even if position of rotary switch don't change
+        bool RepeatCmd[MAX_COMMAND_FOR_ONE_CONTROLE];
 
     public :
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE

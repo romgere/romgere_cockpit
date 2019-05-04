@@ -11,10 +11,8 @@
 #include "../Config/MainConfig.h"
 #include "ArduinoControl.h"
 
-///////////////////////////////////////////////////////////
-//Permet de controler des toggle switchs (2 positions)
-// ou des bouttons à deux position (la commande n'est pas répêtée)
-///////////////////////////////////////////////////////////
+
+//Allow use of 2 positions toggle switch or push button for command who has not to be repeat
 class ArduinoToggleSwitchControl : public ArduinoInputControl{
 
 

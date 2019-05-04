@@ -18,17 +18,16 @@ dir. / ret :    <==(-1)==    ==(+1)==>
            |-------------------------------|
     Val    | 2 | 3 | 1 | 0 | 2 | 3 | 1 | 0 |
            |-------------------------------|
-Cran :
-Enc Type1 : ╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_
-Enc Type2 : ╔═╗_____╔═╗_____╔═╗_____╔═╗_____
-Enc Type3 : ____╔═╗_____╔═╗_____╔═╗_____╔═╗_
-Enc Type4 : ____________╔═╗_____________╔═╗_
+Detent :
+Type1 Enc : ╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_╔═╗_
+Type2 Enc : ╔═╗_____╔═╗_____╔═╗_____╔═╗_____
+Type3 Enc : ____╔═╗_____╔═╗_____╔═╗_____╔═╗_
+Type4 Enc : ____________╔═╗_____________╔═╗_
                          ▲
                          ║
 
-
-Pour tous les type d'encoder la direction est toujours déterminer de la même façon mais les possitions possible ne sont pas les mêmes.
-Pour éviter d'envoyer des commandes en double il faut vérifier la valeur avant d'envoyer la commande
+For all types of rotary encoder, the direction logic is the same. Only detents vary.
+Command are send only if rotary is stop on a detent.
 */
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
 ArduinoRotaryEncoderControl::ArduinoRotaryEncoderControl( uint8_t pin1, uint8_t pin2, RotaryEncoderType type, bool usePullUpPin, int boardAddress) : ArduinoInputControl( DigitalControl, ITypeRotaryEncode, (boardAddress != -1), boardAddress){
@@ -70,11 +69,8 @@ ArduinoRotaryEncoderControl::~ArduinoRotaryEncoderControl(){}
 
 bool ArduinoRotaryEncoderControl::ReadInput(){
 
-    //Statut courant = ancien statut
+    //Keep current status as old status and read new one
     this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] = this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX];
-
-
-    //On lit le nouveau statut
     uint8_t newVal = 0;
     /*
     bitWrite(newVal, 0, _digitalRead(this->Pin1) == HIGH);
@@ -84,7 +80,7 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
     newVal += _digitalRead(this->Pin2) == HIGH ? 2 : 0;
     //*/
 
-    bool isStatutsChanged = this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] != newVal;
+    bool isStatusChanged = this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] != newVal;
 
     #ifdef DEBUG_CONTROL_STAT
     Serial.print("Control Debug : Read RotaryEncoder[");
@@ -92,7 +88,7 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
     Serial.print(",");
     Serial.print(this->Pin2);
     Serial.print("] Stat : ");
-    Serial.print(isStatutsChanged ? "CHANGE !" : "NO CHANGE");
+    Serial.print(isStatusChanged ? "CHANGE !" : "NO CHANGE");
     Serial.print(", Value : ");
     Serial.print(this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX]);
     Serial.print(",");
@@ -100,32 +96,32 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
     Serial.println(".");
     #endif
 
-//Mode "sécurisé" pour les mosue encoder (type3)
+//"Secure“ mode (for cheap type 3 mouse encoder)
 #ifdef USE_SECURE_MODE_FOR_MOUSE_ENCODER
     if( EncoderType == Type3Encoder ){
 
-        //0 => passage à 1 ou 2
+        //Current 0 => allow only new stat to 1 or 2
         if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 0 && newVal == 3 ){
             #ifdef DEBUG_CONTROL_STAT
             Serial.print("Control Debug : Check RotaryEncoder, impossible stat 0 to 3 !");
             #endif
             return false;
         }
-        //1 => passage à 0 ou 3
+        //Current 1 => allow only new stat to 0 or 3
         else if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 1 && newVal == 2 ){
             #ifdef DEBUG_CONTROL_STAT
             Serial.print("Control Debug : Check RotaryEncoder, impossible stat 1 to 2 !");
             #endif
             return false;
         }
-        //2 => passage à 0 ou 3
+        //Current 2 => allow only new stat to 0 or 3
         else if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 2 && newVal == 1 ){
             #ifdef DEBUG_CONTROL_STAT
             Serial.print("Control Debug : Check RotaryEncoder, impossible stat 2 to 1 !");
             #endif
             return false;
         }
-        //3 => passage à 1 ou 2
+        //Current 3 => allow only new stat to 1 or 2
         else if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 3 && newVal == 0 ){
             #ifdef DEBUG_CONTROL_STAT
             Serial.print("Control Debug : Check RotaryEncoder, impossible stat 3 to 0 !");
@@ -138,50 +134,51 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
 
 #ifdef USE_SECURE_TIME_STAT_CHANGE
     unsigned long timeDiff = micros() - this->LastStatChangeTime;
+    //Too fast, no change allowed yet
     if( timeDiff > 0 && timeDiff < MIN_STAT_CHANGE_TIME )
         return false;
     this->LastStatChangeTime = micros();
 #endif // USE_SECURE_TIME_STAT_CHANGE
 
-    //MAJ du membre de la class avec la nouvelle valeur
+
     this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] = newVal;
 
-
-    if( ! isStatutsChanged )
+    if( ! isStatusChanged )
         return false;
 
 
     //Selon le type d'encodeur, certaine etat ne doivent pas être considéré comme un changement.
     //Pour les type 2, 3 ou 4, si la valeur courante ne correspond pas à une valeur de cran, on retourne FALSE (pas d'envoi de commande)
+    //According to the encoder type, somes states does not corresponding to a detent, return false in these case.
     switch( EncoderType){
 
-        //Type 1 : chaque valeur correspond à un valeur possible pour un cran
+        //Type 1 : each value can correspond to a detent
         case Type1Encoder :
-            return isStatutsChanged;
+            return isStatusChanged;
 
-        //Type 2 : seul les valeurs 1 & 2 correspondent à un cran possible
+        //Type 2 : Only 1 & 2 values can correspond to a detent
         case Type2Encoder :
             if( this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] == 1 || this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] == 2 )
-                return isStatutsChanged;
+                return isStatusChanged;
             else
                 return false;
 
-        //Type 3 : seul les valeurs 0 & 3 correspondent à un cran possible
+        //Type 3 : Only 0 & 3 values can correspond to a detent
         case Type3Encoder :
 #ifdef USE_SECURE_MODE_FOR_MOUSE_ENCODER
             if(( this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] == 0 && this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] != 3) || ( this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] == 3 && this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] != 0) )
-                return isStatutsChanged;
+                return isStatusChanged;
 #else
             if( this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] == 0 || this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] == 3 )
-                return isStatutsChanged;
+                return isStatusChanged;
 #endif
             else
                 return false;
 
-        //Type 4 : seul la valeurs 0 correspond à un cran possible
+        //Type 4 : Only 0 value can correspond to a detent
         case Type4Encoder :
             if( this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] == 0 )
-                return isStatutsChanged;
+                return isStatusChanged;
             else
                 return false;
     }
@@ -212,10 +209,10 @@ float ArduinoRotaryEncoderControl::getValue(){
 
         unsigned long timeDiff = micros() - this->LastDirChangeTime;
 
-        //Trop rapide, on garde la direction précédente
+        //Too fast, keep previous direction
         if( timeDiff > 0 && timeDiff < MIN_DIR_CHANGE_TIME )
             curDirection = this->LastDirection;
-        //Ok, on peu changer de direction
+        //Timing OK, we can accept a direction change
         else
             this->LastDirection = curDirection;
     }

@@ -31,11 +31,8 @@ ArduinoIncrementalThreePosToggleSwitchControl::~ArduinoIncrementalThreePosToggle
 bool ArduinoIncrementalThreePosToggleSwitchControl::ReadInput(){
 
 
-    //Statut courant = ancien statut
+    //Keep current status as old status and read new one
     this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX] = this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX];
-
-
-    //On lit le nouveau statut
     bitWrite(this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX], 0, _digitalRead(this->Pin1) == HIGH);
     bitWrite(this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX], 1, _digitalRead(this->Pin2) == HIGH);
 
@@ -54,31 +51,30 @@ bool ArduinoIncrementalThreePosToggleSwitchControl::ReadInput(){
         Serial.println(".");
     #endif
 
+    //Status changed ?
     return this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX] != this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX];
 }
 
 //On retourne une valeur de type float en fonction de l'état du toggle switch et du mode demandé
 float ArduinoIncrementalThreePosToggleSwitchControl::getValue(){
 
-    //Dernière position possible, forcément commande n°2 (monte)
+    //Last position
     if( this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX] == 1 ){
         return 1;
     }
-    //Première position possible, forcément commande n°1 (descent)
+    //First position
     else if( this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX] == 2 ){
         return 0;
     }
-    //Position intermédiaire, la commande dépend de l'état précédent
+    //Middle position, send same value as old status
     else{
 
-        //Ancienne position = premier, donc on "monte" => commande n°2
         if( this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX] == 2 )
             return 1;
-        //Ancienne position = dernière, donc on "descend" => commande n°1
         else
             return 0;
     }
 
-    //Normalement pas possible, donc commande n°3 qui doit de totue façon être null
+    //Not possible ! Command n°3 (Should be null)
     return 2;
 }

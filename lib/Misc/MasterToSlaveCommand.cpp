@@ -13,7 +13,7 @@
 #include "MasterToSlaveCommand.h"
 
 
-MasterToSlaveCommand::MasterToSlaveCommand() : TypeCommande(TypeCommandUnknow), PinMode(PINModeNotSet), RWMode(RWModeNotSet), PinNum(0), ValueToSet(0){
+MasterToSlaveCommand::MasterToSlaveCommand() : TypeCommande(TypeCommandUnknow), PinMode(PINModeNotUsed), RWMode(RWModeNotUsed), PinNum(0), ValueToSet(0){
 }
 
 MasterToSlaveCommand::MasterToSlaveCommand(MSCTypeCommand  type, MSCPINMode pin_mode, MSCRWMode rw_mode, uint8_t pin, int value) : TypeCommande(type), PinMode(pin_mode), RWMode(rw_mode), PinNum(pin), ValueToSet(value){

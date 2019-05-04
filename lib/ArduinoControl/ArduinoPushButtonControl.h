@@ -12,14 +12,16 @@
 #include "ArduinoControl.h"
 
 
-///////////////////////////////////////////////////////////
-//Permet de controler des button (push button)
-///////////////////////////////////////////////////////////
+//Allows use of push button
 class ArduinoPushButtonControl : public ArduinoInputControl{
 
     private :
         uint8_t Pin1;
-        uint8_t DefaultPinStatus; //L'état apr défaut du contrôle (au repos), si l'état est différent la commande est systèmatiquement envoyée, même si l'etat n'a pas changé entre deux loop
+
+        //Default/initial PIN Status.
+        //For this control, "ReadInput" return true (send command) on each loop
+        //when his current status has been changed from initial status
+        uint8_t InitialPinStatus;
 
     public :
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
@@ -27,9 +29,9 @@ class ArduinoPushButtonControl : public ArduinoInputControl{
 #else
         ArduinoPushButtonControl( uint8_t pin, uint8_t defautStat = LOW );
 #endif
-        ~ArduinoPushButtonControl();
+        ~ArduinoPushButtonControl(){};
         bool ReadInput();
-        float getValue();
+        float getValue(){ return 0; }//This control always send his first (and only) command
 };
 
 #endif // ARDUINPUSHBUTTONCLASS_H_INCLUDED

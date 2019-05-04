@@ -37,7 +37,7 @@ public :
 
     //PIN Mode
     typedef enum{
-        PINModeNotSet = 0, //Utilisé pour des commande type set/get (pas besoin de connaitre le mode)
+        PINModeNotUsed = 0, //Utilisé pour des commande type set/get (pas besoin de connaitre le mode)
         PINModeInput,
         PINModeOutput,
         PINModeIntputPullUp
@@ -45,7 +45,7 @@ public :
 
     //Read/Write Mode
     typedef enum{
-        RWModeNotSet = 0, //Utilisé pour des commande type init
+        RWModeNotUsed = 0, //Utilisé pour des commande type init
         RWModeAnalog,
         RWModeDigital
     }MSCRWMode;

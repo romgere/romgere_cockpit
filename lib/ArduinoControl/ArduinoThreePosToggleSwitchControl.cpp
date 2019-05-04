@@ -29,11 +29,9 @@ bool ArduinoThreePosToggleSwitchControl::ReadInput(){
 
     uint8_t last[2];
 
-    //On garde une sauvegarde de l'état avant MAJ
+    //Keep current value as old, and read new one
     last[0] = this->LastPinStatus[0];
     last[1] = this->LastPinStatus[1];
-
-    //On Met à jour l'état du contrôle
     this->LastPinStatus[0] = _digitalRead( this->Pin1);
     this->LastPinStatus[1] = _digitalRead( this->Pin2);
 
@@ -51,11 +49,10 @@ bool ArduinoThreePosToggleSwitchControl::ReadInput(){
     Serial.println(".");
     #endif
 
-    //Retourne TRUE si le controle à changé d'état...
+    //Value changed ?
     return this->LastPinStatus[0] != last[0] || this->LastPinStatus[1] != last[1];
 }
 
-//On retourne une valeur de type float en fonction de l'état du toggle switch et du mode demandé
 float ArduinoThreePosToggleSwitchControl::getValue(){
 
 
@@ -69,6 +66,6 @@ float ArduinoThreePosToggleSwitchControl::getValue(){
         return 2;
     }
 
-    //Etat inconnu !?
+    //Unknow state !?
     return 0;
 }

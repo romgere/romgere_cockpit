@@ -13,35 +13,24 @@ ArduinoPushButtonControl::ArduinoPushButtonControl( uint8_t pin, uint8_t defautS
 #endif
 
     this->Pin1 = pin;
-    //Position par Défaut
-    this->DefaultPinStatus = defautStat == HIGH ? HIGH : LOW;
+    this->InitialPinStatus = defautStat == HIGH ? HIGH : LOW;
 
     _pinMode(this->Pin1, INPUT);
 }
 
-ArduinoPushButtonControl::~ArduinoPushButtonControl(){
-
-}
-
-//Retourne TRUE si le controle n'est pas dans son état par défaut
 bool ArduinoPushButtonControl::ReadInput(){
 #ifdef DEBUG_CONTROL_STAT
     int newVal = _digitalRead( this->Pin1);
     Serial.print("Control Debug : Read PushButton[");
     Serial.print(this->Pin1);
     Serial.print("] Stat : ");
-    Serial.print(this->DefaultPinStatus != newVal ? "CHANGE !" : "NO CHANGE");
+    Serial.print(this->InitialPinStatus != newVal ? "CHANGE !" : "NO CHANGE");
     Serial.print(", Value : ");
     Serial.print(newVal);
     Serial.println(".");
 
-	return this->DefaultPinStatus != newVal;
+	return this->InitialPinStatus != newVal;
 #else
-    return this->DefaultPinStatus != _digitalRead( this->Pin1);
+    return this->InitialPinStatus != _digitalRead( this->Pin1);
 #endif
-}
-
-float ArduinoPushButtonControl::getValue(){
-    //le "Push Button" utilise toujours la première commande passée lors de la déclarion du controle
-    return 0;
 }

@@ -11,9 +11,7 @@
 #include "../Config/MainConfig.h"
 #include "ArduinoControl.h"
 
-///////////////////////////////////////////////////////////
-//Permet de controler un Servo moteur
-///////////////////////////////////////////////////////////
+//allows use of servo motor. Not implemented
 class ArduinoServoControl : public ArduinoOutputControl{
 
     private :

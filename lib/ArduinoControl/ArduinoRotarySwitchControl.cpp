@@ -18,16 +18,14 @@ ArduinoRotarySwitchControl::ArduinoRotarySwitchControl( uint8_t pin, uint8_t nbp
 
     this->NbPos = nbpos;
 
+    //Default : no repeated value
     for( int i= 0; i < MAX_COMMAND_FOR_ONE_CONTROLE; i ++ )
         this->RepeatCmd[i] =  false;
 
-    //Pas entre 2 valeurs
+    //Step between 2 values & tolerance (gap allowed between read and expected value)
     this->Step = 1024 / (this->NbPos-1);
-    //Tolerance (écart min/max possible par rapport à la valeur attendu)
     this->Tolerance = this->Step*float(ROTARY_SWITCH_TOLERANCE);
 
-
-    //pas de valeur précédente, on li la valeur mais sans envoyé de commande pour avoir l'état actuel
     this->LastVal  = -1;
     this->ReadInput();
 }
@@ -40,21 +38,17 @@ ArduinoRotarySwitchControl* ArduinoRotarySwitchControl::setRepeat( uint8_t pos, 
         this->RepeatCmd[pos] = repeat;
     }
 
-    //Permet de chainer les setRepeat.
     return this;
 }
 
 bool ArduinoRotarySwitchControl::ReadInput(){
 
-    //Mémorise l'ancienne valeuir
+    //Keep current value as old, and read new one
     uint8_t oldVal = this->LastVal;
-
-
-    //On lit l'actuelle
     int currentAnalog = _analogRead( this->Pin1);
     for( uint8_t i = 0; i < this->NbPos; i++ ){
 
-        //Pour chaque position possible, on regarde si la valeur actuelle est comprise entre val pour la pos -/+ tolerance
+        //Check each possible position and check if current value is in interval of expected value +/- tolerance
         if( currentAnalog >= (int)((i*this->Step) - this->Tolerance) &&  currentAnalog <= (int)((i*this->Step) + this->Tolerance) ){
            this->LastVal = i;
            break;
@@ -73,7 +67,7 @@ bool ArduinoRotarySwitchControl::ReadInput(){
     Serial.println(").");
     #endif
 
-    //Si la valeur à changée ou qu'il faut répêter la commande, alors on retourne "vrai" pour déclancher l'envoi de la commande.
+    //Value changed or repeat set for this position => return true to send command
     if( this->LastVal != oldVal || this->RepeatCmd[this->LastVal])
         return true;
 

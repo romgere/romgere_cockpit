@@ -11,9 +11,7 @@
 #include "../Config/MainConfig.h"
 #include "ArduinoControl.h"
 
-///////////////////////////////////////////////////////////
-//Permet de controler des toggle switchs à 3 positions
-///////////////////////////////////////////////////////////
+//Allows use of 3 position toggle switch (bind to 3 commands)
 class ArduinoThreePosToggleSwitchControl : public ArduinoInputControl{
 
   public :

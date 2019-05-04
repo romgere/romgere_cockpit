@@ -15,7 +15,7 @@
 
 
 
-//Garde une référence vers l'instance de SlaveBoardApplication pour pouvoir la notifier
+//Keep a global reference to SlaveBoardApplication instance to be able to notify it
 SlaveBoardApplication* slaveAppInstance = NULL;
 void globalReceivedData( int dataSize){
     slaveAppInstance->receivedData( dataSize);
@@ -39,7 +39,7 @@ SlaveBoardApplication::SlaveBoardApplication( uint8_t adresse ) : BoardI2CAdress
     Serial.println("...");
     #endif
 
-    //Garde un pointeur vers notre instance pour être notifié
+    //set global refence to our SlaveBoardApplication instance
     slaveAppInstance = this;
 
     #ifdef DEBUG_SLAVE_APP
@@ -47,17 +47,16 @@ SlaveBoardApplication::SlaveBoardApplication( uint8_t adresse ) : BoardI2CAdress
     #endif
 }
 
+//Register the board on I2C bus
 void SlaveBoardApplication::RegisterI2C(){
 
     #ifdef DEBUG_SLAVE_APP
     Serial.print("SlaveBoardApplication : Register I2C...");
     #endif
 
-    //Initialisation I2C
     Wire.begin(BoardI2CAdresse);
     Wire.onReceive(globalReceivedData);
     Wire.onRequest(globalRequestEvent);
-
 
     #ifdef DEBUG_SLAVE_APP
     Serial.println("OK.");
@@ -71,6 +70,9 @@ SlaveBoardApplication::~SlaveBoardApplication(){
     }
 }
 
+//Main slave board app loop :
+// - dequeue command from master board
+// - do action (init/read) on pin
 void SlaveBoardApplication::loop(){
 
     //On se contente de dépiler les commandes "en attente"
@@ -78,11 +80,11 @@ void SlaveBoardApplication::loop(){
 
         MasterToSlaveCommand *masterCommand =  this->commandQueue.dequeue();
 
-        //Initialisation d'un PIN
+        //Init PIN
         if( masterCommand->TypeCommande == MasterToSlaveCommand::TypeCommandInitialisation ){
 
-            //Erreur !?
-            if( masterCommand->PinMode == MasterToSlaveCommand::PINModeNotSet ){
+            //Error !?
+            if( masterCommand->PinMode == MasterToSlaveCommand::PINModeNotUsed ){
 
                 #ifdef DEBUG_SLAVE_APP
                 Serial.println("SlaveBoardApplication : Init PIN Erreur, bad parameter.");
@@ -103,11 +105,11 @@ void SlaveBoardApplication::loop(){
 
             }
         }
-        //Ecriture de la valeur sur un PIN
+        //Write on analog/digital PIN
         else if( masterCommand->TypeCommande == MasterToSlaveCommand::TypeCommandSetPINValue ){
 
-            //Erreur !?
-            if( masterCommand->RWMode == MasterToSlaveCommand::RWModeNotSet ){
+            //Error !?
+            if( masterCommand->RWMode == MasterToSlaveCommand::RWModeNotUsed ){
 
                 #ifdef DEBUG_SLAVE_APP
                 Serial.println("SlaveBoardApplication : Set PIN Erreur, bad parameter.");
@@ -144,7 +146,7 @@ void SlaveBoardApplication::loop(){
     }
 }
 
-//On parse les données reçues
+//Parse data from master Board
 void SlaveBoardApplication::parseDataFromMaster( byte* data){
 
     #ifdef DEBUG_SLAVE_APP
@@ -156,7 +158,7 @@ void SlaveBoardApplication::parseDataFromMaster( byte* data){
 
 
 
-    //Demande de valeur
+    //Master asking for PIN Value
     if( masterCommand->TypeCommande == MasterToSlaveCommand::TypeCommandGetPINValue ){
 
         if( lastPinForValueSend != NULL )
@@ -166,16 +168,16 @@ void SlaveBoardApplication::parseDataFromMaster( byte* data){
         Serial.println("SlaveBoardApplication : get PIN ask.");
         #endif
 
-        //On garde la commande demandé (avec la référence à l'entrée arduino) pour pouvoir envoyer l'info lorsque demandé par le Master
+        //Keep the command (reference to arduino input PIN) to send it later when master board really ask for it (see "SlaveBoardApplication::requestEvent()")
         lastPinForValueSend = masterCommand;
     }
+    //Enqueue write command
     else{
-        //On met en queue la commande
         this->commandQueue.enqueue( masterCommand);
     }
 }
 
-//On revoi des données du Maitre
+//Received data from master
 void SlaveBoardApplication::receivedData( int dataSize){
 
     int index = 0;
@@ -198,10 +200,9 @@ void SlaveBoardApplication::receivedData( int dataSize){
     #endif // DEBUG_I2C4
 
     parseDataFromMaster(data);
-
 }
 
-//Le master fait une demande (pour une valeur)
+//Master board request a value
 void SlaveBoardApplication::requestEvent(){
 
 
@@ -237,7 +238,7 @@ void SlaveBoardApplication::requestEvent(){
                 #endif
             }
         }
-        //Erreur
+        //Error
         else{
 
             #ifdef DEBUG_I2C
@@ -259,7 +260,7 @@ void SlaveBoardApplication::requestEvent(){
     Serial.println(".");
     #endif
 
-    //On envoi la valeur
+    //Send value on I2C Bus
     Wire.write((uint8_t*)conv.byteVal, 2);
 }
 

@@ -8,4 +8,4 @@
 
 
 
-/* TODO Servo Control */
+/* TODO Servo motor Control */
