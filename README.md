@@ -29,7 +29,7 @@ For more example, please see `Carte1` folder.
 
 - [ ] Translate comment and other text
 - [ ] Change all file header
-- [ ] Modify folder and tree to something like lib / test / example / doc@
+- [x] Modify folder and tree to something like lib / test / example / doc...
 - [ ] Change example and delete all FSX references
 - [ ] Write doc and Readme
 - [ ] Try to create some complete example
