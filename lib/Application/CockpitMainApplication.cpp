@@ -7,7 +7,7 @@
 #include "CockpitMainApplication.h"
 
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-    //Pour l'I2C (utilisation de carte maitre/esclave)
+    //Include I2C support if needed
     #include <Wire.h>
 #endif // ACTIVE_MULTI_ARDUINO_BOARD_MODE
 
@@ -16,7 +16,7 @@
 CockpitMainApplication::CockpitMainApplication( BaseCommunicationInterface *comInterface){
 
     #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-    I2CActive = false;
+    I2CInit = false;
     #endif // ACTIVE_MULTI_ARDUINO_BOARD_MODE
 
 
@@ -29,7 +29,7 @@ CockpitMainApplication::CockpitMainApplication( BaseCommunicationInterface *comI
     Serial.println("CockpitMainApplication : Creating network interface...");
     #endif
 
-    //Interface de communication vers/depuis XPlane (Ethernet/Serial/Debug)
+    //Communication interface from/to XPlane (Ethernet/Serial/Debug)
     CommunicationInterface = comInterface;
 
 
@@ -45,11 +45,11 @@ CockpitMainApplication::CockpitMainApplication( BaseCommunicationInterface *comI
     InputControlCount = 0;
     OutputControlCount = 0;
 
-    //Mise à vide des association controle/commande
+    //NULL Initialisation of control/command association (input)
     for( int i = 0; i < MAX_INPUT_CONTROL_IN_APPLICATION; i++ )
         InputControlList[i] = NULL;
 
-    //Mise à vide des association controle/commande
+    //NULL Initialisation of control/command association (output)
     for( int i = 0; i < MAX_OUTPUT_CONTROL_IN_APPLICATION; i++ )
         OutputControlList[i] = NULL;
 
@@ -77,11 +77,19 @@ CockpitMainApplication::~CockpitMainApplication() {
 
 
 
-//Déclare un controle de type input (switch, encoder, etc...) et la/les commande(s) output associée(s)
-void CockpitMainApplication::DeclareInputControl( ArduinoInputControl *ctrl,    XPlaneOutputCommand *cmd,  XPlaneOutputCommand *cmd1,  XPlaneOutputCommand *cmd2,
-                                                            XPlaneOutputCommand *cmd3, XPlaneOutputCommand *cmd4, XPlaneOutputCommand *cmd5,
-                                                            XPlaneOutputCommand *cmd6, XPlaneOutputCommand *cmd7, XPlaneOutputCommand *cmd8,
-                                                            XPlaneOutputCommand *cmd9, XPlaneOutputCommand *cmd10){
+//Register an input control (switch, encode, ...) and bind it to one or more output command(s)
+void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
+                                                    XPlaneOutputCommand *cmd,
+                                                    XPlaneOutputCommand *cmd1,
+                                                    XPlaneOutputCommand *cmd2,
+                                                    XPlaneOutputCommand *cmd3,
+                                                    XPlaneOutputCommand *cmd4,
+                                                    XPlaneOutputCommand *cmd5,
+                                                    XPlaneOutputCommand *cmd6,
+                                                    XPlaneOutputCommand *cmd7,
+                                                    XPlaneOutputCommand *cmd8,
+                                                    XPlaneOutputCommand *cmd9,
+                                                    XPlaneOutputCommand *cmd10){
 
     if( InputControlCount >= MAX_INPUT_CONTROL_IN_APPLICATION)
         return;
@@ -90,7 +98,7 @@ void CockpitMainApplication::DeclareInputControl( ArduinoInputControl *ctrl,    
     CheckAndInitI2CIfNeed( ctrl);
     #endif
 
-    /* TODO controle en fonction du typre de control arduino (analog/digital)
+    /* TODO: controle en fonction du typre de control arduino (analog/digital)
         si type analogique alors commande 1 = Dref et autre NULL
         si type numerique, alors 1 à 3 comamnde de type char ou data
     */
@@ -104,8 +112,8 @@ void CockpitMainApplication::DeclareInputControl( ArduinoInputControl *ctrl,    
     assoc->OutputCommand[1] = cmd1;
     assoc->OutputCommand[2] = cmd2;
 
-    //TODO: gérer via fonction "Variadic". possible ?
-    //Commande "supplémentaire" selon config pour les rotary switch
+    //TODO: use variadic function
+    //Additional command for rotary switch
     if( MAX_COMMAND_FOR_ONE_CONTROLE >= 4 )
         assoc->OutputCommand[3] = cmd3;
     if( MAX_COMMAND_FOR_ONE_CONTROLE >= 5 )
@@ -125,7 +133,7 @@ void CockpitMainApplication::DeclareInputControl( ArduinoInputControl *ctrl,    
 
 
     #ifdef DEBUG_CONTROL_COMMAND_ASSOC
-    Serial.print("CockpitMainApplication : Declare INPUT control/command association, control : [");
+    Serial.print("CockpitMainApplication : Register INPUT control/command association, control : [");
 
     switch( ctrl->getInputType() ){
         case ArduinoInputControl::ITypePushButton :
@@ -176,8 +184,8 @@ void CockpitMainApplication::DeclareInputControl( ArduinoInputControl *ctrl,    
     InputControlCount++;
 }
 
-//Déclare un controle de type output (LED, servo, etc...) et la commande input associée
-void CockpitMainApplication::DeclareOutputControl( ArduinoOutputControl *ctrl,  XPlaneInputData *data, inputDataTransformFunction fct){
+//Register an output control (LED, servo, ...) and bind it to one intput data(s) (with optional "transformation“ function)
+void CockpitMainApplication::RegisterOutputControl( ArduinoOutputControl *ctrl,  XPlaneInputData *data, inputDataTransformFunction fct){
 
     if( OutputControlCount >= MAX_OUTPUT_CONTROL_IN_APPLICATION)
         return;
@@ -196,7 +204,7 @@ void CockpitMainApplication::DeclareOutputControl( ArduinoOutputControl *ctrl,  
 
 
     #ifdef DEBUG_CONTROL_COMMAND_ASSOC
-    Serial.print("CockpitMainApplication : Declare OUTPUT control/data association, control : [");
+    Serial.print("CockpitMainApplication : Register OUTPUT control/data association, control : [");
 
     switch( ctrl->getOutputType() ){
         case ArduinoOutputControl::OTypeLed:
@@ -221,7 +229,11 @@ void CockpitMainApplication::DeclareOutputControl( ArduinoOutputControl *ctrl,  
     OutputControlCount++;
 }
 
-//Lance l'échange de donnèes entre Xplane et l'arduino (lecture des info xplane, MAJ des contrôles, intérogation des contrôles et envoi des données à XPlane)
+  //Main app loop :
+  // - read xplane Datas
+  // - update outpput controls
+  // - read input controls
+  // - send commands to X-plane
 void CockpitMainApplication::Loop(){
 
 
@@ -231,7 +243,6 @@ void CockpitMainApplication::Loop(){
     Serial.println("...");
     #endif
 
-    //Read data from Xplane
     #if NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
     if( LoopNumber % NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE == 0){
     #endif
@@ -240,9 +251,10 @@ void CockpitMainApplication::Loop(){
         Serial.println("CockpitMainApplication : Loop, process Input Data Reading...");
         #endif
 
+        //Read data from X-plane
         uint8_t nbDataRead = CommunicationInterface->ReadAllInput();
 
-        //On met à jour les controles (ouput)
+        //update ouput controls
         if( nbDataRead > 0 ){
 
             #ifdef DEBUG_LIBRARY_LOOP
@@ -272,7 +284,6 @@ void CockpitMainApplication::Loop(){
     }
     #endif
 
-    //Read input Controle
     #if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1
     if( LoopNumber % NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT == 0){
     #endif
@@ -281,7 +292,7 @@ void CockpitMainApplication::Loop(){
         Serial.println("CockpitMainApplication : Loop, process Input Control Reading...");
         #endif
 
-        //Send data to Xplane
+        //Read input controls and send datas to X-plane
         for( unsigned int i = 0; i < InputControlCount; i++ ){
 
             #ifdef DEBUG_LIBRARY_LOOP
@@ -290,7 +301,6 @@ void CockpitMainApplication::Loop(){
             Serial.println("...");
             #endif
 
-            //Lit le control et envoi la commande si besoin
             this->doControlCommandProcess( InputControlList[i]);
         }
     #if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1
@@ -301,16 +311,16 @@ void CockpitMainApplication::Loop(){
     #endif
 }
 
-//Met à jour le contrôle en fonction de la commande.
+//Update output control if needed with value of binded input command
 void CockpitMainApplication::updateControlWithCommand( OutputControlAssociation* oca ){
 
     XPlaneInputData* inputData  = oca->IntputData;
     ArduinoOutputControl* outputControl = oca->Control;
 
-    //Récupère les datas du groupe associé au controle
+    //get group data of control
     XPData*  dataXplane = CommunicationInterface->GetData( inputData->getGroup() );
 
-    //Ok mise à jour du controle avec la data
+    //update control with data received from X-plane
     if( dataXplane != NULL ){
 
         #ifdef DEBUG_LIBRARY_LOOP
@@ -328,18 +338,18 @@ void CockpitMainApplication::updateControlWithCommand( OutputControlAssociation*
         Serial.print(val);
         #endif
 
-        //Si changement de valeur, on met à jour le contrôle.
+        //Update control only if value changed ( setValue == true )
         if( outputControl->setValue( val) ){
 
             #ifdef DEBUG_LIBRARY_LOOP
-            Serial.println(" => value as changed, update control.");
+            Serial.println(" => value changed, update control.");
             #endif
 
             outputControl->WriteOutput();
         }
         #ifdef DEBUG_LIBRARY_LOOP
         else{
-            Serial.println(" => value as NOT changed.");
+            Serial.println(" => value DON'T changed.");
         }
         #endif
     }
@@ -350,18 +360,16 @@ void CockpitMainApplication::updateControlWithCommand( OutputControlAssociation*
     #endif
 }
 
-//Lit le controle et envoi la commande si besoin
+//Read input control and send command to X-plane if needed
 void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* ica, bool forceSendingCommand ){
 
     XPlaneOutputCommand* outputCmd = NULL;
     ArduinoControl* inputControl = ica->Control;
 
-	//On lit l'état du control, si modifié, alors on traite la commande
-	//Ou envoi la commande quel que soit l'état du contrôle si demandé (forceSendingCommand==true)
+    //Read input stat and send command if value changed (ReadInput == true) or if force sending ask (forceSendingCommand == true)
     if( forceSendingCommand || inputControl->ReadInput() ){
 
-		//Récupère la valeur du controle sous forme float
-		float val = inputControl->getValue();
+		    float val = inputControl->getValue();
 
         #ifdef DEBUG_LIBRARY_LOOP
         Serial.print("CockpitMainApplication : Loop, control was modified, new value:");
@@ -369,35 +377,38 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
         Serial.println("...");
         #endif
 
-		//Controle analogique
-		if( inputControl->getType() == ArduinoControl::DigitalControl ){
-			//Selon la valeur de retour du control, on prend une des commandes du tableau
-			if( val < MAX_COMMAND_FOR_ONE_CONTROLE)
-				outputCmd = ica->OutputCommand[(uint8_t)val];
-		}
-		else{
-			// TODO controle analogique
+		    //Digital control ()
+		    if( inputControl->getType() == ArduinoControl::DigitalControl ){
+
+            //Command is defined from control value and InputControlAssociation's command tab
+			      if( val < MAX_COMMAND_FOR_ONE_CONTROLE)
+				        outputCmd = ica->OutputCommand[(uint8_t)val];
+		    }
+        // TODO : Analog control
+		    else{
+
             #ifdef DEBUG_LIBRARY_LOOP
             Serial.println("CockpitMainApplication : Loop, control type Analogic, not implemented!");
             #endif
-		}
+        }
 
-		if( outputCmd != NULL ){
+        //We got a command to send
+    		if( outputCmd != NULL ){
 
-			switch( outputCmd->getType() ){
+    		    switch( outputCmd->getType() ){
 
-				//Key
-				case XPlaneOutputCommand::TypeKeyCommand :
+        				//Key
+        				case XPlaneOutputCommand::TypeKeyCommand :
                     #ifdef DEBUG_LIBRARY_LOOP
                     Serial.print("CockpitMainApplication : Loop, Process Key Command [");
                     Serial.print(outputCmd->toString());
                     Serial.println("] for control.");
                     #endif
-					CommunicationInterface->SendKey( outputCmd->toString());
-				break;
+  	                CommunicationInterface->SendKey( outputCmd->toString());
+        				break;
 
-				//Commande classique
-				case XPlaneOutputCommand::TypeSimpleCommand :
+  				      //Simple command
+  				      case XPlaneOutputCommand::TypeSimpleCommand :
 
                     #ifdef DEBUG_LIBRARY_LOOP
                     Serial.print("CockpitMainApplication : Loop, Process Command Simple [");
@@ -405,10 +416,10 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
                     Serial.println("] for control.");
                     #endif
 
-					CommunicationInterface->SendCommand( outputCmd->toString());
+  					        CommunicationInterface->SendCommand( outputCmd->toString());
 
-                    //Deuxième commande à envoyer en meme temps ?
-					if( ((XPlaneSimpleCommand*)outputCmd)->isDoubleCommand() ){
+                    //Twin command (send 2 commands for one input)
+  					        if( ((XPlaneSimpleCommand*)outputCmd)->isTwinCommand() ){
 
                         #ifdef DEBUG_LIBRARY_LOOP
                         Serial.print("CockpitMainApplication : Loop, Process SECOND Command Simple [");
@@ -417,19 +428,19 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
                         #endif
 
                         CommunicationInterface->SendCommand( ((XPlaneSimpleCommand*)outputCmd)->toStringSecond());
-					}
-				break;
+  				          }
+  			        break;
 
-				//DREF / DATA : Envoi de DREF
-				case XPlaneOutputCommand::TypeDREFCommand :
-				case XPlaneOutputCommand::TypeDATACommand :
+  				      //DREF / DATA command
+  				      case XPlaneOutputCommand::TypeDREFCommand :
+  				      case XPlaneOutputCommand::TypeDATACommand :
                     #ifdef DEBUG_LIBRARY_LOOP
                     Serial.println("CockpitMainApplication : Loop, Command type DATA or DREF for control, not implemented!");
                     #endif
-				break;
+  		          break;
 
-				//Commande "system" : interne à la librairie
-				case XPlaneOutputCommand::TypeInternalCommand :
+  				      //System command : internal to library
+  				      case XPlaneOutputCommand::TypeInternalCommand :
 
                     #ifdef DEBUG_LIBRARY_LOOP
                     Serial.print("CockpitMainApplication : Loop, Process Command System [");
@@ -437,17 +448,19 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
                     Serial.println("] for control.");
                     #endif
 
-					this->doInternalCommande((LibrarySpecialCommand*)outputCmd);
-				break;
-			}
-		}
+  				          this->doInternalCommande((LibrarySpecialCommand*)outputCmd);
+  		          break;
+            }
+        }
         #ifdef DEBUG_LIBRARY_LOOP
+        //No command
         else{
             Serial.println("CockpitMainApplication : Loop, no command for control value.");
         }
         #endif
-	}
+    }
     #ifdef DEBUG_LIBRARY_LOOP
+    //No change in control value
     else{
         Serial.println("CockpitMainApplication : Loop, control was not modified.");
     }
@@ -455,37 +468,34 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
 }
 
 
+//Reset arduino (function at 0 address = cause arduino reset)
+void(* resetArduinoFunction) (void) = 0;
 
-void(* resetArduinoFunction) (void) = 0; //declare function reset à l'address 0
-
+//Deal with library internal command
 void CockpitMainApplication::doInternalCommande( LibrarySpecialCommand *cmd){
 
 
     switch( cmd->getCommand() ){
 
-        //Envoi de toutes les commande quel que soit l'état du controle
+        //Send all command of all (toggle switch and rotary switch) input control even if control was not modified
         case LibrarySpecialCommand::SendAll :
-            //Send data to Xplane
             for( unsigned int i = 0; i < InputControlCount; i++ ){
 
-                if( InputControlList[i] != NULL ){
-
-                    //Uniquement pour les toggle et rotary switch
-                    if( InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeRotarySwitch || InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeToggleSwitch ){
-
-                        //Lit le control et force lenvoi la commande si besoin
+                if( InputControlList[i] != NULL &&
+                  (  InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeRotarySwitch
+                  || InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeToggleSwitch) ){
                         this->doControlCommandProcess( InputControlList[i], true);
                     }
                 }
             }
         break;
 
-        //RESET ARDUINO
+        //Reset Arduino board
         case LibrarySpecialCommand::ResetArduino :
             resetArduinoFunction();
         break;
 
-        //Allumer/Eteindre toutes les LED
+        //Turn on/off all LED output controls (Example : testing panel)
         case LibrarySpecialCommand::AllLedOn :
         case LibrarySpecialCommand::AllLedOff :
 
@@ -493,29 +503,25 @@ void CockpitMainApplication::doInternalCommande( LibrarySpecialCommand *cmd){
 
                 if( OutputControlList[i] != NULL ){
 
-                    //Le controle en output
                     ArduinoOutputControl* outputControl = OutputControlList[i]->Control;
 
-                    if( outputControl->getOutputType() == ArduinoOutputControl::OTypeLed ){
-                        //Force l'allumage
-                        outputControl->setValue( cmd->getCommand() == LibrarySpecialCommand::AllLedOn ? 1 : 0);
+                    if( outputControl->getOutputType() == ArduinoOutputControl::OTypeLed && outputControl->setValue( cmd->getCommand() == LibrarySpecialCommand::AllLedOn ? 1 : 0);
                         outputControl->WriteOutput();
                     }
                 }
             }
         break;
     }
-
 }
+
 
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
 
-//Chaque contrôle déclaré (in ou out) à l'application est passé par cette fonction.
-//Si le contrôle est déclaré comme situé sur une carte esclave, alors on active le bus I2C pour cette carte (comme maitre)
+//Init I2C interface if control is defined on slave arduno board (All registered control are passed to this methode)
 void CockpitMainApplication::CheckAndInitI2CIfNeed( ArduinoControl *ctrl){
 
-    if( ctrl->isOnSlaveBoard() && ! I2CActive ){
-        Wire.begin();        //joindre le bus i2c comme maître
+    if( ctrl->isOnSlaveBoard() && ! I2CInit ){
+        Wire.begin();        //join i2c bus as master
     }
 }
 

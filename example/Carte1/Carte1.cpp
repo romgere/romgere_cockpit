@@ -44,7 +44,7 @@ void setup()
     ///////////////////////
     // ANNUN TEST BUTTON //
     ///////////////////////
-    cockpitApp->DeclareInputControl(    new ArduinoPushButtonControl(40),
+    cockpitApp->RegisterInputControl(    new ArduinoPushButtonControl(40),
                                         //new XPlaneSimpleCommand("sim/annunciator/test_all_annunciators")
                                         new LibrarySpecialCommand(LibrarySpecialCommand::SendAll));
 
@@ -53,14 +53,14 @@ void setup()
     /////////////
     ArduinoRotarySwitchControl *a;
     ArduinoRotarySwitchControl *b;
-    cockpitApp->DeclareInputControl(    (a = new ArduinoRotarySwitchControl(9, 5)),
+    cockpitApp->RegisterInputControl(    (a = new ArduinoRotarySwitchControl(9, 5)),
                                         new XPlaneSimpleCommand(commandTab[magnetos_off_1][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[magnetos_right_1][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[magnetos_left_1][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[magnetos_both_1][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[engage_starter_1][arduinoRunForFSX]));
 
-    cockpitApp->DeclareInputControl(    (b = new ArduinoRotarySwitchControl(8, 5)),
+    cockpitApp->RegisterInputControl(    (b = new ArduinoRotarySwitchControl(8, 5)),
                                         new XPlaneSimpleCommand(commandTab[magnetos_off_2][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[magnetos_right_2][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[magnetos_left_2][arduinoRunForFSX]),
@@ -77,24 +77,24 @@ void setup()
     //////////////////
     // LIGHT SWITCH //
     //////////////////
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(27),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(27),
                                         new XPlaneSimpleCommand(commandTab[landing_lights_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[landing_lights_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(25),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(25),
                                         new XPlaneSimpleCommand(commandTab[taxi_lights_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[taxi_lights_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(31),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(31),
                                         new XPlaneSimpleCommand(commandTab[strobe_lights_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[strobe_lights_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(37),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(37),
                                         new XPlaneSimpleCommand(commandTab[nav_lights_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[nav_lights_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(29),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(29),
                                         new XPlaneSimpleCommand(commandTab[beacon_lights_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[beacon_lights_off][arduinoRunForFSX]));
     if( arduinoRunForFSX ){
 
-        cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(33),
+        cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(33),
                                             new XPlaneSimpleCommand("PANEL_LIGHTS_ON"),
                                             new XPlaneSimpleCommand("PANEL_LIGHTS_OFF"));
 
@@ -104,19 +104,19 @@ void setup()
     ///////////////////
     // MASTER SWITCH //
     ///////////////////
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(39),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(39),
                                         new XPlaneSimpleCommand(commandTab[avionics_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[avionics_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(47),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(47),
                                         new XPlaneSimpleCommand(commandTab[battery_1_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[battery_1_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(45),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(45),
                                         new XPlaneSimpleCommand(commandTab[generator_1_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[generator_1_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(41),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(41),
                                         new XPlaneSimpleCommand(commandTab[generator_2_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[generator_2_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(43),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(43),
                                         new XPlaneSimpleCommand(commandTab[prop_sync_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[prop_sync_off][arduinoRunForFSX]));
 
@@ -124,29 +124,29 @@ void setup()
     ////////////////
     // ICE SWITCH //
     ////////////////
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(26),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(26),
                                         new XPlaneSimpleCommand(commandTab[pitot_heat0_on][arduinoRunForFSX], commandTab[pitot_heat1_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[pitot_heat0_off][arduinoRunForFSX], commandTab[pitot_heat1_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(28),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(28),
                                         new XPlaneSimpleCommand(commandTab[AOA_heat0_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[AOA_heat0_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(22),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(22),
                                         new XPlaneSimpleCommand(commandTab[prop_heat0_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[prop_heat0_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(30),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(30),
                                         new XPlaneSimpleCommand(commandTab[window_heat_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[window_heat_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(24),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(24),
                                         new XPlaneSimpleCommand(commandTab[wing_heat0_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[wing_heat0_off][arduinoRunForFSX]));
 
     ///////////////////////
     // FUEL BOOST SWITCH //
     ///////////////////////
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(44),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(44),
                                         new XPlaneSimpleCommand(commandTab[fuel_pump_1_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[fuel_pump_1_off][arduinoRunForFSX]));
-    cockpitApp->DeclareInputControl(    new ArduinoToggleSwitchControl(46),
+    cockpitApp->RegisterInputControl(    new ArduinoToggleSwitchControl(46),
                                         new XPlaneSimpleCommand(commandTab[fuel_pump_2_on][arduinoRunForFSX]),
                                         new XPlaneSimpleCommand(commandTab[fuel_pump_2_off][arduinoRunForFSX]));
 
@@ -154,13 +154,13 @@ void setup()
     ////////////////////
     // Gear Indicator //
     ////////////////////
-    cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(32,0, arduinoRunForFSX ? 100 : 1),
+    cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(32,0, arduinoRunForFSX ? 100 : 1),
                                         new XPlaneInputData(67, 0));
-    cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(34,0, arduinoRunForFSX ? 100 : 1),
+    cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(34,0, arduinoRunForFSX ? 100 : 1),
                                         new XPlaneInputData(67, 1));
-    cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(36,0, arduinoRunForFSX ? 100 : 1),
+    cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(36,0, arduinoRunForFSX ? 100 : 1),
                                         new XPlaneInputData(67, 2));
-    cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(38),
+    cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(38),
                                         new XPlaneInputData(67),
                                         arduinoRunForFSX ? inTransitGearManageFunctionFSX : inTransitGearManageFunction);
 
@@ -169,14 +169,14 @@ void setup()
     //Flap switch //
     ////////////////
     if( arduinoRunForFSX ){
-        cockpitApp->DeclareInputControl(    new ArduinoThreePosToggleSwitchControl(19,18),
+        cockpitApp->RegisterInputControl(    new ArduinoThreePosToggleSwitchControl(19,18),
                                             new XPlaneSimpleCommand("FLAPS_UP"),
                                             new XPlaneSimpleCommand("FLAPS_1"),
                                             new XPlaneSimpleCommand("FLAPS_DOWN"));
     }
     else{
 
-        cockpitApp->DeclareInputControl(    new ArduinoIncrementalThreePosToggleSwitchControl(19,18),
+        cockpitApp->RegisterInputControl(    new ArduinoIncrementalThreePosToggleSwitchControl(19,18),
                                             new XPlaneSimpleCommand("sim/flight_controls/flaps_down"),
                                             new XPlaneSimpleCommand("sim/flight_controls/flaps_up"));
     }
@@ -185,23 +185,23 @@ void setup()
     ////////////////////
     // Flap indicator //
     ////////////////////
-    cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(15), //APH
+    cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(15), //APH
                                         new XPlaneInputData(13),
                                         arduinoRunForFSX ? aphFlapManageFunctionFSX : aphFlapManageFunction);
 
-    cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(16), //IN TRANSIT
+    cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(16), //IN TRANSIT
                                         new XPlaneInputData(13),
                                         arduinoRunForFSX ? inTransitFlapManageFunctionFSX : inTransitFlapManageFunction);
 
     if( arduinoRunForFSX ){
-      cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(17), //DWN
+      cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(17), //DWN
                                           new XPlaneInputData(13),
                                           downFlapManageFunctionFSX);
 
 
     }
     else{
-      cockpitApp->DeclareOutputControl(   new ArduinoLEDControl(17), //DWN
+      cockpitApp->RegisterOutputControl(   new ArduinoLEDControl(17), //DWN
                                           new XPlaneInputData(13, 4));
     }
 

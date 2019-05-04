@@ -93,7 +93,7 @@ class XPlaneSimpleCommand : public XPlaneOutputCommand{
     private :
         String Command;
         String *SecondCommand;
-        bool doubleCommand;
+        bool twinCommand;
 
     public :
         XPlaneSimpleCommand( const char* cmd, const char* cmd2 = NULL );
@@ -101,7 +101,7 @@ class XPlaneSimpleCommand : public XPlaneOutputCommand{
 
         const char* toString();
         const char* toStringSecond();
-        bool isDoubleCommand();
+        bool isTwinCommand();
 };
 
 

@@ -27,13 +27,13 @@ const char* XPlaneKeyCommand::toString(){
 XPlaneSimpleCommand::XPlaneSimpleCommand( const char* cmd, const char* cmd2 ): XPlaneOutputCommand(TypeSimpleCommand), Command( cmd){
     if( cmd2 != NULL ){
         SecondCommand = new String( cmd2);
-        Serial.println("DOUBLE COMAND DECLARE...");
+        Serial.print("Twin command registered : ");
         Serial.println(cmd2);
-        doubleCommand = true;
+        twinCommand = true;
     }
     else{
         SecondCommand = NULL;
-        doubleCommand = false;
+        twinCommand = false;
     }
 }
 
@@ -45,8 +45,8 @@ const char* XPlaneSimpleCommand::toString(){
     return Command.c_str();
 }
 
-bool XPlaneSimpleCommand::isDoubleCommand(){
-    return doubleCommand;
+bool XPlaneSimpleCommand::isTwinCommand(){
+    return twinCommand;
 }
 
 const char* XPlaneSimpleCommand::toStringSecond(){
