@@ -27,7 +27,7 @@ For more example, please see `Carte1` folder.
 
 # Todos
 
-- [ ] Translate comment and other text
+- [x] Translate comment and other text
 - [x] Change all file header
 - [x] Modify folder and tree to something like lib / test / example / doc...
 - [ ] Add "this->" on somes methods calls
