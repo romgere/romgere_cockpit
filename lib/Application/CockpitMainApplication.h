@@ -77,17 +77,9 @@ public :
 
     //Register an input control (switch, encode, ...) and bind it to one or more output command(s)
     void RegisterInputControl(  ArduinoInputControl *ctrl,
-                                XPlaneOutputCommand *cmd,
                                 XPlaneOutputCommand *cmd1 = NULL,
-                                XPlaneOutputCommand *cmd2 = NULL,
-                                XPlaneOutputCommand *cmd3 = NULL,
-                                XPlaneOutputCommand *cmd4 = NULL,
-                                XPlaneOutputCommand *cmd5 = NULL,
-                                XPlaneOutputCommand *cmd6 = NULL,
-                                XPlaneOutputCommand *cmd7 = NULL,
-                                XPlaneOutputCommand *cmd8 = NULL,
-                                XPlaneOutputCommand *cmd9 = NULL,
-                                XPlaneOutputCommand *cmd10 = NULL);
+                                ...
+                              );
 
     //Register an output control (LED, servo, ...) and bind it to one intput data(s) (with optional "transformation“ function)
     void RegisterOutputControl( ArduinoOutputControl *ctrl,  XPlaneInputData *data, inputDataTransformFunction fct = NULL);

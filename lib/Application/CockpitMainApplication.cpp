@@ -79,17 +79,8 @@ CockpitMainApplication::~CockpitMainApplication() {
 
 //Register an input control (switch, encode, ...) and bind it to one or more output command(s)
 void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
-                                                    XPlaneOutputCommand *cmd,
                                                     XPlaneOutputCommand *cmd1,
-                                                    XPlaneOutputCommand *cmd2,
-                                                    XPlaneOutputCommand *cmd3,
-                                                    XPlaneOutputCommand *cmd4,
-                                                    XPlaneOutputCommand *cmd5,
-                                                    XPlaneOutputCommand *cmd6,
-                                                    XPlaneOutputCommand *cmd7,
-                                                    XPlaneOutputCommand *cmd8,
-                                                    XPlaneOutputCommand *cmd9,
-                                                    XPlaneOutputCommand *cmd10){
+                                                    ... ){
 
     if( InputControlCount >= MAX_INPUT_CONTROL_IN_APPLICATION)
         return;
@@ -108,29 +99,27 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
 
 
     assoc->Control = ctrl;
-    assoc->OutputCommand[0] = cmd;
-    assoc->OutputCommand[1] = cmd1;
-    assoc->OutputCommand[2] = cmd2;
+    assoc->OutputCommand[0] = cmd1;
 
-    //TODO: use variadic function
-    //Additional command for rotary switch
-    if( MAX_COMMAND_FOR_ONE_CONTROLE >= 4 )
-        assoc->OutputCommand[3] = cmd3;
-    if( MAX_COMMAND_FOR_ONE_CONTROLE >= 5 )
-        assoc->OutputCommand[4] = cmd4;
-    if( MAX_COMMAND_FOR_ONE_CONTROLE >= 6 )
-        assoc->OutputCommand[5] = cmd5;
-    if( MAX_COMMAND_FOR_ONE_CONTROLE >= 7 )
-        assoc->OutputCommand[6] = cmd6;
-    if( MAX_COMMAND_FOR_ONE_CONTROLE >= 8 )
-        assoc->OutputCommand[7] = cmd7;
-    if( MAX_COMMAND_FOR_ONE_CONTROLE >= 9 )
-        assoc->OutputCommand[8] = cmd8;
-    if( MAX_COMMAND_FOR_ONE_CONTROLE == 10 )
-        assoc->OutputCommand[9] = cmd9;
+    va_list args;
+    va_start(args, cmd1);
+
+    XPlaneOutputCommand *nextCmd = NULL;
+    uint8_t nextIndex = 1;
+
+    //Additional command for multiple position input control (rotary switch, toggle switch ...)
+    while ((nextCmd = va_arg(args, XPlaneOutputCommand *)) != NULL) {
+
+        if ( nextIndex < MAX_COMMAND_FOR_ONE_CONTROLE ) {
+            assoc->OutputCommand[ nextIndex] = nextCmd;
+        }
+
+        ++nextIndex;
+    }
+
+    va_end(args);
 
     InputControlList[InputControlCount] = assoc;
-
 
 #ifdef DEBUG_CONTROL_COMMAND_ASSOC
     Serial.print("CockpitMainApplication : Register INPUT control/command association, control : [");
