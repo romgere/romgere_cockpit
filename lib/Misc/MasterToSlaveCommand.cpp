@@ -10,7 +10,7 @@
 
 #include <Wire.h>
 
-#include "MasterToSlaveCommand.h
+#include "MasterToSlaveCommand.h"
 
 //Send current command to Slave board on I2C bus
 void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
@@ -38,7 +38,7 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
 #endif
 
     //Send to slave board on I2C bus
-    Wire.beginTransmission(this->boardAddress);
+    Wire.beginTransmission(boardAddress);
     Wire.write((uint8_t*)buffer, 4);
     Wire.endTransmission();
 
@@ -52,7 +52,7 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
     //Only for getPin
     if( this->TypeCommande !=  TypeCommandGetPINValue )
-        return;
+        return 0;
 
     //We can't do this because one I2C transaction must include write, requestFrom and read actions
     //SendDataToIC2( boardAddress);
@@ -75,7 +75,7 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 #endif
 
     //Send to slave
-    Wire.beginTransmission(this->boardAddress);
+    Wire.beginTransmission(boardAddress);
     Wire.write((uint8_t*)buffer, 4);
 
     //Wait a little bit (Seen on lot of other source code)
@@ -85,11 +85,11 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
 #ifdef DEBUG_I2C
     Serial.print("I2C : REQ FROM ");
-    Serial.print(this->boardAddress);
+    Serial.print(boardAddress);
     Serial.println("...");
 #endif
 
-    Wire.requestFrom( this->boardAddress, (uint8_t)2);
+    Wire.requestFrom( boardAddress, (uint8_t)2);
     uint8_t index = 0;
     while(Wire.available() && index < 2)
     {

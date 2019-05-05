@@ -479,9 +479,9 @@ void CockpitMainApplication::doInternalCommande( LibrarySpecialCommand *cmd){
         case LibrarySpecialCommand::SendAll :
             for( unsigned int i = 0; i < InputControlCount; i++ ){
 
-                if( InputControlList[i] != NULL &&
-                  (  InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeRotarySwitch
-                  || InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeToggleSwitch) ){
+                if( InputControlList[i] != NULL ){
+
+                    if( InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeRotarySwitch || InputControlList[i]->Control->getInputType() == ArduinoInputControl::ITypeToggleSwitch ){
                         this->doControlCommandProcess( InputControlList[i], true);
                     }
                 }
@@ -503,7 +503,7 @@ void CockpitMainApplication::doInternalCommande( LibrarySpecialCommand *cmd){
 
                     ArduinoOutputControl* outputControl = OutputControlList[i]->Control;
 
-                    if( outputControl->getOutputType() == ArduinoOutputControl::OTypeLed && outputControl->setValue( cmd->getCommand() == LibrarySpecialCommand::AllLedOn ? 1 : 0);
+                    if( outputControl->getOutputType() == ArduinoOutputControl::OTypeLed && outputControl->setValue( cmd->getCommand() == LibrarySpecialCommand::AllLedOn ? 1 : 0) ){
                         outputControl->WriteOutput();
                     }
                 }
