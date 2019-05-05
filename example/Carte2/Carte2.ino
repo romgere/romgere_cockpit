@@ -3,11 +3,11 @@
 #include <Ethernet.h>
 
 //L'application
-#include "RomgereCockpit/Application/CockpitMainApplication.h"
-#include "RomgereCockpit/CommunicationInterface/EthernetInterface.h"
+#include "src/RomgereCockpit/Application/CockpitMainApplication.h"
+#include "src/RomgereCockpit/CommunicationInterface/EthernetInterface.h"
 
 //Les contrôles
-#include "RomgereCockpit/ArduinoControl/ArduinoRotaryEncoderControl.h"
+#include "src/RomgereCockpit/ArduinoControl/ArduinoRotaryEncoderControl.h"
 
 //Config pour la carte 2
 #include "NetworkConfig.h"
@@ -64,4 +64,3 @@ void loop()
 {
     cockpitApp->Loop();
 }
-

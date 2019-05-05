@@ -4,10 +4,10 @@
 //#include <Wire.h>
 
 //L'application
-#include "RomgereCockpit/Application/CockpitMainApplication.h"
-#include "RomgereCockpit/CommunicationInterface/EthernetInterface.h"
+#include "src/RomgereCockpit/Application/CockpitMainApplication.h"
+#include "src/RomgereCockpit/CommunicationInterface/EthernetInterface.h"
 //Les contrôles
-#include "RomgereCockpit/ArduinoControl/AllControlInclude.h"
+#include "src/RomgereCockpit/ArduinoControl/AllControlInclude.h"
 
 
 //Config pour la carte 1

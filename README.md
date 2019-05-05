@@ -1,9 +1,9 @@
 # Romgere Cockpit Arduino Lib
 
-Arduino library for building "real" cockpit/panel with X-Plane and arduino board.
+Arduino library for building "real" cockpit/panel with X-Plane and Arduino board.
 
 # WIP
-*2019/05/04 :  This library was just moved from bitbucket (private repository) to github and need some work for writing doc/example, translate, review project organisation.*
+*2019/05/04 :  This library was just moved from bitbucket (private repository) to github and need some work for writing doc/example, translate, review project folder architecture.*
 
 **Please be careful if you using this library as is.**
 
@@ -30,13 +30,19 @@ For more example, please see `Carte1` folder.
 - [x] Translate comment and other text
 - [x] Change all file header
 - [x] Modify folder and tree to something like lib / test / example / doc...
-- [ ] Add "this->" on somes methods calls
+- [ ] Add "this->" on some methods calls
 - [x] Re-indent all pre-compilation conditional blocks
 - [ ] Change example and delete all FSX references
 - [ ] Write doc and Readme
 - [ ] Try to create some complete example
 - [ ] Add some "todos" and/or open issues
 - [ ] X-plane 11 support
+
+# Use the library in your own sketches
+
+- Create an `src` folder in your Sketch folder (the folder who contain your main `.ino` file)
+- Copy (or create simlink) the `lib` folder of this library and name it "RomgereCockpit"
+- Include the library file(s) you need with `#include "src/RomgereCockpit/_file_you_need_.h"`.
 
 # Various link to add to readme/doc
 

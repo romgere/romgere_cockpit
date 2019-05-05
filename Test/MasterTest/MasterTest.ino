@@ -4,11 +4,11 @@
 #include <Wire.h>
 
 //L'application + Interface Ehternet
-#include "RomgereCockpit/Application/CockpitMainApplication.h"
-#include "RomgereCockpit/CommunicationInterface/EthernetInterface.h"
+#include "src/RomgereCockpit/Application/CockpitMainApplication.h"
+#include "src/RomgereCockpit/CommunicationInterface/EthernetInterface.h"
 //Les contrôles
-#include "RomgereCockpit/ArduinoControl/ArduinoToggleSwitchControl.h"
-#include "RomgereCockpit/ArduinoControl/ArduinoRotaryEncoderControl.h"
+#include "src/RomgereCockpit/ArduinoControl/ArduinoToggleSwitchControl.h"
+#include "src/RomgereCockpit/ArduinoControl/ArduinoRotaryEncoderControl.h"
 
 
 
@@ -22,7 +22,7 @@ EthernetInterface       *ethernetInterface;
 
 
 void setup()
-{
+{ 
 
     byte arduinoMAC[6]              = ARDUINO_MAC_ADDRESS;
     byte arduinoIP[4]               = ARDUINO_IP_ADDRESS;
