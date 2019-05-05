@@ -23,7 +23,7 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
 
     this->CreateBufferForI2C( buffer);
 
-    #ifdef DEBUG_I2C
+#ifdef DEBUG_I2C
     Serial.print("I2C : SEND TO ");
     Serial.print(boardAddress);
     Serial.print(" {");
@@ -35,16 +35,16 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
     Serial.print("-");
     Serial.print(buffer[3]);
     Serial.println("}.");
-    #endif
+#endif
 
     //Send to slave board on I2C bus
     Wire.beginTransmission(this->boardAddress);
     Wire.write((uint8_t*)buffer, 4);
     Wire.endTransmission();
 
-    #ifdef DEBUG_I2C
+#ifdef DEBUG_I2C
     Serial.println("I2C : SEND OK.");
-    #endif
+#endif
 }
 
 //Send a "GetPIN" command to slave board and wait return of slave board on I2C bus
@@ -60,7 +60,7 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
     byte buffer[4] = {0,0,0,0};
     this->CreateBufferForI2C( buffer);
 
-    #ifdef DEBUG_I2C
+#ifdef DEBUG_I2C
     Serial.print("I2C : SEND TO ");
     Serial.print(this->boardAddress);
     Serial.print(" {");
@@ -72,7 +72,7 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
     Serial.print("-");
     Serial.print(buffer[3]);
     Serial.println("}.");
-    #endif
+#endif
 
     //Send to slave
     Wire.beginTransmission(this->boardAddress);
@@ -83,11 +83,11 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
     I2CDataRCA conv;
 
-    #ifdef DEBUG_I2C
+#ifdef DEBUG_I2C
     Serial.print("I2C : REQ FROM ");
     Serial.print(this->boardAddress);
     Serial.println("...");
-    #endif
+#endif
 
     Wire.requestFrom( this->boardAddress, (uint8_t)2);
     uint8_t index = 0;
@@ -101,18 +101,18 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
     //Not enough data ! error
     if( index != 2 ){
 
-        #ifdef DEBUG_I2C
+#ifdef DEBUG_I2C
         Serial.println("I2C : REQ/REC HS.");
-        #endif
+#endif
 
         return 0;
     }
 
-    #ifdef DEBUG_I2C
+#ifdef DEBUG_I2C
     Serial.print("I2C : REQ/REC int : ");
     Serial.print(conv.intVal);
     Serial.println(".");
-    #endif
+#endif
 
     //2 bytes received : OK, return the received value as an integer
     return conv.intVal;

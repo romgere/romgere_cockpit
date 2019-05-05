@@ -32,7 +32,7 @@ private :
     //loop number to deal with send/receive action jump
     #if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1 || NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
     uint8_t LoopNumber;
-    #endif
+#endif
 
     //Communication interface between ArduinoBoard and X-Plane (Serial, NetWork, Debug)
     BaseCommunicationInterface* CommunicationInterface;
@@ -63,12 +63,12 @@ private :
     //Deal with library internal command
     void doInternalCommande( LibrarySpecialCommand *cmd);
 
-    #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
+#ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
     //I2C bus already init
     bool I2CInit;
     //Init I2C interface if control is defined on slave arduno board (All registered control are passed to this methode)
     void CheckAndInitI2CIfNeed( ArduinoControl *ctrl);
-    #endif
+#endif
 
 public :
 

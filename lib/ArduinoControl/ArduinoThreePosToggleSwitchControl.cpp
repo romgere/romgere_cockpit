@@ -35,7 +35,7 @@ bool ArduinoThreePosToggleSwitchControl::ReadInput(){
     this->LastPinStatus[0] = _digitalRead( this->Pin1);
     this->LastPinStatus[1] = _digitalRead( this->Pin2);
 
-    #ifdef DEBUG_CONTROL_STAT
+#ifdef DEBUG_CONTROL_STAT
     Serial.print("Control Debug : Read TheePosToggleSwitch[");
     Serial.print(this->Pin1);
     Serial.print(",");
@@ -47,7 +47,7 @@ bool ArduinoThreePosToggleSwitchControl::ReadInput(){
     Serial.print(",");
     Serial.print(this->LastPinStatus[1]);
     Serial.println(".");
-    #endif
+#endif
 
     //Value changed ?
     return this->LastPinStatus[0] != last[0] || this->LastPinStatus[1] != last[1];

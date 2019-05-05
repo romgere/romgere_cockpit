@@ -33,13 +33,13 @@ EthernetInterface::EthernetInterface(unsigned int readPort, unsigned int writePo
     //DHCP
 	  if ( arduinoIP[0] == 0){
 
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
         Serial.println("Ethernet debug : Start Ethernet using DHCP...");
-        #endif // DEBUG
+#endif // DEBUG
 
         res = Ethernet.begin(arduinoMAC);
 
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
         if( res == 0){
             Serial.println("Ethernet debug : Failed to configure Ethernet using DHCP");
         }
@@ -51,7 +51,7 @@ EthernetInterface::EthernetInterface(unsigned int readPort, unsigned int writePo
             }
             Serial.println();
         }
-        #endif // DEBUG_ETHERNET
+#endif // DEBUG_ETHERNET
 
         //DHCP error ! Can't do any other util stuff
         if( res == 0 ){
@@ -60,28 +60,28 @@ EthernetInterface::EthernetInterface(unsigned int readPort, unsigned int writePo
     }
     //Fixed IP
 	  else{
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
             Serial.println("Ethernet debug : Start Ethernet using Static IP Address");
-        #endif
+#endif
 
         Ethernet.begin( arduinoMAC, arduinoIP);
 
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
         Serial.println("Ethernet debug : Ethernet Start.");
-        #endif
+#endif
     }
 
     //Start listening on UDP
 	  res = this->Udp.begin( this->XplaneReadPort);
 
-    #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
     if( res == 0){
         Serial.println("Ethernet debug : Failed to start UDP");
     }
     else{
         Serial.println("Ethernet debug : UDP start");
     }
-    #endif // DEBUG_ETHERNET
+#endif // DEBUG_ETHERNET
 
     //UDP error ! Can't do any other util stuff
     if( res == 0 ){
@@ -92,14 +92,14 @@ EthernetInterface::EthernetInterface(unsigned int readPort, unsigned int writePo
     //Wait for a first exchange with X-Plane
 	  if ( waitForXPlane ){
 
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
         Serial.println("Ethernet debug : Start wait for Xplane...");
-        #endif // DEBUG
+#endif // DEBUG
 
         while ( !this->IsXPlaneAdressInit ){
             this->ReadAllInput();
 
-            #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
             if( this->IsXPlaneAdressInit ){
                 Serial.print("Ethernet debug : Ethernet debug : OK, data received from Xplane, IP of Xplane is : ");
                 for (byte thisByte = 0; thisByte < 4; thisByte++) {
@@ -110,7 +110,7 @@ EthernetInterface::EthernetInterface(unsigned int readPort, unsigned int writePo
             }
             else
                 Serial.println("Ethernet debug : Nothing received from Xplane still waiting...");
-            #endif // DEBUG
+#endif // DEBUG
 
             if( !this->IsXPlaneAdressInit )
                 delay(250);
@@ -140,11 +140,11 @@ uint8_t EthernetInterface::ReadAllInput(){
         }
 
 
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
         Serial.print("Ethernet debug : Received ");
         Serial.print(readSize);
         Serial.println(" byte(s) from Xplane, parsing...");
-        #endif // DEBUG
+#endif // DEBUG
 
 
         byte buffer[readSize];
@@ -173,11 +173,11 @@ uint8_t EthernetInterface::ReadAllInput(){
                 //First byte : Data's group
                 p->group = buffer[i];
 
-                #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
                 Serial.print("Ethernet debug : Receive data for group ");
                 Serial.print(p->group);
                 Serial.print(" with value [");
-                #endif
+#endif
 
                 //Datas : table of 8 float value (8 x 4 bytes)
                 for (int j=0; j<8; j++){
@@ -190,15 +190,15 @@ uint8_t EthernetInterface::ReadAllInput(){
                     //Convert 4 byte array to float with XPGroupData union
                     p->data[j] = tmpData.floatVal;
 
-                    #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
                     Serial.print(p->data[j]);
                     Serial.print(",");
-                    #endif
+#endif
                 }
 
-                #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
                 Serial.println("].");
-                #endif
+#endif
 
                 this->LastXPlaneDatas[index] = p;
 
@@ -210,13 +210,13 @@ uint8_t EthernetInterface::ReadAllInput(){
 
         }
 
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
         Serial.println("Ethernet debug : Data received not start with \"DATA>\" : ");
         Serial.println("---------------START------------------");
         for (int i=0; i < readSize; i++)
             Serial.print((char)buffer[i]);
         Serial.println("----------------END-------------------");
-        #endif
+#endif
 
 
 	}
@@ -287,17 +287,17 @@ void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
 	this->Udp.beginPacket( this->XPlaneAdress, this->XPlaneWritePort);
     this->Udp.write("DREF0");
 
-    #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
         Serial.print("Send DREF command [");
-    #endif
+#endif
     //Envoi des données
     for (int i=0; i<4; i++){
         this->Udp.write( data[i]);
 
-        #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
             Serial.print( data[i]);
             if( i < 3 ) Serial.print(",");
-        #endif
+#endif
     }
 
     //Donnée à envoyer
@@ -319,20 +319,20 @@ void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
     }
     DataOut[499] = 0;
 
-    #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
     Serial.print("] with command \"");
     Serial.print(DataOut);
     Serial.print("\" : ");
-    #endif
+#endif
 
     int res = this->Udp.write(DataOut);
 
-    #ifdef DEBUG_ETHERNET
+#ifdef DEBUG_ETHERNET
     if( res == 500 )
         Serial.println("succes");
     else
         Serial.println("error");
-    #endif // DEBUG
+#endif // DEBUG
 
 
     this->Udp.endPacket();

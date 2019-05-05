@@ -15,32 +15,32 @@
 
 CockpitMainApplication::CockpitMainApplication( BaseCommunicationInterface *comInterface){
 
-    #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
+#ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
     I2CInit = false;
-    #endif // ACTIVE_MULTI_ARDUINO_BOARD_MODE
+#endif // ACTIVE_MULTI_ARDUINO_BOARD_MODE
 
 
-    #ifdef DEBUG_SERIAL_START
+#ifdef DEBUG_SERIAL_START
     Serial.begin(DEBUG_SERIAL_SPEED);
-    #endif
+#endif
 
-    #ifdef DEBUG_LIBRARY
+#ifdef DEBUG_LIBRARY
     Serial.println("CockpitMainApplication : APP STARTING...");
     Serial.println("CockpitMainApplication : Creating network interface...");
-    #endif
+#endif
 
     //Communication interface from/to XPlane (Ethernet/Serial/Debug)
     CommunicationInterface = comInterface;
 
 
-    #ifdef DEBUG_LIBRARY
+#ifdef DEBUG_LIBRARY
     Serial.println("CockpitMainApplication : Network interface created.");
     Serial.println("CockpitMainApplication : Init application datas.");
-    #endif
+#endif
 
-	#if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1 || NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
+#if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1 || NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
     LoopNumber = 0;
-	#endif
+#endif
 
     InputControlCount = 0;
     OutputControlCount = 0;
@@ -54,10 +54,10 @@ CockpitMainApplication::CockpitMainApplication( BaseCommunicationInterface *comI
         OutputControlList[i] = NULL;
 
 
-    #ifdef DEBUG_LIBRARY
+#ifdef DEBUG_LIBRARY
     Serial.println("CockpitMainApplication : Application datas initialized.");
     Serial.println("CockpitMainApplication : APP STARTED.");
-    #endif
+#endif
 }
 
 
@@ -94,9 +94,9 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
     if( InputControlCount >= MAX_INPUT_CONTROL_IN_APPLICATION)
         return;
 
-    #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
+#ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
     CheckAndInitI2CIfNeed( ctrl);
-    #endif
+#endif
 
     /* TODO: controle en fonction du typre de control arduino (analog/digital)
         si type analogique alors commande 1 = Dref et autre NULL
@@ -132,7 +132,7 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
     InputControlList[InputControlCount] = assoc;
 
 
-    #ifdef DEBUG_CONTROL_COMMAND_ASSOC
+#ifdef DEBUG_CONTROL_COMMAND_ASSOC
     Serial.print("CockpitMainApplication : Register INPUT control/command association, control : [");
 
     switch( ctrl->getInputType() ){
@@ -179,7 +179,7 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
         }
     }
     Serial.println(".");
-    #endif // DEBUG_CONTROL_COMMAND_ASSOC
+#endif // DEBUG_CONTROL_COMMAND_ASSOC
 
     InputControlCount++;
 }
@@ -190,9 +190,9 @@ void CockpitMainApplication::RegisterOutputControl( ArduinoOutputControl *ctrl, 
     if( OutputControlCount >= MAX_OUTPUT_CONTROL_IN_APPLICATION)
         return;
 
-    #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
+#ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
     CheckAndInitI2CIfNeed( ctrl);
-    #endif
+#endif
 
     OutputControlAssociation* assoc = new OutputControlAssociation();
 
@@ -203,7 +203,7 @@ void CockpitMainApplication::RegisterOutputControl( ArduinoOutputControl *ctrl, 
     OutputControlList[OutputControlCount] = assoc;
 
 
-    #ifdef DEBUG_CONTROL_COMMAND_ASSOC
+#ifdef DEBUG_CONTROL_COMMAND_ASSOC
     Serial.print("CockpitMainApplication : Register OUTPUT control/data association, control : [");
 
     switch( ctrl->getOutputType() ){
@@ -224,7 +224,7 @@ void CockpitMainApplication::RegisterOutputControl( ArduinoOutputControl *ctrl, 
     Serial.print(" transform function");
 
     Serial.print(".");
-    #endif // DEBUG_CONTROL_COMMAND_ASSOC
+#endif // DEBUG_CONTROL_COMMAND_ASSOC
 
     OutputControlCount++;
 }
@@ -237,19 +237,19 @@ void CockpitMainApplication::RegisterOutputControl( ArduinoOutputControl *ctrl, 
 void CockpitMainApplication::Loop(){
 
 
-    #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
     Serial.print("CockpitMainApplication : Loop n°");
     Serial.print(LoopNumber);
     Serial.println("...");
-    #endif
+#endif
 
     #if NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
     if( LoopNumber % NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE == 0){
-    #endif
+#endif
 
-        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
         Serial.println("CockpitMainApplication : Loop, process Input Data Reading...");
-        #endif
+#endif
 
         //Read data from X-plane
         uint8_t nbDataRead = CommunicationInterface->ReadAllInput();
@@ -257,58 +257,56 @@ void CockpitMainApplication::Loop(){
         //update ouput controls
         if( nbDataRead > 0 ){
 
-            #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
             Serial.print("CockpitMainApplication : ");
             Serial.print(nbDataRead);
             Serial.println(" data to read...");
-            #endif
+#endif
 
 
             for( unsigned int i = 0; i < OutputControlCount; i++ ){
 
-                #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
                 Serial.print("CockpitMainApplication : Loop, process for control n°");
                 Serial.print(i);
                 Serial.println("...");
-                #endif
+#endif
 
                 this->updateControlWithCommand( OutputControlList[i]);
             }
         }
         else{
-            #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
             Serial.println("CockpitMainApplication : Loop, No Input Data.");
-            #endif
+#endif
         }
-    #if NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
+#if NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
     }
-    #endif
+#endif
 
-    #if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1
+#if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1
     if( LoopNumber % NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT == 0){
-    #endif
+#endif
 
-        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
         Serial.println("CockpitMainApplication : Loop, process Input Control Reading...");
-        #endif
+#endif
 
         //Read input controls and send datas to X-plane
         for( unsigned int i = 0; i < InputControlCount; i++ ){
 
-            #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
             Serial.print("CockpitMainApplication : Loop, process for control n°");
             Serial.print(i);
             Serial.println("...");
-            #endif
+#endif
 
             this->doControlCommandProcess( InputControlList[i]);
         }
-    #if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1
+#if NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT > 1
     }
-
     LoopNumber++;
-
-    #endif
+#endif
 }
 
 //Update output control if needed with value of binded input command
@@ -323,9 +321,9 @@ void CockpitMainApplication::updateControlWithCommand( OutputControlAssociation*
     //update control with data received from X-plane
     if( dataXplane != NULL ){
 
-        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
         Serial.print("CockpitMainApplication : Loop, data received for control, (new) value :");
-        #endif
+#endif
 
         float val = 0;
 
@@ -334,30 +332,30 @@ void CockpitMainApplication::updateControlWithCommand( OutputControlAssociation*
         else
             val =  oca->TransformationFunction( dataXplane->data);
 
-        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
         Serial.print(val);
-        #endif
+#endif
 
         //Update control only if value changed ( setValue == true )
         if( outputControl->setValue( val) ){
 
-            #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
             Serial.println(" => value changed, update control.");
-            #endif
+#endif
 
             outputControl->WriteOutput();
         }
-        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
         else{
             Serial.println(" => value DON'T changed.");
         }
-        #endif
+#endif
     }
-    #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
     else{
         Serial.println("CockpitMainApplication : Loop, NO data received for control.");
     }
-    #endif
+#endif
 }
 
 //Read input control and send command to X-plane if needed
@@ -371,11 +369,11 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
 
 		    float val = inputControl->getValue();
 
-        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
         Serial.print("CockpitMainApplication : Loop, control was modified, new value:");
         Serial.print(val);
         Serial.println("...");
-        #endif
+#endif
 
 		    //Digital control ()
 		    if( inputControl->getType() == ArduinoControl::DigitalControl ){
@@ -387,9 +385,9 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
         // TODO : Analog control
 		    else{
 
-            #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
             Serial.println("CockpitMainApplication : Loop, control type Analogic, not implemented!");
-            #endif
+#endif
         }
 
         //We got a command to send
@@ -399,33 +397,33 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
 
         				//Key
         				case XPlaneOutputCommand::TypeKeyCommand :
-                    #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
                     Serial.print("CockpitMainApplication : Loop, Process Key Command [");
                     Serial.print(outputCmd->toString());
                     Serial.println("] for control.");
-                    #endif
+#endif
   	                CommunicationInterface->SendKey( outputCmd->toString());
         				break;
 
   				      //Simple command
   				      case XPlaneOutputCommand::TypeSimpleCommand :
 
-                    #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
                     Serial.print("CockpitMainApplication : Loop, Process Command Simple [");
                     Serial.print(outputCmd->toString());
                     Serial.println("] for control.");
-                    #endif
+#endif
 
   					        CommunicationInterface->SendCommand( outputCmd->toString());
 
                     //Twin command (send 2 commands for one input)
   					        if( ((XPlaneSimpleCommand*)outputCmd)->isTwinCommand() ){
 
-                        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
                         Serial.print("CockpitMainApplication : Loop, Process SECOND Command Simple [");
                         Serial.print(((XPlaneSimpleCommand*)outputCmd)->toStringSecond());
                         Serial.println("] for control.");
-                        #endif
+#endif
 
                         CommunicationInterface->SendCommand( ((XPlaneSimpleCommand*)outputCmd)->toStringSecond());
   				          }
@@ -434,37 +432,37 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
   				      //DREF / DATA command
   				      case XPlaneOutputCommand::TypeDREFCommand :
   				      case XPlaneOutputCommand::TypeDATACommand :
-                    #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
                     Serial.println("CockpitMainApplication : Loop, Command type DATA or DREF for control, not implemented!");
-                    #endif
+#endif
   		          break;
 
   				      //System command : internal to library
   				      case XPlaneOutputCommand::TypeInternalCommand :
 
-                    #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
                     Serial.print("CockpitMainApplication : Loop, Process Command System [");
                     Serial.print(outputCmd->toString());
                     Serial.println("] for control.");
-                    #endif
+#endif
 
   				          this->doInternalCommande((LibrarySpecialCommand*)outputCmd);
   		          break;
             }
         }
-        #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
         //No command
         else{
             Serial.println("CockpitMainApplication : Loop, no command for control value.");
         }
-        #endif
+#endif
     }
-    #ifdef DEBUG_LIBRARY_LOOP
+#ifdef DEBUG_LIBRARY_LOOP
     //No change in control value
     else{
         Serial.println("CockpitMainApplication : Loop, control was not modified.");
     }
-    #endif
+#endif
 }
 
 
