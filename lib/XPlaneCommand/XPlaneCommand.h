@@ -14,13 +14,13 @@
 /*****************/
 
 
-//Donnée Xplane (Donnée type DREF reçue )
+//Used to binf ouptut control to datas received from X-Plane (DREF)
 class XPlaneInputData{
 
     private :
 
-        byte DataGroup; //Group de Données
-        uint8_t DataIndex; //Index de la Donnée du groupe à utiliser
+        byte DataGroup; //Group to use
+        uint8_t DataIndex; //Index of data in group to use
 
     public :
 
@@ -36,8 +36,7 @@ class XPlaneInputData{
 /* OUTPUT COMMAND */
 /******************/
 
-//Commande Xplane (Commande envoyée)
-//classe virtuelle
+//Parent class for all output command (DREF, Key, Data...)
 class XPlaneOutputCommand{
 
 
@@ -60,17 +59,17 @@ class XPlaneOutputCommand{
     public :
 
         XPlaneOutputCommand(XPlaneCommandType type) : CommandType(type){};
-        ~XPlaneOutputCommand(){};
+    ~XPlaneOutputCommand(){};
 
-        XPlaneCommandType getType(){ return CommandType; };
+    XPlaneCommandType getType(){ return CommandType; };
 
-        virtual const char* toString() = 0;
-        //virtual float getGroup(){return DataGroup; };
+    virtual const char* toString() = 0;
+    //virtual float getGroup(){return DataGroup; };
 };
 
 
 
-//Commande Xplane Type touche
+//Xplane command key
 class XPlaneKeyCommand : public XPlaneOutputCommand{
 
     private :
@@ -87,7 +86,7 @@ class XPlaneKeyCommand : public XPlaneOutputCommand{
 };
 
 
-//Commande Xplane Classique type "sim/radios/com1_standy_flip"
+//X-Plane simple command (like "sim/radios/com1_standy_flip")
 class XPlaneSimpleCommand : public XPlaneOutputCommand{
 
     private :
@@ -105,11 +104,11 @@ class XPlaneSimpleCommand : public XPlaneOutputCommand{
 };
 
 
-/******************/
-/* NON IMPLEMENTE */
-/******************/
+/*******************/
+/* NOT IMPLEMENTED */
+/*******************/
 
-//Commande Xplane type DATA
+//X-Plane DATA command
 class XPlaneDATACommand : public XPlaneOutputCommand{
 
     public :
@@ -121,7 +120,7 @@ class XPlaneDATACommand : public XPlaneOutputCommand{
 
 
 
-//Commande Xplane type DREF
+//X-Plane DREF command
 class XPlaneDREFCommand : public XPlaneOutputCommand{
 
     public :
@@ -133,23 +132,22 @@ class XPlaneDREFCommand : public XPlaneOutputCommand{
 
 
 
-/**********************/
-/* COMMANDE "SYSTEME" */
-/**********************/
+/*****************************/
+/* SYSTEM (INTERNAL) COMMAND */
+/*****************************/
 
 
-
-//Commande "spécial" "System"
+//Special "system" command (internal to library)
 class LibrarySpecialCommand : public XPlaneOutputCommand{
 
 
     public :
 
-     typedef enum{
-            SendAll = 0, //Envoi toutes les commandes en fonction de l'état des contrôlee, même si les contrôle n'ont pas été modifié
-            ResetArduino, //Redémarrage de l'arduino
-            AllLedOn, //Allumer toutes les LED (pour test)
-            AllLedOff, //Eteindre toutes les LED (pour test)
+        typedef enum{
+            SendAll = 0,          //Send all command of all (toggle switch and rotary switch) input control even if control was not modified
+            ResetArduino,         //Reset Arduino board
+            AllLedOn,             //Turn on all LED output controls (Example : testing panel)
+            AllLedOff,            //Turn off all LED output controls
         }SpecialCommand;
 
     private :

@@ -12,7 +12,7 @@
 #include "BaseCommunicationInterface.h"
 
 
-//Classe hérité par l'interface Network et Debug (et à terme Serial)
+//Allows debuging (sent keys, commands or DREF commands) on the serial output of Arduino board
 class SerialDebugInterface : public BaseCommunicationInterface{
 
     private :
@@ -24,19 +24,18 @@ class SerialDebugInterface : public BaseCommunicationInterface{
         SerialDebugInterface( int serialSpeed = 9600 );
         ~SerialDebugInterface();
 
-        //Lit et parse les données reçues d'Xplane, retourne le nombre de données (paquet Xplane) reçus
-        uint8_t ReadAllInput();
+        uint8_t ReadAllInput(){ return 0; }
 
-        //Envoi une commande à Xplane
+        //Print command on arduino serial output
         void SendCommand(const char* cmd);
 
-        //Envoi une touche à Xplane
+        //Print key on arduino serial output
         void SendKey( const char* key);
 
-        //Envoi une commande DREF à Xplane
+        //Print DREF command and his datas on arduino serial output
         void SendDrefCommand( const  char *dref, byte data[]);
 
-        //Retourne les données d'un groupe de donnée reçu d'XPlane
+        //Get an empty group datas (4 x 0 float value)
         XPData* GetData( float group );
 };
 

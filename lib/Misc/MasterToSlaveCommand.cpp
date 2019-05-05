@@ -10,26 +10,18 @@
 
 #include <Wire.h>
 
-#include "MasterToSlaveCommand.h"
+#include "MasterToSlaveCommand.h
 
-
-MasterToSlaveCommand::MasterToSlaveCommand() : TypeCommande(TypeCommandUnknow), PinMode(PINModeNotUsed), RWMode(RWModeNotUsed), PinNum(0), ValueToSet(0){
-}
-
-MasterToSlaveCommand::MasterToSlaveCommand(MSCTypeCommand  type, MSCPINMode pin_mode, MSCRWMode rw_mode, uint8_t pin, int value) : TypeCommande(type), PinMode(pin_mode), RWMode(rw_mode), PinNum(pin), ValueToSet(value){
-}
-
-MasterToSlaveCommand::~MasterToSlaveCommand(){
-}
-
-
-
+//Send current command to Slave board on I2C bus
 void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
+
+    //Only for setPin or Init command
+    if( this->TypeCommande !=  TypeCommandSetPINValue && this->TypeCommande != TypeCommandInitialisation )
+      return;
 
     byte buffer[4] = {0,0,0,0};
 
-    //On créer le buffer de donnée en fonction de l'état de la classe
-    CreateBufferForI2C( buffer);
+    this->CreateBufferForI2C( buffer);
 
     #ifdef DEBUG_I2C
     Serial.print("I2C : SEND TO ");
@@ -45,8 +37,8 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
     Serial.println("}.");
     #endif
 
-    //On transmet à l'esclave
-    Wire.beginTransmission(boardAddress);
+    //Send to slave board on I2C bus
+    Wire.beginTransmission(this->boardAddress);
     Wire.write((uint8_t*)buffer, 4);
     Wire.endTransmission();
 
@@ -55,19 +47,22 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
     #endif
 }
 
-//Envoi une requête vers une carte I2C, en envoyant préalablement la commande désirée
+//Send a "GetPIN" command to slave board and wait return of slave board on I2C bus
 int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
-    //On commence par envoyer la commande vers le slave (contenant l'info attendue)
-    //SendDataToIC2( boardAddress); Non ! Car la transacition doit englober le write, le requestFrom et le read
+    //Only for getPin
+    if( this->TypeCommande !=  TypeCommandGetPINValue )
+        return;
 
-    //On créer le buffer de donnée en fonction de l'état de la classe
+    //We can't do this because one I2C transaction must include write, requestFrom and read actions
+    //SendDataToIC2( boardAddress);
+
     byte buffer[4] = {0,0,0,0};
-    CreateBufferForI2C( buffer);
+    this->CreateBufferForI2C( buffer);
 
     #ifdef DEBUG_I2C
     Serial.print("I2C : SEND TO ");
-    Serial.print(boardAddress);
+    Serial.print(this->boardAddress);
     Serial.print(" {");
     Serial.print(buffer[0]);
     Serial.print("-");
@@ -79,32 +74,31 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
     Serial.println("}.");
     #endif
 
-    //On transmet à l'esclave
-    Wire.beginTransmission(boardAddress);
+    //Send to slave
+    Wire.beginTransmission(this->boardAddress);
     Wire.write((uint8_t*)buffer, 4);
 
-    //On attend un peu (vu sur beaucoup d'exemple d code simulaire à celui-ci)
+    //Wait a little bit (Seen on lot of other source code)
     delay(10);
 
     I2CDataRCA conv;
 
     #ifdef DEBUG_I2C
     Serial.print("I2C : REQ FROM ");
-    Serial.print(boardAddress);
+    Serial.print(this->boardAddress);
     Serial.println("...");
     #endif
 
-    Wire.requestFrom( boardAddress, (uint8_t)2);
+    Wire.requestFrom( this->boardAddress, (uint8_t)2);
     uint8_t index = 0;
     while(Wire.available() && index < 2)
     {
         conv.byteVal[index++]  = Wire.read();
     }
 
-    //Fin de transmission
     Wire.endTransmission();
 
-    //Erreur ! Pas assez de donnée reçue
+    //Not enough data ! error
     if( index != 2 ){
 
         #ifdef DEBUG_I2C
@@ -120,82 +114,81 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
     Serial.println(".");
     #endif
 
-    //2 bytes reçues : OK, on retourne la valeur int
+    //2 bytes received : OK, return the received value as an integer
     return conv.intVal;
 }
 
-
+//Fill "data" buffer with bytes defining current command
 void MasterToSlaveCommand::CreateBufferForI2C( byte *buffer){
 
-
-
-    //On créé notre flag sur le byte 1
-    switch( TypeCommande ){
+    //First Byte : command type, pin mode and R/W mode
+    switch( this->TypeCommande ){
         case TypeCommandInitialisation :
-            buffer[0] |= 0x00000001;        break;
+            buffer[0] |= 0x00000001; break;
         case TypeCommandSetPINValue :
-            buffer[0] |= 0x00000002;        break;
+            buffer[0] |= 0x00000002; break;
         case TypeCommandGetPINValue :
-            buffer[0] |= 0x00000004;        break;
+            buffer[0] |= 0x00000004; break;
     }
-    switch( PinMode ){
+    switch( this->PinMode ){
         case PINModeInput :
-            buffer[0] |= 0x00000008;        break;
+            buffer[0] |= 0x00000008; break;
         case PINModeOutput :
-            buffer[0] |= 0x00000010;        break;
+            buffer[0] |= 0x00000010; break;
         case PINModeIntputPullUp :
-            buffer[0] |= 0x00000020;        break;
+            buffer[0] |= 0x00000020; break;
     }
-    switch( RWMode ){
+    switch( this->RWMode ){
         case RWModeAnalog :
-            buffer[0] |= 0x00000040;        break;
+            buffer[0] |= 0x00000040; break;
         case RWModeDigital :
-            buffer[0] |= 0x00000080;        break;
+            buffer[0] |= 0x00000080; break;
     }
 
-    //Byte n°2 = PIN Mode
+    //Second byte : PIN N°
     buffer[1] = PinNum;
 
-    //Byte n°3 & 4 value
+    //Third and Fourth Byte : value (setPin command)
     I2CDataRCA conv;
-    conv.intVal = ValueToSet;
+    conv.intVal = this->ValueToSet;
     buffer[2] = conv.byteVal[0];
     buffer[3] = conv.byteVal[1];
 }
 
 
+//Parse datas from "data" buffer (received from I2C bus) and init current command attributes
 void MasterToSlaveCommand::ParseDataFromIC2( byte* data ){
 
+    //First Byte : command type, pin mode and R/W mode
     if( data[0] & 0x00000001)
-        TypeCommande = TypeCommandInitialisation;
+        this->TypeCommande = TypeCommandInitialisation;
     else if( data[0] & 0x00000002)
-        TypeCommande = TypeCommandSetPINValue;
+        this->TypeCommande = TypeCommandSetPINValue;
     else if( data[0] & 0x00000004)
-        TypeCommande = TypeCommandGetPINValue;
+        this->TypeCommande = TypeCommandGetPINValue;
 
     if( data[0] & 0x00000080)
-        PinMode = PINModeInput;
+        this->PinMode = PINModeInput;
     else if( data[0] & 0x00000010)
-        PinMode = PINModeOutput;
+        this->PinMode = PINModeOutput;
     else if( data[0] & 0x00000020)
-        PinMode = PINModeIntputPullUp;
+        this->PinMode = PINModeIntputPullUp;
 
     if( data[0] & 0x00000040)
-        RWMode = RWModeAnalog;
+        this->RWMode = RWModeAnalog;
     else if( data[0] & 0x00000080)
-        RWMode = RWModeDigital;
+        this->RWMode = RWModeDigital;
 
+    //Second byte : PIN N°
+    this->PinNum = data[1];
 
-    //Byte n°2 = PIN Mode
-    PinNum = data[1];
-
-    //Byte n°3 & 4 value
+    //Third and Fourth Byte : value (setPin command)
     I2CDataRCA conv;
 
     conv.byteVal[0] = data[2];
     conv.byteVal[1] = data[3];
 
-    ValueToSet = conv.intVal;
+    this->ValueToSet = conv.intVal;
 }
 
 #endif

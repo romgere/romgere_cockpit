@@ -19,9 +19,9 @@ const char* XPlaneKeyCommand::toString(){
     return &Key;
 }
 
-/*********************/
-/* COMMAND CLASSIQUE */
-/*********************/
+/******************/
+/* SIMPLE COMMAND */
+/******************/
 
 
 XPlaneSimpleCommand::XPlaneSimpleCommand( const char* cmd, const char* cmd2 ): XPlaneOutputCommand(TypeSimpleCommand), Command( cmd){

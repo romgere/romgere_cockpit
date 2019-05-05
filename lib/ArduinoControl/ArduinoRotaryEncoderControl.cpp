@@ -53,9 +53,9 @@ ArduinoRotaryEncoderControl::ArduinoRotaryEncoderControl( uint8_t pin1, uint8_t 
 
 
 
-#ifdef USE_SECURE_TIME_STAT_CHANGE
+#ifdef USE_SECURE_TIME_STATE_CHANGE
         this->LastStatChangeTime = micros();
-#endif // USE_SECURE_TIME_STAT_CHANGE
+#endif // USE_SECURE_TIME_STATE_CHANGE
 
 #ifdef USE_SECURE_TIME_DIR_CHANGE
         this->LastDirection = UnknowDirection;
@@ -132,13 +132,13 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
 #endif // USE_SECURE_MODE_FOR_MOUSE_ENCODER
 
 
-#ifdef USE_SECURE_TIME_STAT_CHANGE
+#ifdef USE_SECURE_TIME_STATE_CHANGE
     unsigned long timeDiff = micros() - this->LastStatChangeTime;
     //Too fast, no change allowed yet
     if( timeDiff > 0 && timeDiff < MIN_STAT_CHANGE_TIME )
         return false;
     this->LastStatChangeTime = micros();
-#endif // USE_SECURE_TIME_STAT_CHANGE
+#endif // USE_SECURE_TIME_STATE_CHANGE
 
 
     this->LastPinStatus[ROTARY_ENC_CUR_STATUS_INDEX] = newVal;
@@ -147,8 +147,6 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
         return false;
 
 
-    //Selon le type d'encodeur, certaine etat ne doivent pas être considéré comme un changement.
-    //Pour les type 2, 3 ou 4, si la valeur courante ne correspond pas à une valeur de cran, on retourne FALSE (pas d'envoi de commande)
     //According to the encoder type, somes states does not corresponding to a detent, return false in these case.
     switch( EncoderType){
 

@@ -7,8 +7,8 @@
 #define ROMGERE_COCKPIT_CONFIG_FILE
 
 /*
- * Active les message de debug sur la sortie Port Serie
- * Commenter la ligne pour désactiver les message de débug
+ * Enable debug message on serial output.
+ * Uncomment line to enable log.
  */
 //#define DEBUG_ETHERNET
 
@@ -20,50 +20,54 @@
 
 //#define DEBUG_SLAVE_APP
 
-// Non conseillé ! les logs font "bugger" les transmission I²C
+// Not recommended. I2C logs create I2C communication bugs
 //#define DEBUG_I2C
 
 /*
- * Permet d'ouvrir le port série automatiquement au lancement de l'application
-*/
+ * Automatically open serial port on Application Startup
+ */
 //#define DEBUG_SERIAL_START
-//#define DEBUG_SERIAL_SPEED 115200
+#define DEBUG_SERIAL_SPEED 115200
 
 
 /*
- * Active ou non la gestion des carte esclave (Plusieurs arduino connecté via I2C)
+ * Enable multiple board mode (Master and Slave(s) board with I2C communication)
  */
 #define ACTIVE_MULTI_ARDUINO_BOARD_MODE
 
 
 /*
- * Nombre de contrôle max géré par l'application
+ * Max input and output controls the application can manage.
+ * Decrease = Memory saving.
  */
 #define MAX_INPUT_CONTROL_IN_APPLICATION  128
 #define MAX_OUTPUT_CONTROL_IN_APPLICATION  128
 
 /*
- * Nombre de commande max par controle (pour les rotary switch)
- * Min : 3, Max : 10 ou Position max de vos Switch rotatif
+ * Max number of command who can be bind to one control.
+ * Min : 3 (For 3 position toggle switch)
+ * Max : 10 (For rotary switch)
  */
 #define MAX_COMMAND_FOR_ONE_CONTROLE 10
 
 
 
 /*
- * Nombre max de donnée (group) reçues d'Xplane à gérer
+ * Max input data group received from X-Plane the application can manage
+ * Adapt for your need.
+ * Decrease = Memory saving.
  */
 #define MAX_INPUT_DATA_FROM_XPLANE  32
 
 
 
 /*
- * Port par lequel les données d'Xplane sont reçues
+ * X-Plane UDP read port
  */
 #define XPLANE_READ_PORT 49001
 
 /*
- * Port par lequel on envoi les donnée vers Xplane
+ * X-Plane UDP write port
  */
 #define XPLANE_WRITE_PORT 49000
 
@@ -72,49 +76,44 @@
 
 
 /*
- * Définit a quelle moment les données d'Xplane sont lues lors des appel  à loop()
- * 1 : Lecture à chaque loop
- * 2 : Lecture une loop sur deux
+ * Defined the frequency of read data action (from X-Plane) on "loop" method calls
+ * 1 : Read data at each loop
+ * 2 : Read a loop on two
  * ...
- * 4 : Lecture toutes les 4 loop
- * Max : 255
+ * 4 : Read each 4 loop
+ * Max recommended : 255
  */
 #define NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE 1
 
 
 /*
- * Définit a quelle moment les données contrôle de l'arrduino (en input) sont lus lors des appel  à loop()
- * 1 : Lecture à chaque loop
- * 2 : Lecture une loop sur deux
+ * Defined the frequency of read input value action on "loop" method calls
+ * 1 : Read data at each loop
+ * 2 : Read a loop on two
  * ...
- * 4 : Lecture toutes les 4 loop
- * Max : 255
+ * 4 : Read each 4 loop
+ * Max recommended : 255
  */
 #define NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT 1
 
 
-//Permet d'utiliser un mode "securisé" pour les mouses encode (Type 3)
-//Les mouse ecode n'étant pas forcement de bonne qualité, ce paramètre permet :
-
-//lors d'un changement d'état de l'encoder, une verification de la cohérence est faite.
-//Si le nouvel état n'est pas un etat suivant normalement possible, on ne prend pas en compte le changement.
-//(Exemple : passage de la valeur 3 à 1 ou 2 : OK, de 3 à 0 : NOK on ignore.
+//Activate "secure“ mode (for cheap type 3 mouse encoder)
 #define USE_SECURE_MODE_FOR_MOUSE_ENCODER  1
 
 
-//Active ou non le controle du temp min de changement d'un etat de l'encoder
-#define USE_SECURE_TIME_STAT_CHANGE
-//Temp en micro seconde
+//Activate "secure" mode for rotary encoder state change (software debouce)
+#define USE_SECURE_TIME_STATE_CHANGE
+//Min time to allow state change (in micro second)
 #define MIN_STAT_CHANGE_TIME 3000
 
-//Active ou non le controle du temp min de changement de direction de l'encoder
+//Activate "secure" mode for rotary encoder direction change (software debouce)
 #define USE_SECURE_TIME_DIR_CHANGE
-//Temp en micro seconde
+//Min time to allow direction change (in micro second)
 #define MIN_DIR_CHANGE_TIME 150000
 
 /*
- * Ecart de valeur (tolerance) géré pour les rotary switch (en pourcentage, 10% = 0.1)
- * 0.15 conseillé
+ * Gap allowed (tolerance) between read and expected value for rotary switch (in percent, 10% = 0.1)
+ * 0.15 recommended
  */
 #define ROTARY_SWITCH_TOLERANCE 0.15
 

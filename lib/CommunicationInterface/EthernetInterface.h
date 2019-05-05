@@ -13,7 +13,7 @@
 #include "BaseCommunicationInterface.h"
 
 
-//Classe permettant la réception et l'envoi des données à partir/vers Xplane sur un SHIELD ETHERNET
+//Allows to send and received X-Plane datas on an ethernet network (Need a board with an ethernet Shield)
 class EthernetInterface : public BaseCommunicationInterface{
 
 
@@ -24,37 +24,37 @@ class EthernetInterface : public BaseCommunicationInterface{
             float floatVal;
         }XPGroupData;
 
-        //Dernières Données lues d'XPlane
+        //Last datas read from X-Plane
         XPData* LastXPlaneDatas[MAX_INPUT_DATA_FROM_XPLANE];
 
-        bool        IsClassInit; //Adresse Xplane définit ?
+        bool        IsClassInit;
 
-        bool        IsXPlaneAdressInit; //Adresse Xplane définit ?
-        IPAddress   XPlaneAdress;       //Adresse d'XPlane
+        bool        IsXPlaneAdressInit;
+        IPAddress   XPlaneAdress;
 
-        unsigned int XPlaneWritePort;   //Port pour l'envoi de données vers XPlane
-        unsigned int XplaneReadPort;    //Port pour la reception des données d'XPlane
+        unsigned int XPlaneWritePort;
+        unsigned int XplaneReadPort;
 
-        EthernetUDP Udp;                //Pour la gestion des packet UDP
+        EthernetUDP Udp;
 
     public :
 
         EthernetInterface(unsigned int readPort, unsigned int writePort, IPAddress arduinoIP, uint8_t arduinoMAC[6], IPAddress xplaneIP, bool waitForXPlane = false);
         ~EthernetInterface();
 
-        //Lit et parse les données reçues d'Xplane, retourne le nombre de données (paquet Xplane) reçus
+        //Read and parse datas received from X-Plane. Return : Number of packet read from x-Plane ()
         uint8_t ReadAllInput();
 
-        //Envoi une commande à Xplane
+        //Send command to X-Plane
         void SendCommand(const char* cmd);
 
-        //Envoi une touche à Xplane
+        //Send a key to X-Plane
         void SendKey( const char* key);
 
-        //Envoi une commande DREF à Xplane
+        //Send DREF command to X-Plane
         //void SendDrefCommand( const  char *dref, byte data[]);
 
-        //Retourne les données d'un groupe de donnée reçu d'XPlane
+        //Get a datas received for a given group number
         XPData* GetData( float group );
 };
 

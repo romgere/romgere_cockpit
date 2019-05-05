@@ -45,9 +45,9 @@ class ArduinoRotaryEncoderControl : public ArduinoInputControl{
         uint8_t LastPinStatus[2];
 
 
-#ifdef USE_SECURE_TIME_STAT_CHANGE
+#ifdef USE_SECURE_TIME_STATE_CHANGE
         unsigned long LastStatChangeTime; //(Soft debounce)
-#endif // USE_SECURE_TIME_STAT_CHANGE
+#endif // USE_SECURE_TIME_STATE_CHANGE
 
 #ifdef USE_SECURE_TIME_DIR_CHANGE
         RotaryEncoderDirection LastDirection;

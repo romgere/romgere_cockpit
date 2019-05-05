@@ -12,40 +12,39 @@
 
 #include "../Config/MainConfig.h"
 
- //Pour la conversion entier vers 2 byte à envoyer/recevoir via I2C
+//For convertion between integer and the 2 bytes to send/received via I2C bus
 typedef union{
     byte byteVal[4];
     int intVal;
 }I2CDataRCA;
 
-//Pour envoi des commande entre maitre et esclave
-// 1 byte : action + PINMode + Read/Write mode
-// 1 byte : PIN
-// 2 byte : Value
-
+//Allows exchange between Master and Slave board on I2C bus.
+// First byte       : action + PINMode + Read/Write mode
+// Second byte      : PIN Number
+// Third and fourth : Value (write action)
 class MasterToSlaveCommand{
 
 public :
 
-    //Type de commande
+    //Command Types
     typedef enum{
         TypeCommandUnknow = 0,
-        TypeCommandInitialisation,         //Initialisation d'une entrée/sortie
-        TypeCommandSetPINValue,            //Définit la valeur d'un PIN (en sortie)
-        TypeCommandGetPINValue             //Demande la valeur d'un PIN (en entrée)
+        TypeCommandInitialisation,         //Init a PIN
+        TypeCommandSetPINValue,            //Write PIN on slave board
+        TypeCommandGetPINValue             //Read PIN on slave board
     }MSCTypeCommand;
 
-    //PIN Mode
+    //PIN Modes
     typedef enum{
-        PINModeNotUsed = 0, //Utilisé pour des commande type set/get (pas besoin de connaitre le mode)
+        PINModeNotUsed = 0, //For get/set command the PIN mode is unused
         PINModeInput,
         PINModeOutput,
         PINModeIntputPullUp
     }MSCPINMode;
 
-    //Read/Write Mode
+    //Read/Write Modes
     typedef enum{
-        RWModeNotUsed = 0, //Utilisé pour des commande type init
+        RWModeNotUsed = 0, //For init command the R/W mode is unused
         RWModeAnalog,
         RWModeDigital
     }MSCRWMode;
@@ -57,22 +56,23 @@ public :
     uint8_t         PinNum;
     int             ValueToSet;
 
-    MasterToSlaveCommand();
-    MasterToSlaveCommand(MSCTypeCommand  type, MSCPINMode pin_mode, MSCRWMode rw_mode, uint8_t pin, int value);
-    ~MasterToSlaveCommand();
+    MasterToSlaveCommand(): TypeCommande(TypeCommandUnknow), PinMode(PINModeNotUsed), RWMode(RWModeNotUsed), PinNum(0), ValueToSet(0){ };
+    MasterToSlaveCommand(MSCTypeCommand  type, MSCPINMode pin_mode, MSCRWMode rw_mode, uint8_t pin, int value): TypeCommande(type), PinMode(pin_mode), RWMode(rw_mode), PinNum(pin), ValueToSet(value){ };
+    ~MasterToSlaveCommand(){ };
 
-    //Parse la commande (retrouve les valeurs) à partir de bytes reçues via I2C
+    //Parse datas from "data" buffer (received from I2C bus) and init current command attributes
     void ParseDataFromIC2( byte* data );
 
-    //Envoi la commande via I2C vers une carte Esclave
+    //Send current command to Slave board on I2C bus (used for "SetPIN" command)
     void SendDataToIC2( uint8_t boardAddress );
 
-    //Envoi une requête vers une carte I2C, en envoyant préalablement la commande désirée
+    //Send a "GetPIN" command to slave board and wait return of slave board on I2C bus
     int RequestDataFromIC2( uint8_t boardAddress );
 
 
 private :
 
+    //Fill "data" buffer with bytes defining current command
     void CreateBufferForI2C( byte* data);
 
 };

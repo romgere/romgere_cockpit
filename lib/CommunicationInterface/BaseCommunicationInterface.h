@@ -10,14 +10,15 @@
 #include "../Config/MainConfig.h"
 
 
-//Pour reception des infos XPlane
+//An X-Plane group data
 typedef struct{
     byte group;
     float data[8];
 }XPData;
 
-//Classe abstraite permettant la communication en entrée/sortie de l'application
-//Classe hérité par l'interface Network et Debug (et à terme Serial)
+
+//Parent class to deal with communication (input/output) between Arduino Board and X-Plane
+//Used by "EthernetInterface" and "SerialDebugInterface"
 class BaseCommunicationInterface{
 
 
@@ -26,19 +27,19 @@ class BaseCommunicationInterface{
         BaseCommunicationInterface(){};
         virtual ~BaseCommunicationInterface(){};
 
-        //Lit et parse les données reçues d'Xplane, retourne le nombre de données (paquet Xplane) reçus
+        //Read and parse datas received from X-Plane. Return : Number of packet read from x-Plane ()
         virtual uint8_t ReadAllInput() = 0;
 
-        //Envoi une commande à Xplane
+        //Send command to X-Plane
         virtual void SendCommand(const char* cmd) = 0;
 
-        //Envoi une touche à Xplane
+        //Send a key to X-Plane
         virtual void SendKey( const char* key) = 0;
 
-        //Envoi une commande DREF à Xplane
-        virtual void SendDrefCommand( const  char *dref, byte data[]){}; //Non virtuelle pure car non implémenter pour EthernetInterface
+        //Send DREF command to X-Plane
+        virtual void SendDrefCommand( const  char *dref, byte data[]){}; //Not pure virtual because not implemented by EthernetInterface
 
-        //Retourne les données d'un groupe de donnée reçu d'XPlane
+        //Get a datas received for a given group number
         virtual XPData* GetData( float group ) = 0;
 };
 

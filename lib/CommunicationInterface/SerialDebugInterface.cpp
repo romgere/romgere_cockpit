@@ -24,11 +24,6 @@ SerialDebugInterface::~SerialDebugInterface(){
 }
 
 
-uint8_t SerialDebugInterface::ReadAllInput(){
-    return 0;
-}
-
-
 void SerialDebugInterface::SendCommand(const char* cmd){
     Serial.print("DebugInterface, SEND COMMAND : ");
     Serial.println(cmd);
@@ -42,7 +37,6 @@ void SerialDebugInterface::SendKey( const char* key){
 
 void SerialDebugInterface::SendDrefCommand( const  char *dref, byte data[]){
 
-    //Donnée à envoyer
     char DataOut[500];
 
     //"sim/"
@@ -73,7 +67,7 @@ void SerialDebugInterface::SendDrefCommand( const  char *dref, byte data[]){
     Serial.println("}.");
 }
 
-//Retourne la donnée fictive avec le bon groupe
+//Get an empty group datas (4 x 0 float value)
 XPData* SerialDebugInterface::GetData( float group ){
     FakeData->group = group;
     return FakeData;
