@@ -104,11 +104,7 @@ class XPlaneSimpleCommand : public XPlaneOutputCommand{
 };
 
 
-/*******************/
-/* NOT IMPLEMENTED */
-/*******************/
-
-//X-Plane DATA command
+//X-Plane DATA command (NOT IMPLEMENTED)
 class XPlaneDATACommand : public XPlaneOutputCommand{
 
     public :
@@ -120,7 +116,7 @@ class XPlaneDATACommand : public XPlaneOutputCommand{
 
 
 
-//X-Plane DREF command
+//X-Plane DREF command (NOT IMPLEMENTED)
 class XPlaneDREFCommand : public XPlaneOutputCommand{
 
     public :

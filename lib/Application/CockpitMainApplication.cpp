@@ -89,9 +89,10 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
     CheckAndInitI2CIfNeed( ctrl);
 #endif
 
-    /* TODO: controle en fonction du typre de control arduino (analog/digital)
-        si type analogique alors commande 1 = Dref et autre NULL
-        si type numerique, alors 1 à 3 comamnde de type char ou data
+    /*
+        TODO: Check args according to ArduinoInputControl (analog/digital)
+        Analog : First command = DREF (and other NULL or ignored)
+        Digital : One to three (Key, Simple, Data or Internal) command
     */
 
     InputControlAssociation* assoc = new InputControlAssociation();
