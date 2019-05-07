@@ -21,7 +21,6 @@ The documentation file are stored in the [`resources/doc`](resources/doc/index.m
   * [Prerequisites](resources/doc/index.md#prerequisites)
   * [How it works](resources/doc/index.md#how-it-works)
   * [Use library on your own sketches](resources/doc/index.md#use-library-on-your-own-sketches)
-  * [Use library on your own sketches](resources/doc/index.md#use-library-on-your-own-sketches)
   * [X-Plane configuration](resources/doc/index.md#x-plane-configuration)
 * [Further documentation](resources/doc/index.md#further-documentation)
   * [Configuration reference](resources/doc/1-configuration-reference.md)
