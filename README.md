@@ -2,6 +2,10 @@
 
 Arduino library for building "real" cockpit/panel with X-Plane and Arduino board.
 
+I use it to build my own "cockpit", an Beechcraft Baron 58 "cockpit" (Still work in progress) :
+![My Beechcraft Baron 58 cockpit (WIP)](/resources/img/my_cockpit.jpg?raw=true)
+*Instruments display not done with this library*
+
 # WIP
 *2019/05/04 :  This library was just moved from bitbucket (private repository) to github and need some work for writing doc/example, translate, review project folder architecture.*
 
@@ -15,7 +19,8 @@ The documentation file are stored in the [`resources/doc`](resources/doc/index.m
 
 * [Getting started](resources/doc/index.md#getting-started)
   * [Prerequisites](resources/doc/index.md#prerequisites)
-  * [Installation](resources/doc/index.md#installation)
+  * [How it works](resources/doc/index.md#how-it-works)
+  * [Use library on your own sketches](resources/doc/index.md#use-library-on-your-own-sketches)
   * [Use library on your own sketches](resources/doc/index.md#use-library-on-your-own-sketches)
   * [X-Plane configuration](resources/doc/index.md#x-plane-configuration)
 * [Further documentation](resources/doc/index.md#further-documentation)
