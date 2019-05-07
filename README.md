@@ -9,29 +9,21 @@ Arduino library for building "real" cockpit/panel with X-Plane and Arduino board
 
 **Please note that the Slave/Master board mode does not seems to work properly.**
 
-# Basic example
+# Documentation
 
-```
-//Register an "3 positions Toggle Switch" on PIN 40, 41 to select auto pilot source (Nav1, nav2 or GPS)
-cockpitApp->RegisterInputControl(   new ArduinoThreePosToggleSwitchControl(40,41),
-                                    new XPlaneSimpleCommand("sim/autopilot/hsi_select_nav_1"),
-                                    new XPlaneSimpleCommand("sim/autopilot/hsi_select_nav_2"),
-                                    new XPlaneSimpleCommand("sim/autopilot/hsi_select_gps")
-                                );
+The documentation file are stored in the [`resources/doc`](resources/doc/index.md) directory :
 
-//Register an "Rotary encoder" on PIN 30, 31, to send "Barometer UP/DOWN" command to x-plane
-cockpitApp->RegisterInputControl(   new ArduinoRotaryEncoderControl(30,31, ArduinoRotaryEncoderControl::Type3Encoder),
-                                    new XPlaneSimpleCommand("sim/instruments/barometer_down"),
-                                    new XPlaneSimpleCommand("sim/instruments/barometer_up"));
-```
-
-For more example, please see `Carte1` folder.
-
-# Use the library in your own sketches
-
-- Create an `src` folder in your Sketch folder (the folder who contain your main `.ino` file)
-- Copy (or create simlink) the `lib` folder of this library and name it "RomgereCockpit"
-- Include the library file(s) you need with `#include "src/RomgereCockpit/_file_you_need_.h"`.
+* [Getting started](resources/doc/index.md#getting-started)
+  * [Prerequisites](resources/doc/index.md#prerequisites)
+  * [Installation](resources/doc/index.md#installation)
+  * [Use library on your own sketches](resources/doc/index.md#use-library-on-your-own-sketches)
+  * [X-Plane configuration](resources/doc/index.md#x-plane-configuration)
+* [Further documentation](resources/doc/index.md#further-documentation)
+  * [Configuration reference](resources/doc/1-configuration-reference.md)
+  * [Basic example](resources/doc/2-basic-example.md)
+  * [Xplane command](resources/doc/3-commands.md)
+  * [Control (hardware)](resources/doc/4-controls.md)
+  * [Use multiple Arduino boards](resources/doc/5-multiple-boards.md)
 
 # Todos
 
@@ -42,16 +34,13 @@ For more example, please see `Carte1` folder.
 - [x] Re-indent all pre-compilation conditional blocks
 - [ ] Test and Fix Master/Slave board mode
 - [ ] Change example and delete all FSX references
-- [ ] Write doc and Readme
-- [ ] Try to create some complete example
+- [ ] Write doc and Readme (WIP)
 - [ ] Add some "todos" and/or open issues
 - [ ] Implements DREF and DATA command support
 - [ ] Implements analog control (input and ouput)
 - [ ] X-plane 11 support
 
-# Various link to add to readme/doc
+# License
 
-- [X-PLane command list] (https://siminnovations.com/wiki/index.php?title=Xplane_commandrefs) (or see in `Resources/plugins/Commands.txt`)
-- [List DREF] http://xplane.anzui.de/dataref-search/
-- [List DREF] http://www.xsquawkbox.net/xpsdk/docs/DataRefs.txt
-- [List DREF] http://crewchief.aero.calpoly.edu/svn/crewrep/Pheagle/branches/RudderProject/Model/udpdata.txt
+This library is under the MIT license.  
+For the whole copyright, please see the [LICENSE](LICENSE) file.
