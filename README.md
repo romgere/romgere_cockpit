@@ -28,6 +28,7 @@ The documentation file are stored in the [`resources/doc`](resources/doc/index.m
   * [Xplane command](resources/doc/3-commands.md)
   * [Control (hardware)](resources/doc/4-controls.md)
   * [Use multiple Arduino boards](resources/doc/5-multiple-boards.md)
+  * [Transformation function](resources/doc/6-transformation-function.md)
 
 # Todos
 
