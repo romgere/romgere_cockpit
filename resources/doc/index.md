@@ -46,7 +46,7 @@ So you want to use this libray in your own sketches ? Simply follow there 3 step
 
 ![X-Plane network settings](/resources/img/xplane_conf_data.png?raw=true)
 
-**Note :** Step n°3 is optional if want planned to only use the library to send command to X-plane (and not received any data).
+**Note :** Step n°3 is optional if only use the library to send command to X-plane (not received any data).
 
 
 # Further documentation

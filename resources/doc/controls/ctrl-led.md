@@ -11,7 +11,7 @@ Board view | Sketch view
 
 # Code sample
 
-```
+```cpp
 #include "src/RomgereCockpit/Application/CockpitMainApplication.h"
 #include "src/RomgereCockpit/CommunicationInterface/EthernetInterface.h"
 #include "src/RomgereCockpit/ArduinoControl/ArduinoLEDControl.h"
