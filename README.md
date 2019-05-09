@@ -11,7 +11,7 @@ Arduino library for building "real" cockpit/panel with X-Plane and Arduino board
 
 # Basic example
 
-```
+```cpp
 #include <Arduino.h>
 
 #include "src/RomgereCockpit/Application/CockpitMainApplication.h"
