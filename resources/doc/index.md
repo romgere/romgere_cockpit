@@ -54,7 +54,7 @@ So you want to use this libray in your own sketches ? Simply follow there 3 step
 * [Create library instance in your app](/resources/doc/0-create-library-instance.md)
 * [Configuration reference](/resources/doc/1-configuration-reference.md)
 * [Basic example](/resources/doc/2-basic-example.md)
-* [Xplane command](/resources/doc/3-commands.md)
+* [Xplane data/command](/resources/doc/3-command-and-data.md)
 * [Control (hardware)](/resources/doc/4-controls.md)
 * [Use multiple Arduino boards](/resources/doc/5-multiple-boards.md)
 * [Transformation function](/resources/doc/6-transformation-function.md)
