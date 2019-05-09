@@ -51,6 +51,7 @@ So you want to use this libray in your own sketches ? Simply follow there 3 step
 
 # Further documentation
 
+* [Create library instance in your app](/resources/doc/0-create-library-instance.md)
 * [Configuration reference](/resources/doc/1-configuration-reference.md)
 * [Basic example](/resources/doc/2-basic-example.md)
 * [Xplane command](/resources/doc/3-commands.md)
