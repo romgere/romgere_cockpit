@@ -8,13 +8,13 @@
 
 
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-ArduinoLEDControl::ArduinoLEDControl( uint8_t pin, float defaultVal, float highLEDVal, int boardAddress): ArduinoOutputControl( DigitalControl, OTypeLed, (boardAddress != -1), boardAddress){
+ArduinoLEDControl::ArduinoLEDControl( uint8_t pin, float highLEDVal, int boardAddress): ArduinoOutputControl( DigitalControl, OTypeLed, (boardAddress != -1), boardAddress){
 #else
-ArduinoLEDControl::ArduinoLEDControl( uint8_t pin, float defaultVal, float highLEDVal): ArduinoOutputControl( DigitalControl, OTypeLed){
+ArduinoLEDControl::ArduinoLEDControl( uint8_t pin, float highLEDVal): ArduinoOutputControl( DigitalControl, OTypeLed){
 #endif
 
     this->Pin = pin;
-    this->Val = (float)defaultVal;
+    this->Val = -1; //LED will be update next time we will receive other than -1 float value from X-Plane
     this->HighVal = highLEDVal;
     _pinMode(this->Pin, OUTPUT);
 
