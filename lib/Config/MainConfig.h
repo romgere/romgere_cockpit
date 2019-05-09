@@ -61,19 +61,6 @@
 
 
 
-/*
- * X-Plane UDP read port
- */
-#define XPLANE_READ_PORT 49001
-
-/*
- * X-Plane UDP write port
- */
-#define XPLANE_WRITE_PORT 49000
-
-
-
-
 
 /*
  * Defined the frequency of read data action (from X-Plane) on "loop" method calls
