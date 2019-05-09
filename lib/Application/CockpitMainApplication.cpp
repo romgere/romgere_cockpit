@@ -122,7 +122,7 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
 
     InputControlList[InputControlCount] = assoc;
 
-#ifdef DEBUG_CONTROL_COMMAND_ASSOC
+#ifdef DEBUG_CONTROL_COMMAND_REGISTER
     Serial.print("CockpitMainApplication : Register INPUT control/command association, control : [");
 
     switch( ctrl->getInputType() ){
@@ -169,7 +169,7 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
         }
     }
     Serial.println(".");
-#endif // DEBUG_CONTROL_COMMAND_ASSOC
+#endif // DEBUG_CONTROL_COMMAND_REGISTER
 
     InputControlCount++;
 }
@@ -193,7 +193,7 @@ void CockpitMainApplication::RegisterOutputControl( ArduinoOutputControl *ctrl, 
     OutputControlList[OutputControlCount] = assoc;
 
 
-#ifdef DEBUG_CONTROL_COMMAND_ASSOC
+#ifdef DEBUG_CONTROL_COMMAND_REGISTER
     Serial.print("CockpitMainApplication : Register OUTPUT control/data association, control : [");
 
     switch( ctrl->getOutputType() ){
@@ -214,7 +214,7 @@ void CockpitMainApplication::RegisterOutputControl( ArduinoOutputControl *ctrl, 
     Serial.print(" transform function");
 
     Serial.print(".");
-#endif // DEBUG_CONTROL_COMMAND_ASSOC
+#endif // DEBUG_CONTROL_COMMAND_REGISTER
 
     OutputControlCount++;
 }

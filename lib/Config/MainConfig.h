@@ -12,7 +12,7 @@
  */
 //#define DEBUG_ETHERNET
 
-//#define DEBUG_CONTROL_COMMAND_ASSOC
+//#define DEBUG_CONTROL_COMMAND_REGISTER
 //#define DEBUG_CONTROL_STAT
 
 //#define DEBUG_LIBRARY
@@ -85,13 +85,13 @@
 
 
 //Activate "secure“ mode (for cheap type 3 mouse encoder)
-#define USE_SECURE_MODE_FOR_MOUSE_ENCODER  1
+#define USE_SECURE_MODE_FOR_MOUSE_ENCODER
 
 
 //Activate "secure" mode for rotary encoder state change (software debouce)
 #define USE_SECURE_TIME_STATE_CHANGE
 //Min time to allow state change (in micro second)
-#define MIN_STAT_CHANGE_TIME 3000
+#define MIN_STATE_CHANGE_TIME 3000
 
 //Activate "secure" mode for rotary encoder direction change (software debouce)
 #define USE_SECURE_TIME_DIR_CHANGE

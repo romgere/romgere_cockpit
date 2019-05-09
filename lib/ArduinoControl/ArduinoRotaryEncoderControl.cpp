@@ -135,7 +135,7 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
 #ifdef USE_SECURE_TIME_STATE_CHANGE
     unsigned long timeDiff = micros() - this->LastStatChangeTime;
     //Too fast, no change allowed yet
-    if( timeDiff > 0 && timeDiff < MIN_STAT_CHANGE_TIME )
+    if( timeDiff > 0 && timeDiff < MIN_STATE_CHANGE_TIME )
         return false;
     this->LastStatChangeTime = micros();
 #endif // USE_SECURE_TIME_STATE_CHANGE
