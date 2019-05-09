@@ -1,31 +1,31 @@
 /*
- * Adresse MAC
+ * MAC Adress
  */
 #define ARDUINO_MAC_ADDRESS { 0xDE, 0xAD, 0xBE, 0xEF, 0xEA, 0xED } //ARduino 1
 
 /*
- * Adresse IP
- * {0,0,0,0} pour utilisation du DHCP
+ * IP Adress
+ * {0,0,0,0} for DHCP
  */
 #define ARDUINO_IP_ADDRESS { 192, 168, 1, 97 } //ARduino 1
 
 /*
- * Adresse IP d'XPlane (mettre {0,0,0,0} pour une detection auto)
+ * XPlane IP adresse ({0,0,0,0} for auto detection)
  */
 #define XPLANE_IP_ADDRESS { 192, 168, 1, 21 }
 
 /*
- * Doit-on attendre de recevoir les info d'XPlane au lancement de l'arduino
+ * Wait for the first reception of X-Plane data when starting the library
  */
 #define WAIT_FOR_XPLANE_AT_STARTUP true
 
 
 /*
- * Port par lequel les données d'Xplane sont reçues
+ * Read port (receive data from X-Plane)
  */
 #define XPLANE_READ_PORT 49001
 
 /*
- * Port par lequel on envoi les donnée vers Xplane
+ * Write port (send data to X-Plane)
  */
 #define XPLANE_WRITE_PORT 49000
