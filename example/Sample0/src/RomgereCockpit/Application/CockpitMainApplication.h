@@ -14,8 +14,7 @@
 
 #include "../CommunicationInterface/BaseCommunicationInterface.h"
 
-#include "../XPlaneData/XPlaneCommand.h"
-#include "../XPlaneData/XPlaneInputData.h"
+#include "../XPlaneCommand/XPlaneCommand.h"
 #include "../ArduinoControl/ArduinoControl.h"
 
 

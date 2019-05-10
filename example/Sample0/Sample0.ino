@@ -1,17 +1,3 @@
-# Romgere Cockpit Arduino Lib
-
-Arduino library for building "real" cockpit/panel with X-Plane and Arduino board.
-
-# WIP
-*2019/05/04 :  This library was just moved from bitbucket (private repository) to github and need some work for writing doc/example, translate, review project folder architecture.*
-
-**Please be careful if you using this library as is.**
-
-**Please note that the Slave/Master board mode does not seems to work properly.**
-
-# Basic example
-
-```cpp
 #include <Arduino.h>
 
 #include "src/RomgereCockpit/Application/CockpitMainApplication.h"
@@ -55,36 +41,3 @@ void loop()
 {
   cockpitApp->Loop();
 }
-```
-*This sample come from [Sample0.ino](/example/Sample0/Sample0.ino) file*
-
-For more example, please see "example" folder.
-
-# Use the library in your own sketches
-
-- Create an `src` folder in your Sketch folder (the folder who contain your main `.ino` file)
-- Copy (or create simlink) the `lib` folder of this library and name it "RomgereCockpit"
-- Include the library file(s) you need with `#include "src/RomgereCockpit/_file_you_need_.h"`.
-
-# Todos
-
-- [x] Translate comment and other text
-- [x] Change all file header
-- [x] Modify folder and tree to something like lib / test / example / doc...
-- [ ] Add "this->" on some methods calls
-- [x] Re-indent all pre-compilation conditional blocks
-- [x] Change example and delete all FSX references
-- [ ] Write doc and Readme
-- [ ] Test and Fix Master/Slave board mode
-- [ ] Create example for master/slave
-- [ ] Add some "todos" and/or open issues
-- [ ] Implements DREF and DATA command support
-- [ ] Implements analog control (input and ouput)
-- [ ] X-plane 11 support
-
-# Various link to add to readme/doc
-
-- [X-PLane command list] (https://siminnovations.com/wiki/index.php?title=Xplane_commandrefs) (or see in `Resources/plugins/Commands.txt`)
-- [List DREF] http://xplane.anzui.de/dataref-search/
-- [List DREF] http://www.xsquawkbox.net/xpsdk/docs/DataRefs.txt
-- [List DREF] http://crewchief.aero.calpoly.edu/svn/crewrep/Pheagle/branches/RudderProject/Model/udpdata.txt
