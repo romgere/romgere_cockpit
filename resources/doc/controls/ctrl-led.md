@@ -39,7 +39,7 @@ In this example, the LED plug on the PIN n°8 will be turn on or off depending o
 
 # Options (constructor parameters)
 
-Here is the definition of the ArduinoLEDControl constructor :
+Here is the definition of the `ArduinoLEDControl` constructor :
 
 **Multi arduino board OFF :**
 `ArduinoLEDControl( uint8_t pin, float highLEDVal = 1MM);`

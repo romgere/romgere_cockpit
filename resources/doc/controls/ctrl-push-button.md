@@ -1,8 +1,6 @@
-**WIP**
-
 # Case of use
 
-The `XXX` class goal is to be bind with an input data (or group of data) from X-Plane to turn on or off an LED plugged on your Arduino board.
+The `ArduinoPushButtonControl` class allow you to send **and repeat** an X-Plane command when a push button plugged into Arduino board is pressed.
 
 # Arduino connection
 
@@ -14,24 +12,40 @@ Board view | Sketch view
 # Code sample
 
 ```cpp
+#include "src/RomgereCockpit/Application/CockpitMainApplication.h"
+#include "src/RomgereCockpit/CommunicationInterface/EthernetInterface.h"
+#include "src/RomgereCockpit/ArduinoControl/ArduinoPushButtonControl.h"
 
-void setup(){
-  ...
+CockpitMainApplication  *cockpitApp;
+EthernetInterface       *ethernetInterface;
+
+void setup() {
+  ethernetInterface = new EthernetInterface( ... );
+  cockpitApp = new CockpitMainApplication(ethernetInterface);
+
+  //Declare and bind control with command
+  cockpitApp->RegisterInputControl(    
+    new ArduinoPushButtonControl(8), //Create push button on PIN 8
+    new XPlaneSimpleCommand("sim/annunciator/test_all_annunciators") //Send "Test all annunciators" command to X-Plane
+  );
 }
 
+void loop() {
+  cockpitApp->Loop();
+}
 ```
 
 # Options (constructor parameters)
 
-Here is the definition of the xxx constructor :
+Here is the definition of the `ArduinoPushButtonControl` constructor :
 
 **Multi arduino board OFF :**
-`XXXX( ... );`
+`ArduinoPushButtonControl( uint8_t pin, uint8_t defautState = LOW);`
 
 **Multi arduino board ON :**
-`XXXX( ... );`
+`ArduinoPushButtonControl( uint8_t pin, uint8_t defautState = LOW , int boardAddress = -1 );`
 
 Arguments definition :
-1. `...` : PIN n° ...
-2. `...` (default: 1) : ...
+1. `uint8_t pin` : PIN n° on which Toggle switch is plug.
+2. `uint8_t defautState` (default: LOW) : Default state of the PIN (Idle state). Command will be send when PIN state is different of this value.
 3. `int boardAddress` (default: -1) : Address of slave board on which xxxx is plug (-1 = plug on main board). *Available only if you previously enable the "multi board mode"*
