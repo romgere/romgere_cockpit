@@ -18,7 +18,7 @@ class ArduinoRotarySwitchControl : public ArduinoInputControl{
     private :
 
         uint8_t Pin1;
-        uint8_t NbPos;
+        uint8_t positionCount;
 
         uint16_t Step;
         uint16_t Tolerance;
@@ -30,9 +30,9 @@ class ArduinoRotarySwitchControl : public ArduinoInputControl{
 
     public :
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-        ArduinoRotarySwitchControl( uint8_t pin, uint8_t nbpos, int boardAddress = -1);
+        ArduinoRotarySwitchControl( uint8_t pin, uint8_t positionCount, int boardAddress = -1);
 #else
-        ArduinoRotarySwitchControl( uint8_t pin, uint8_t nbpos);
+        ArduinoRotarySwitchControl( uint8_t pin, uint8_t positionCount);
 #endif
 
         ~ArduinoRotarySwitchControl();
