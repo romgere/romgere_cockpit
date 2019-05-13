@@ -3,7 +3,7 @@
 You can find below a basic case of use for this library.
 
 This code manage:
-- A toggle switch (2 postitions) to send "Gear up/down" command.
+- A toggle switch (2 positions) to send "Gear up/down" command.
 - 3 LED bind with the 3 "Gear down" indicators.
 - 1 LED to manager "Gear in transit" indicator.
 

@@ -40,12 +40,12 @@ void loop() {
 Here is the definition of the `ArduinoPushButtonControl` constructor :
 
 **Multi arduino board OFF :**
-`ArduinoPushButtonControl( uint8_t pin, uint8_t defautState = LOW);`
+`ArduinoPushButtonControl( uint8_t pin, uint8_t defaultState = LOW);`
 
 **Multi arduino board ON :**
-`ArduinoPushButtonControl( uint8_t pin, uint8_t defautState = LOW , int boardAddress = -1 );`
+`ArduinoPushButtonControl( uint8_t pin, uint8_t defaultState = LOW , int boardAddress = -1 );`
 
 Arguments definition :
 1. `uint8_t pin` : PIN n° on which Toggle switch is plug.
-2. `uint8_t defautState` (default: LOW) : Default state of the PIN (Idle state). Command will be send when PIN state is different of this value.
+2. `uint8_t defaultState` (default: LOW) : Default state of the PIN (Idle state). Command will be send when PIN state is different of this value.
 3. `int boardAddress` (default: -1) : Address of slave board on which xxxx is plug (-1 = plug on main board). *Available only if you previously enable the "multi board mode"*
