@@ -1,5 +1,3 @@
-**WIP**
-
 # Case of use
 
 The `ArduinoRotarySwitchControl` allow you to use multiple position rotary switch (max position number depends on the value of [MAX_COMMAND_FOR_ONE_CONTROLE](/resources/doc/1-configuration-reference.md#MAX_COMMAND_FOR_ONE_CONTROLE) parameter). Each position send can send a different command and one or more command can be repeat as long as the position remains.
