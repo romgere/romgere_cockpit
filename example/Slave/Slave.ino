@@ -1,7 +1,6 @@
 #include <Arduino.h>
-#include <Wire.h>
-
 #include "src/RomgereCockpit/Application/SlaveBoardApplication.h"
+
 SlaveBoardApplication* slaveCockpit;
 
 void setup()
