@@ -6,15 +6,7 @@ I use it to build my own "cockpit", an Beechcraft Baron 58 "cockpit" (Still work
 ![My Beechcraft Baron 58 cockpit (WIP)](/resources/img/my_cockpit.jpg?raw=true)
 *Instruments display not done with this library*
 
-# WIP
-*2019/05/04 :  This library was just moved from bitbucket (private repository) to github and need some work for writing doc/example, translate, review project folder architecture.*
-
-**Please be careful if you using this library as is.**
-
-**Please note that the Slave/Master board mode does not seems to work properly.**
-
-
-# Basic example
+# Short example
 
 ```cpp
 #include <Arduino.h>
