@@ -2,12 +2,17 @@
 
 Arduino library for building "real" cockpit/panel with X-Plane and Arduino board.
 
+I use it to build my own "cockpit", an Beechcraft Baron 58 "cockpit" (Still work in progress) :
+![My Beechcraft Baron 58 cockpit (WIP)](/resources/img/my_cockpit.jpg?raw=true)
+*Instruments display not done with this library*
+
 # WIP
 *2019/05/04 :  This library was just moved from bitbucket (private repository) to github and need some work for writing doc/example, translate, review project folder architecture.*
 
 **Please be careful if you using this library as is.**
 
 **Please note that the Slave/Master board mode does not seems to work properly.**
+
 
 # Basic example
 
@@ -60,11 +65,21 @@ void loop()
 
 For more example, please see "example" folder.
 
-# Use the library in your own sketches
+The documentation file are stored in the [`resources/doc`](resources/doc/index.md) directory :
 
-- Create an `src` folder in your Sketch folder (the folder who contain your main `.ino` file)
-- Copy (or create simlink) the `lib` folder of this library and name it "RomgereCockpit"
-- Include the library file(s) you need with `#include "src/RomgereCockpit/_file_you_need_.h"`.
+* [Getting started](/resources/doc/index.md#getting-started)
+  * [Prerequisites](/resources/doc/index.md#prerequisites)
+  * [How it works](/resources/doc/index.md#how-it-works)
+  * [Use library on your own sketches](/resources/doc/index.md#use-the-library-in-your-own-sketches)
+  * [X-Plane configuration](/resources/doc/index.md#x-plane-configuration)
+* [Further documentation](/resources/doc/index.md#further-documentation)
+  * [Configuration reference](/resources/doc/1-configuration-reference.md)
+  * [Basic example](/resources/doc/2-basic-example.md)
+  * [Xplane data/command](/resources/doc/3-command-and-data.md)
+  * [Control (hardware)](/resources/doc/4-controls.md)
+  * [Register controls with data or command](/resources/doc/5-register-control-data-command.md)
+  * [Transformation function](/resources/doc/6-transformation-function.md)
+  * [Use multiple Arduino boards](/resources/doc/7-multiple-boards.md)
 
 # Todos
 
@@ -74,17 +89,15 @@ For more example, please see "example" folder.
 - [ ] Add "this->" on some methods calls
 - [x] Re-indent all pre-compilation conditional blocks
 - [x] Change example and delete all FSX references
-- [ ] Write doc and Readme
+- [x] Write doc and Readme
 - [ ] Test and Fix Master/Slave board mode
-- [ ] Create example for master/slave
+- [x] Create example for master/slave
 - [ ] Add some "todos" and/or open issues
 - [ ] Implements DREF and DATA command support
 - [ ] Implements analog control (input and ouput)
 - [ ] X-plane 11 support
 
-# Various link to add to readme/doc
+# License
 
-- [X-PLane command list] (https://siminnovations.com/wiki/index.php?title=Xplane_commandrefs) (or see in `Resources/plugins/Commands.txt`)
-- [List DREF] http://xplane.anzui.de/dataref-search/
-- [List DREF] http://www.xsquawkbox.net/xpsdk/docs/DataRefs.txt
-- [List DREF] http://crewchief.aero.calpoly.edu/svn/crewrep/Pheagle/branches/RudderProject/Model/udpdata.txt
+This library is under the MIT license.  
+For the whole copyright, please see the [LICENSE](LICENSE) file.

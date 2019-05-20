@@ -15,8 +15,7 @@
 //Send current command to Slave board on I2C bus
 void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
 
-    //Only for setPin or Init command
-    if( this->TypeCommande !=  TypeCommandSetPINValue && this->TypeCommande != TypeCommandInitialisation )
+    if( this->TypeCommande ==  TypeCommandUnknow )
       return;
 
     byte buffer[4] = {0,0,0,0};
@@ -50,36 +49,7 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
 //Send a "GetPIN" command to slave board and wait return of slave board on I2C bus
 int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
-    //Only for getPin
-    if( this->TypeCommande !=  TypeCommandGetPINValue )
-        return 0;
-
-    //We can't do this because one I2C transaction must include write, requestFrom and read actions
-    //SendDataToIC2( boardAddress);
-
-    byte buffer[4] = {0,0,0,0};
-    this->CreateBufferForI2C( buffer);
-
-#ifdef DEBUG_I2C
-    Serial.print("I2C : SEND TO ");
-    Serial.print(this->boardAddress);
-    Serial.print(" {");
-    Serial.print(buffer[0]);
-    Serial.print("-");
-    Serial.print(buffer[1]);
-    Serial.print("-");
-    Serial.print(buffer[2]);
-    Serial.print("-");
-    Serial.print(buffer[3]);
-    Serial.println("}.");
-#endif
-
-    //Send to slave
-    Wire.beginTransmission(boardAddress);
-    Wire.write((uint8_t*)buffer, 4);
-
-    //Wait a little bit (Seen on lot of other source code)
-    delay(10);
+    SendDataToIC2( boardAddress);
 
     I2CDataRCA conv;
 
@@ -91,20 +61,23 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
     Wire.requestFrom( boardAddress, (uint8_t)2);
     uint8_t index = 0;
-    while(Wire.available() && index < 2)
+    while(Wire.available())
     {
+        //Too much data
+        if( index >= 2){
+#ifdef DEBUG_I2C
+            Serial.println("I2C : TOO MUCH DATA RECEIVED FROM SLAVE.");
+#endif
+            break;
+        }
         conv.byteVal[index++]  = Wire.read();
     }
 
-    Wire.endTransmission();
-
-    //Not enough data ! error
+    //No enough data ! error
     if( index != 2 ){
-
 #ifdef DEBUG_I2C
-        Serial.println("I2C : REQ/REC HS.");
+        Serial.println("I2C : NO ENOUGH DATA RECEIVED FROM SLAVE.");
 #endif
-
         return 0;
     }
 
