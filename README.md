@@ -6,7 +6,7 @@ I use it to build my own "cockpit", an Beechcraft Baron 58 "cockpit" (Still work
 ![My Beechcraft Baron 58 cockpit (WIP)](/resources/img/my_cockpit.jpg?raw=true)
 *Instruments display not done with this library*
 
-# Short example
+# Sample
 
 ```cpp
 #include <Arduino.h>
@@ -53,11 +53,11 @@ void loop()
   cockpitApp->Loop();
 }
 ```
-*This sample come from [Sample0.ino](/example/Sample0/Sample0.ino) file*
+*This sample come from [Sample0.ino](/example/Sample0/Sample0.ino) file. Find more example in ["example" folder](/example/)*
 
 For more example, please see "example" folder.
 
-The documentation file are stored in the [`resources/doc`](resources/doc/index.md) directory :
+The documentation file are stored in the [resources/doc](/resources/doc/) directory :
 
 * [Getting started](/resources/doc/index.md#getting-started)
   * [Prerequisites](/resources/doc/index.md#prerequisites)
