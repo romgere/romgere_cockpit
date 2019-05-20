@@ -19,7 +19,7 @@ EthernetInterface       *ethernetInterface;
 
 void setup()
 {
-  //Create & start Ethernet interface + Create app with our Eternet interface
+  //Create & start Ethernet interface + Create app with our Ethernet interface
   byte arduinoMAC[6]  = { 0xDE, 0xAD, 0xBE, 0xEF, 0xEA, 0xED };
   ethernetInterface = new EthernetInterface( 49001, 49000, { 192, 168, 1, 97 }, arduinoMAC, { 192, 168, 1, 21 });
   cockpitApp = new CockpitMainApplication( ethernetInterface);
