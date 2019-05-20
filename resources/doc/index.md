@@ -56,5 +56,6 @@ So you want to use this libray in your own sketches ? Simply follow there 3 step
 * [Basic example](/resources/doc/2-basic-example.md)
 * [Xplane data/command](/resources/doc/3-command-and-data.md)
 * [Control (hardware)](/resources/doc/4-controls.md)
-* [Use multiple Arduino boards](/resources/doc/5-multiple-boards.md)
+* [Register controls with data or command](/resources/doc/5-register-control-data-command.md)
 * [Transformation function](/resources/doc/6-transformation-function.md)
+* [Use multiple Arduino boards](/resources/doc/7-multiple-boards.md)
