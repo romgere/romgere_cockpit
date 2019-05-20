@@ -25,9 +25,9 @@ class ArduinoPushButtonControl : public ArduinoInputControl{
 
     public :
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-        ArduinoPushButtonControl( uint8_t pin, uint8_t defaultState = LOW , int boardAddress = -1 );
+        ArduinoPushButtonControl( uint8_t pin, uint8_t defautStat = LOW , int boardAddress = -1 );
 #else
-        ArduinoPushButtonControl( uint8_t pin, uint8_t defaultState = LOW );
+        ArduinoPushButtonControl( uint8_t pin, uint8_t defautStat = LOW );
 #endif
         ~ArduinoPushButtonControl(){};
         bool ReadInput();

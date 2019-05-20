@@ -22,9 +22,9 @@ class ArduinoLEDControl : public ArduinoOutputControl{
     public :
 
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-        ArduinoLEDControl( uint8_t pin, float highLEDVal = 1, int boardAddress = -1);
+        ArduinoLEDControl( uint8_t pin, float defaultVal = 0, float highLEDVal = 1, int boardAddress = -1);
 #else
-        ArduinoLEDControl( uint8_t pin, float highLEDVal = 1);
+        ArduinoLEDControl( uint8_t pin, float defaultVal = 0, float highLEDVal = 1);
 #endif
         ~ArduinoLEDControl();
 
