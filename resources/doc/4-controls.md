@@ -5,7 +5,7 @@ The library provide 2 types of control :
 - Input controls : Use to manage hardware component (button, switch, ...) who will send data/command to X-Plane when their state changed.
 
 
-## Input control
+## Output control
 
 Currently, LED is the only available output control :
 
@@ -19,7 +19,7 @@ Other planned control (no yet implemented) :
 *These 2 types are not implemented. Any help is appreciate. If you want to contribute to the library don't hesitate to create a PR on github.*
 
 
-## Output controls
+## Input control
 
 Here is the list of supported controls (see related page for more informations) :
 
