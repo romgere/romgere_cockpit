@@ -52,6 +52,6 @@ void loop()
   cockpitApp->Loop();
 }
 ```
-*This sample come from [Sample0.ino](/example/Sample0/Sample0.ino) file*
+*This sample come from [Sample0.ino](https://github.com/romgere/romgere_cockpit/blob/master/example/Sample0/Sample0.ino) file*
 
 For more example, please see "example" folder.

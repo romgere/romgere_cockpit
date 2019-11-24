@@ -1,0 +1,25 @@
+{
+  "name": "romgere_cockpit",
+  "version": "0.0.0",
+  "description": "Arduino library for building \"real\" cockpit/panel with X-Plane and Arduino board",
+  "keywords": [
+    "romgere",
+    "cockpit",
+    "arduino",
+    "DIY",
+    "xplane",
+    "DREF"
+  ],
+  "repository": "git@github.com:romgere/romgere_cockpit.git",
+  "license": "MIT",
+  "author": "",
+  "scripts": {
+    "docs:dev": "vuepress dev resources/doc",
+    "docs:build": "vuepress build resources/doc"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-back-to-top": "^1.2.0",
+    "@vuepress/plugin-medium-zoom": "^1.2.0",
+    "vuepress": "^1.2.0"
+  }
+}

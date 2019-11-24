@@ -15,7 +15,7 @@ The library use 2 classes to manager exchanges with X-Plane :
 The `XPlaneInputData` class goal is to reference which data (group number and value index) as to be bind to an output control.
 A "group" is a set of data send by X-Plane, it contains 8 float parameters (8 float values). You can easily find a group number on X-Plane interface when you [configure which data as to be send to the library](/resources/doc/index.md#x-plane-configuration) :
 
-![X-Plane network settings](/resources/img/xplane_conf_data.png?raw=true)
+![X-Plane network settings](../img/xplane_conf_data.png?raw=true)
 *The group number is the number on the left of group name (eg. "speeds" is will be send to library with number 3).*
 
 
@@ -34,11 +34,11 @@ As say below, an group is composed of 8 float values, so if you want to bind a d
 
 To easily find which index you had to used, you can display a group informations on X-Plane screen to "debug" group's data. Example for "landing gear deployment" (group n°67):
 
-![Gear group config](/resources/img/gear_group_config.png?raw=true)
+![Gear group config](../img/gear_group_config.png?raw=true)
 Enable the first checkbos (n°1 on image) to send group on UDP (to Arduino board) and last checkbox (n°2 on image) to display group datas on screen.
 
 Here is the result of displaying the data of group n°67 on X-Plane screen (for Beechcraft Baron 58) :
-![Gear group screen](/resources/img/gear_group_screen.png?raw=true)
+![Gear group screen](../img/gear_group_screen.png?raw=true)
 *The 3 first values (in red) are the state of the 3 gears of the plane (in this example the 3 gears are down).*
 
 

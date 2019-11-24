@@ -3,8 +3,12 @@
 Arduino library for building "real" cockpit/panel with X-Plane and Arduino board.
 
 I use it to build my own "cockpit", an Beechcraft Baron 58 "cockpit" (Still work in progress) :
-![My Beechcraft Baron 58 cockpit (WIP)](/resources/img/my_cockpit.jpg?raw=true)
+![My Beechcraft Baron 58 cockpit (WIP)](./resources/img/my_cockpit.jpg?raw=true)
 *Instruments display not done with this library*
+
+# Documentation
+
+The library documentation can be found on [www.to_be_defined.com](www.to_be_defined.com)
 
 # Sample
 
@@ -57,21 +61,6 @@ void loop()
 
 For more example, please see "example" folder.
 
-The documentation file are stored in the [resources/doc](/resources/doc/) directory :
-
-* [Getting started](/resources/doc/index.md#getting-started)
-  * [Prerequisites](/resources/doc/index.md#prerequisites)
-  * [How it works](/resources/doc/index.md#how-it-works)
-  * [Use library on your own sketches](/resources/doc/index.md#use-the-library-in-your-own-sketches)
-  * [X-Plane configuration](/resources/doc/index.md#x-plane-configuration)
-* [Further documentation](/resources/doc/index.md#further-documentation)
-  * [Configuration reference](/resources/doc/1-configuration-reference.md)
-  * [Basic example](/resources/doc/2-basic-example.md)
-  * [Xplane data/command](/resources/doc/3-command-and-data.md)
-  * [Control (hardware)](/resources/doc/4-controls.md)
-  * [Register controls with data or command](/resources/doc/5-register-control-data-command.md)
-  * [Transformation function](/resources/doc/6-transformation-function.md)
-  * [Use multiple Arduino boards](/resources/doc/7-multiple-boards.md)
 
 # Todos
 

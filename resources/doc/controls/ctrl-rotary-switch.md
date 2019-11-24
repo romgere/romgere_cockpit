@@ -6,7 +6,7 @@ The `ArduinoRotarySwitchControl` allow you to use multiple position rotary switc
 
 Board view | Sketch view
 ---------- | -----------
-![Rotary switch connection (board view)](/resources/img/rotary_switch_bb.png?raw=true) | ![Rotary switch connection (sketch view)](/resources/img/rotary_switch_sk.png?raw=true)
+![Rotary switch connection (board view)](../../img/rotary_switch_bb.png?raw=true) | ![Rotary switch connection (sketch view)](../../img/rotary_switch_sk.png?raw=true)
 
 
 # Code sample

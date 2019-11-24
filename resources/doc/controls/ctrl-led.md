@@ -6,7 +6,7 @@ The `ArduinoLEDControl` class goal is to be bind with an input data (or group of
 
 Board view | Sketch view
 ---------- | -----------
-![LED connection (board view)](/resources/img/led_bb.png?raw=true) | ![LED connection (sketch view)](/resources/img/led_sk.png?raw=true)
+![LED connection (board view)](../../img/led_bb.png?raw=true) | ![LED connection (sketch view)](../../img/led_sk.png?raw=true)
 
 
 # Code sample
