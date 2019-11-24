@@ -13,6 +13,9 @@
   "repository": "git@github.com:romgere/romgere_cockpit.git",
   "license": "MIT",
   "author": "",
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
     "docs:dev": "vuepress dev resources/doc",
     "docs:build": "vuepress build resources/doc"
