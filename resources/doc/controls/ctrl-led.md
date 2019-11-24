@@ -61,4 +61,4 @@ In this case the `RegisterInputControl` method can take a "transformation functi
 
 The "transformation function" goal is to transform all datas of single group in one float value. This single float value will be pass to the `ArduinoLEDControl` to turn on/off the LED.
 
-For more information please see [transformation function documentation page](/resources/doc/6-transformation-function.md).
+For more information please see [transformation function documentation page](./6-transformation-function.md).

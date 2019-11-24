@@ -10,9 +10,9 @@ For more information about how Master/Slave communication work, you can read Ard
 
 ## Active multiple board mode
 
-To active multiple board support you need to enable [ACTIVE_MULTI_ARDUINO_BOARD_MODE](/resources/doc/1-configuration-reference.md#ACTIVE_MULTI_ARDUINO_BOARD_MODE) parameter when you compile the library.
+To active multiple board support you need to enable [ACTIVE_MULTI_ARDUINO_BOARD_MODE](./1-configuration-reference.md#ACTIVE_MULTI_ARDUINO_BOARD_MODE) parameter when you compile the library.
 
-Please see [configuration reference page](/resources/doc/1-configuration-reference.md) for  more information.
+Please see [configuration reference page](./1-configuration-reference.md) for  more information.
 
 ## Declare controls on slave board
 

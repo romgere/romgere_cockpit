@@ -1,8 +1,8 @@
 # Register (aka "bind") input/output control with data/control
 
 To work properly, all controls need to be associate ("register") with data or command :
-- An [output control](/resources/doc/4-controls.md#ouput_control) (LED for example) need to be register with an [X-Plane input data](/resources/doc/3-command-and-data.md#input_data).
-- An [input control](/resources/doc/4-controls.md#input_control) (Push button for example) need to be register with an [X-Plane command](/resources/doc/3-command-and-data.md#output_command).
+- An [output control](./4-controls.md#ouput_control) (LED for example) need to be register with an [X-Plane input data](./3-command-and-data.md#input_data).
+- An [input control](./4-controls.md#input_control) (Push button for example) need to be register with an [X-Plane command](./3-command-and-data.md#output_command).
 
 
 Each input control registered with command(s) will send the associated command when its state change.
@@ -44,4 +44,4 @@ cockpitApp->RegisterOutputControl(
 Arguments definition :
 1. `ArduinoOutputControl *ctrl` : Pointer to the output control to register.
 2. `XPlaneInputData *data` : Pointer to input data.
-3. `inputDataTransformFunction fct` (default: NULL) : Transformation function (Use whole group's data to determine control state). See [Transformation function](/resources/doc/6-transformation-function.md) for more information.
+3. `inputDataTransformFunction fct` (default: NULL) : Transformation function (Use whole group's data to determine control state). See [Transformation function](./6-transformation-function.md) for more information.

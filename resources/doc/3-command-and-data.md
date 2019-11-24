@@ -13,7 +13,7 @@ The library use 2 classes to manager exchanges with X-Plane :
 ## Input data
 
 The `XPlaneInputData` class goal is to reference which data (group number and value index) as to be bind to an output control.
-A "group" is a set of data send by X-Plane, it contains 8 float parameters (8 float values). You can easily find a group number on X-Plane interface when you [configure which data as to be send to the library](/resources/doc/index.md#x-plane-configuration) :
+A "group" is a set of data send by X-Plane, it contains 8 float parameters (8 float values). You can easily find a group number on X-Plane interface when you [configure which data as to be send to the library](./index.md#x-plane-configuration) :
 
 ![X-Plane network settings](../img/xplane_conf_data.png?raw=true)
 *The group number is the number on the left of group name (eg. "speeds" is will be send to library with number 3).*
@@ -74,7 +74,7 @@ If you want to use all the values in the group to define the state of the contro
 
 The "transformation function" goal is to transform all values of single group in one float value. This single float value will be send to define state of a control.
 
-For more information please see [transformation function documentation page](/resources/doc/6-transformation-function.md).
+For more information please see [transformation function documentation page](./6-transformation-function.md).
 
 
 ## Output command

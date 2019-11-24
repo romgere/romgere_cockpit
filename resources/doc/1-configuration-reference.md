@@ -181,11 +181,11 @@ Gap allowed (tolerance) between read and expected value for rotary switch (in pe
 
 Change the line `#define ROTARY_SWITCH_TOLERANCE 0.15` to change the value.
 
-*Please read [Rotary swich documentation page](/resources/doc/controls/ctrl-rotary-switch.md) for more informations on how rotary switch works*
+*Please read [Rotary swich documentation page](./controls/ctrl-rotary-switch.md) for more informations on how rotary switch works*
 
 ### ACTIVE_MULTI_ARDUINO_BOARD_MODE
 Enable multiple board mode (Master and Slave(s) board with I2C communication).
 
-*Please read [Multiple boards documentation page](/resources/doc/7-multiple-board.md) for more informations on how multiple board mode works*
+*Please read [Multiple boards documentation page](./7-multiple-board.md) for more informations on how multiple board mode works*
 
 Enable by uncomment the line `#define ACTIVE_MULTI_ARDUINO_BOARD_MODE`

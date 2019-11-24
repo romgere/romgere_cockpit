@@ -1,6 +1,6 @@
 # Create App and NetworkInterface instance in your app
 
-The first step to use this library (after [importing library](/resources/doc/index.md#use-the-library-in-your-own-sketches)) is to declare and create the "communication interface" (to send/recevied data to/from X-Plane) and the  library itself
+The first step to use this library (after [importing library](./index.md#use-the-library-in-your-own-sketches)) is to declare and create the "communication interface" (to send/recevied data to/from X-Plane) and the  library itself
 
 ## Communication interface
 

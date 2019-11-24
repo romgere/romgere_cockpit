@@ -37,7 +37,7 @@ float inTransitGearManageFunction( float *val){
 
 # Use transformation function with data and control
 
-To use an transformation function with a data/control set, you can pass the transformation function as third argument of `RegisterOutputControl` method, please read [Register controls with data or command](/resources/doc/5-register-control-data-command.md) page for more informations.
+To use an transformation function with a data/control set, you can pass the transformation function as third argument of `RegisterOutputControl` method, please read [Register controls with data or command](./5-register-control-data-command.md) page for more informations.
 
 # Complete code sample
 
