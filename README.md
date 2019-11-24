@@ -8,7 +8,10 @@ I use it to build my own "cockpit", an Beechcraft Baron 58 "cockpit" (Still work
 
 # Documentation
 
-The library documentation can be found on [www.to_be_defined.com](www.to_be_defined.com)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/26429911-d246-4dd3-8417-8da933fb8e2d/deploy-status)](https://app.netlify.com/sites/festive-fermi-955d25/deploys)
+
+
+The library documentation can be found on [romgere-cockpit-arduino-lib.mestres.fr](http://romgere-cockpit-arduino-lib.mestres.fr/)
 
 # Sample
 
