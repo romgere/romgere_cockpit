@@ -138,7 +138,7 @@ Change the line `#define NUMBER_LOOP_SKIP_FOR_READ_ARDUINO_INPUT 1` to change th
 The library implements some "secure mode" features for rotary encoder.
 
 ### USE_SECURE_MODE_FOR_MOUSE_ENCODER
-Activate "secure“ mode (for cheap type 3 mouse encoder). This mode prevent rotary encoder changes how are not supposed to append. Please see [ArduinoRotaryEncoderControl.cpp](/lib/ArduinoControl/ArduinoRotaryEncoderControl.cpp) header's for more information.
+Activate "secure“ mode (for cheap type 3 mouse encoder). This mode prevent rotary encoder changes how are not supposed to append. Please see [ArduinoRotaryEncoderControl.cpp](https://github.com/romgere/romgere_cockpit/blob/master/lib/ArduinoControl/ArduinoRotaryEncoderControl.cpp) header's for more information.
 
 - **Default :** Enable.
 

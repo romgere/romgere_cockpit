@@ -8,7 +8,7 @@ When you use the `ArduinoToggleSwitchControl` class with an push button, unlike 
 
 Board view | Sketch view
 ---------- | -----------
-![2 positions toggle switch connection (board view)](/resources/img/toggle_switch_bb.png?raw=true) | ![2 positions toggle switch connection (sketch view)](/resources/img/toggle_switch_sk.png?raw=true)
+![2 positions toggle switch connection (board view)](../../img/toggle_switch_bb.png?raw=true) | ![2 positions toggle switch connection (sketch view)](../../img/toggle_switch_sk.png?raw=true)
 
 
 # Code sample

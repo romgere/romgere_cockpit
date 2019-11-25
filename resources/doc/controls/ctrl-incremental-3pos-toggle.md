@@ -10,7 +10,7 @@ It's useful, for example with the flap switch of the Beechcraft baron 58, who ha
 
 Board view | Sketch view
 ---------- | -----------
-![3 positions toggle switch connection (board view)](/resources/img/3pos_toggle_switch_bb.png?raw=true) | ![3 positions toggle switch connection (sketch view)](/resources/img/3pos_toggle_switch_sk.png?raw=true)
+![3 positions toggle switch connection (board view)](../../img/3pos_toggle_switch_bb.png?raw=true) | ![3 positions toggle switch connection (sketch view)](../../img/3pos_toggle_switch_sk.png?raw=true)
 
 
 # Code sample

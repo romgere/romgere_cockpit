@@ -8,7 +8,7 @@ This class is compatible with "incremental encoder" ([see wikipedia Incremental 
 
 Board view | Sketch view
 ---------- | -----------
-![Rotary encoder connection (board view)](/resources/img/rotary_encoder_bb.png?raw=true) | ![Rotary encoder connection (sketch view)](/resources/img/rotary_encoder_sk.png?raw=true)
+![Rotary encoder connection (board view)](../../img/rotary_encoder_bb.png?raw=true) | ![Rotary encoder connection (sketch view)](../../img/rotary_encoder_sk.png?raw=true)
 
 
 # Code sample
@@ -40,8 +40,8 @@ void loop() {
 # Encoder type
 
 `ArduinoRotaryEncoderControl` class allow 4 configurations of rotary encoder depending on the number of state changes between 2 detents :
-![Rotary encoder type](/resources/img/rotary_encoder_type.png?raw=true)
-*More information in [ArduinoRotaryEncoderControl.cpp](/lib/ArduinoControl/ArduinoRotaryEncoderControl.cpp) file's header*
+![Rotary encoder type](../../img/rotary_encoder_type.png?raw=true)
+*More information in [ArduinoRotaryEncoderControl.cpp](https://github.com/romgere/romgere_cockpit/blob/master/lib/ArduinoControl/ArduinoRotaryEncoderControl.cpp) file's header*
 
 
 An encoder type can be one of the type below :

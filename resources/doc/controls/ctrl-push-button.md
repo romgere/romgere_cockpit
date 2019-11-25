@@ -6,7 +6,7 @@ The `ArduinoPushButtonControl` class allow you to send **and repeat** an X-Plane
 
 Board view | Sketch view
 ---------- | -----------
-![Push button connection (board view)](/resources/img/push_button_bb.png?raw=true) | ![Push button connection (sketch view)](/resources/img/push_button_sk.png?raw=true)
+![Push button connection (board view)](../../img/push_button_bb.png?raw=true) | ![Push button connection (sketch view)](../../img/push_button_sk.png?raw=true)
 
 
 # Code sample

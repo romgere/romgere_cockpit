@@ -24,7 +24,7 @@ For example, to declare a LED control on PIN n°8 of Slave board n°1, just add 
 
 Board view | Sketch view
 ---------- | -----------
-![I2C Connection (boar view)](/resources/img/multiple_board_bb.png?raw=true) | ![I2C Connection (sketch view)](/resources/img/multiple_board_sk.png?raw=true)
+![I2C Connection (boar view)](../img/multiple_board_bb.png?raw=true) | ![I2C Connection (sketch view)](../img/multiple_board_sk.png?raw=true)
 
 # Code sample "Master Board"
 
@@ -72,7 +72,7 @@ void loop()
   cockpitApp->Loop();
 }
 ```
-*This sample come from [Master.ino](/example/MultipleBoard/Master/Master.ino) file*
+*This sample come from [Master.ino](https://github.com/romgere/romgere_cockpit/blob/master/example/MultipleBoard/Master/Master.ino) file*
 
 # Code sample "Slave Board"
 
@@ -94,4 +94,4 @@ void loop()
 	slaveCockpit->loop();
 }
 ```
-*This sample come from [Slave.ino](/example/MultipleBoard/Master/Slave.ino) file*
+*This sample come from [Slave.ino](https://github.com/romgere/romgere_cockpit/blob/master/example/MultipleBoard/Master/Slave.ino) file*

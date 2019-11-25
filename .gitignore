@@ -1,3 +1,5 @@
 *.epp
 *.ar
 .DS_Store
+/node_modules/
+/resources/doc/.vuepress/dist/
