@@ -14,10 +14,10 @@ module.exports = {
     displayAllHeaders: true, // Default: false
     sidebar: [
       ['/', 'Home'],
-      ['3-command-and-data.html', 'X-Plane command'],
+      ['/3-command-and-data.html', 'X-Plane command'],
       {
         title: 'Library Controls',
-        path: '4-controls.html',
+        path: '/4-controls.html',
         collapsable: false,
         children: [
           ['controls/ctrl-2pos-toggle.md', 'ArduinoToggleSwitchControl'],
@@ -29,7 +29,7 @@ module.exports = {
         ]
       },
 
-      ['1-configuration-reference.html', 'Configuration reference'],
+      ['/1-configuration-reference.html', 'Configuration reference'],
     ]
   },
   plugins: [
