@@ -7,7 +7,7 @@ module.exports = {
     repoLabel: 'Github',
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Example', link: '2-basic-example.html' }
+      { text: 'Example', link: '/2-basic-example.html' }
     ],
     sidebarDepth: 3,
     activeHeaderLinks: false, // Default: true
