@@ -2,12 +2,12 @@ module.exports = {
   title: 'Romgere Cockpit Arduino Lib',
   description: 'Arduino library for building \"real\" cockpit/panel with X-Plane and Arduino board',
   themeConfig: {
-    logo: 'logo.png',
+    logo: '/logo.png',
     repo: 'romgere/romgere_cockpit',
     repoLabel: 'Github',
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Example', link: '2-basic-example.html' }
+      { text: 'Example', link: '/2-basic-example.html' }
     ],
     sidebarDepth: 3,
     activeHeaderLinks: false, // Default: true
