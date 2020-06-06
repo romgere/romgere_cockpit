@@ -21,7 +21,7 @@ void setup()
 
   //Create & start Ethernet interface
   ethernetInterface = new EthernetInterface(
-    { 0xDE, 0xAD, 0xBE, 0xEF, 0xEA, 0xED },
+    XPLANE_READ_PORT,
     XPLANE_WRITE_PORT,
     ARDUINO_IP_ADDRESS,
     arduinoMAC,
