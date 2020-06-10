@@ -134,6 +134,8 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
             Serial.print("Rotary Switch");break;
         case ArduinoInputControl::ITypeRotaryEncode:
             Serial.print("Rotary Encoder");break;
+        case ArduinoInputControl::ITypePotentiometer:
+            Serial.print("Potentiometer");break;
     }
 
     Serial.print("] with command :");
@@ -430,7 +432,7 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
 
                     CommunicationInterface->SendDrefCommand( outputCmd->toString(), val);
                 break;
-                
+
   				      case XPlaneOutputCommand::TypeDATACommand :
 #ifdef DEBUG_LIBRARY_LOOP
                     Serial.println("CockpitMainApplication : Loop, Command type DATA for control, not implemented!");

@@ -307,24 +307,26 @@ void EthernetInterface::SendDrefCommand( const char *dref, float value){
 #endif
     }
 
+    //Convert & send DREF value
+    XPNetworkData tmpData;
+    tmpData.floatVal = value;
+    for (int i=0; i<4; i++){
+        this->Udp.write( tmpData.byteVal[i]);
+    }
+
+    this->Udp.write("sim/");
+
     //Send DREF name "sim/..."
-    char DataOut[500];
-
-    //"sim/"
-    DataOut[0] = 's';
-    DataOut[1] = 'i';
-    DataOut[2] = 'm';
-    DataOut[3] = '/';
-
+    char DataOut[496];
     int i = 0;
-    while( dref[i] != 0 && i < 499 ){
-        DataOut[i+4] = dref[i];
+    while( dref[i] != 0 && i < 496 ){
+        DataOut[i] = dref[i];
         i++;
     }
-    for(; i < 498; i++  ){
+    for(; i < 496; i++  ){
         DataOut[i] = char(32);
     }
-    DataOut[499] = 0;
+    DataOut[496] = 0;
 
 #ifdef DEBUG_ETHERNET
     Serial.print("] with command \"");
@@ -335,7 +337,7 @@ void EthernetInterface::SendDrefCommand( const char *dref, float value){
     int res = this->Udp.write(DataOut);
 
 #ifdef DEBUG_ETHERNET
-    if( res == 500 )
+    if( res == 496 )
         Serial.println("succes");
     else
         Serial.println("error");
