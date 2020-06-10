@@ -278,7 +278,6 @@ void EthernetInterface::SendCommand( const char* cmd) {
 
 
 //Send DREF command to X-Plane
-//Send DREF command to X-Plane
 void EthernetInterface::SendDrefCommand( const char *dref, float value){
 
     Serial.print("EthernetInterface::SendDrefCommand : Not implemented ");
@@ -287,15 +286,20 @@ void EthernetInterface::SendDrefCommand( const char *dref, float value){
     if( ! this->IsClassInit )
         return;
 
-	this->Udp.beginPacket( this->XPlaneAdress, this->XPlaneWritePort);
+
+
+	  this->Udp.beginPacket( this->XPlaneAdress, this->XPlaneWritePort);
     this->Udp.write("DREF0");
 
 #ifdef DEBUG_ETHERNET
         Serial.print("Send DREF command [");
 #endif
-    //Envoi des données
+
+    //Convert & send DREF value
+    XPNetworkData tmpData;
+    tmpData.floatVal = value;
     for (int i=0; i<4; i++){
-        this->Udp.write( data[i]);
+        this->Udp.write( tmpData.byteVal[i]);
 
 #ifdef DEBUG_ETHERNET
             Serial.print( data[i]);
@@ -303,7 +307,7 @@ void EthernetInterface::SendDrefCommand( const char *dref, float value){
 #endif
     }
 
-    //Donnée à envoyer
+    //Send DREF name "sim/..."
     char DataOut[500];
 
     //"sim/"

@@ -55,7 +55,6 @@ class XPlaneKeyCommand : public XPlaneOutputCommand{
 
     public :
 
-
         XPlaneKeyCommand( const char c );
         ~XPlaneKeyCommand();
 
@@ -95,12 +94,13 @@ class XPlaneDATACommand : public XPlaneOutputCommand{
 
 //X-Plane DREF command (NOT IMPLEMENTED)
 class XPlaneDREFCommand : public XPlaneOutputCommand{
-
+    private :
+       String Dref;
     public :
-        XPlaneDREFCommand() : XPlaneOutputCommand(TypeDREFCommand){};
-        ~XPlaneDREFCommand(){};
+        XPlaneDREFCommand( const char* dref): XPlaneOutputCommand(TypeDREFCommand), Dref( dref){ };
+        ~XPlaneDREFCommand(){ };
 
-        const char* toString(){ return "Not implemented";};
+        const char* toString() { return Dref.c_str(); };
 };
 
 

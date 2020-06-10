@@ -365,15 +365,15 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
         Serial.println("...");
 #endif
 
-		    //Digital control ()
 		    if( inputControl->getType() == ArduinoControl::DigitalControl ){
 
             //Command is defined from control value and InputControlAssociation's command tab
 			      if( val < MAX_COMMAND_FOR_ONE_CONTROLE)
 				        outputCmd = ica->OutputCommand[(uint8_t)val];
 		    }
-        // TODO : Analog control
 		    else{
+            // Always use first command for analog inputs
+            outputCmd = ica->OutputCommand[0];
 
 #ifdef DEBUG_LIBRARY_LOOP
             Serial.println("CockpitMainApplication : Loop, control type Analogic, not implemented!");
@@ -421,9 +421,19 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
 
   				      //DREF / DATA command
   				      case XPlaneOutputCommand::TypeDREFCommand :
+
+  #ifdef DEBUG_LIBRARY_LOOP
+                    Serial.print("CockpitMainApplication : Loop, Process Dref Command [");
+                    Serial.print(outputCmd->toString());
+                    Serial.println("] for control.");
+  #endif
+
+                    CommunicationInterface->SendDrefCommand( outputCmd->toString(), val);
+                break;
+                
   				      case XPlaneOutputCommand::TypeDATACommand :
 #ifdef DEBUG_LIBRARY_LOOP
-                    Serial.println("CockpitMainApplication : Loop, Command type DATA or DREF for control, not implemented!");
+                    Serial.println("CockpitMainApplication : Loop, Command type DATA for control, not implemented!");
 #endif
   		          break;
 
