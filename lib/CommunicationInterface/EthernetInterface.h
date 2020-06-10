@@ -52,7 +52,7 @@ class EthernetInterface : public BaseCommunicationInterface{
         void SendKey( const char* key);
 
         //Send DREF command to X-Plane
-        //void SendDrefCommand( const  char *dref, byte data[]);
+        void SendDrefCommand( const  char *dref, float value);
 
         //Get a datas received for a given group number
         XPData* GetData( float group );

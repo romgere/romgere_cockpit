@@ -33,7 +33,7 @@ class SerialDebugInterface : public BaseCommunicationInterface{
         void SendKey( const char* key);
 
         //Print DREF command and his datas on arduino serial output
-        void SendDrefCommand( const  char *dref, byte data[]);
+        void SendDrefCommand( const  char *dref, float value);
 
         //Get an empty group datas (4 x 0 float value)
         XPData* GetData( float group );

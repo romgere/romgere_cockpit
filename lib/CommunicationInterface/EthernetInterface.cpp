@@ -278,8 +278,11 @@ void EthernetInterface::SendCommand( const char* cmd) {
 
 
 //Send DREF command to X-Plane
-/*
-void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
+//Send DREF command to X-Plane
+void EthernetInterface::SendDrefCommand( const char *dref, float value){
+
+    Serial.print("EthernetInterface::SendDrefCommand : Not implemented ");
+    return;
 
     if( ! this->IsClassInit )
         return;
@@ -337,8 +340,6 @@ void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
 
     this->Udp.endPacket();
 }
-
-*/
 
 //Get a datas received for a given group number
 XPData* EthernetInterface::GetData( float group ){
