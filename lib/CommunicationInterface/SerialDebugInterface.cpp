@@ -9,7 +9,7 @@
 
 
 SerialDebugInterface::SerialDebugInterface( int serialSpeed){
-    FakeData = new XPData();
+    FakeData = new XPGroupDatas();
 
     FakeData->data[0] = 0;
     FakeData->data[1] = 0;
@@ -61,7 +61,7 @@ void SerialDebugInterface::SendDrefCommand( const  char *dref, float value){
 }
 
 //Get an empty group datas (4 x 0 float value)
-XPData* SerialDebugInterface::GetData( float group ){
+XPGroupDatas* SerialDebugInterface::GetData( float group ){
     FakeData->group = group;
     return FakeData;
 }

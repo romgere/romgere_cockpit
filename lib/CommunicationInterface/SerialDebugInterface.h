@@ -17,7 +17,7 @@ class SerialDebugInterface : public BaseCommunicationInterface{
 
     private :
 
-        XPData  *FakeData;
+        XPGroupDatas  *FakeData;
 
     public :
 
@@ -36,7 +36,7 @@ class SerialDebugInterface : public BaseCommunicationInterface{
         void SendDrefCommand( const  char *dref, float value);
 
         //Get an empty group datas (4 x 0 float value)
-        XPData* GetData( float group );
+        XPGroupDatas* GetData( float group );
 };
 
 

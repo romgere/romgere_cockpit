@@ -14,7 +14,7 @@
 typedef struct{
     byte group;
     float data[8];
-}XPData;
+}XPGroupDatas;
 
 
 //Parent class to deal with communication (input/output) between Arduino Board and X-Plane
@@ -40,7 +40,7 @@ class BaseCommunicationInterface{
         virtual void SendDrefCommand( const  char *dref, float value); //Not pure virtual because not implemented by EthernetInterface
 
         //Get a datas received for a given group number
-        virtual XPData* GetData( float group ) = 0;
+        virtual XPGroupDatas* GetData( float group ) = 0;
 };
 
 

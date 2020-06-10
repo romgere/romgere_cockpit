@@ -306,7 +306,7 @@ void CockpitMainApplication::updateControlWithCommand( OutputControlAssociation*
     ArduinoOutputControl* outputControl = oca->Control;
 
     //get group data of control
-    XPData*  dataXplane = CommunicationInterface->GetData( inputData->getGroup() );
+    XPGroupDatas*  dataXplane = CommunicationInterface->GetData( inputData->getGroup() );
 
     //update control with data received from X-plane
     if( dataXplane != NULL ){

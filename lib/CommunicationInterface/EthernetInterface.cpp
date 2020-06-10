@@ -169,7 +169,7 @@ uint8_t EthernetInterface::ReadAllInput(){
             for (int i=5 ; i < readSize; i+=36) {
 
 
-                XPData *p = new XPData();
+                XPGroupDatas *p = new XPGroupDatas();
                 //First byte : Data's group
                 p->group = buffer[i];
 
@@ -182,12 +182,12 @@ uint8_t EthernetInterface::ReadAllInput(){
                 //Datas : table of 8 float value (8 x 4 bytes)
                 for (int j=0; j<8; j++){
 
-                    XPGroupData tmpData;
+                    XPNetworkData tmpData;
 
                     for (int k=0; k<4; k++){
                         tmpData.byteVal[k] = buffer[i + 4 + (j*4) + k];
                     }
-                    //Convert 4 byte array to float with XPGroupData union
+                    //Convert 4 byte array to float with XPNetworkData union
                     p->data[j] = tmpData.floatVal;
 
 #ifdef DEBUG_ETHERNET
@@ -342,7 +342,7 @@ void EthernetInterface::SendDrefCommand( const char *dref, float value){
 }
 
 //Get a datas received for a given group number
-XPData* EthernetInterface::GetData( float group ){
+XPGroupDatas* EthernetInterface::GetData( float group ){
 
     for( int i =0; i < MAX_INPUT_DATA_FROM_XPLANE; i++ ){
         if( this->LastXPlaneDatas[i] != NULL &&  this->LastXPlaneDatas[i]->group == group ){
