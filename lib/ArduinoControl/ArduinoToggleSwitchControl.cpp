@@ -29,16 +29,6 @@ bool ArduinoToggleSwitchControl::ReadInput(){
     uint8_t last = this->LastPinStatus;
     this->LastPinStatus = _digitalRead( this->Pin1);
 
-#ifdef DEBUG_CONTROL_STAT
-    Serial.print("Control Debug : Read ToggleSwitch[");
-    Serial.print(this->Pin1);
-    Serial.print("] Stat : ");
-    Serial.print(this->LastPinStatus != last ? "CHANGE !" : "NO CHANGE");
-    Serial.print(", Value : ");
-    Serial.print(this->LastPinStatus);
-    Serial.println(".");
-#endif
-
     //Value changed ?
     return this->LastPinStatus != last;
 }

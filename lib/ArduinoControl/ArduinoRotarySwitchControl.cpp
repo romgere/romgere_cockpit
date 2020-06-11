@@ -55,18 +55,6 @@ bool ArduinoRotarySwitchControl::ReadInput(){
         }
     }
 
-#ifdef DEBUG_CONTROL_STAT
-    Serial.print("Control Debug : Read RotarySwitch[");
-    Serial.print(this->Pin1);
-    Serial.print("] Stat : ");
-    Serial.print(this->LastVal != oldVal ? "CHANGE !" : "NO CHANGE");
-    Serial.print(", Value : ");
-    Serial.print(this->LastVal);
-    Serial.print("(");
-    Serial.print(currentAnalog);
-    Serial.println(").");
-#endif
-
     //Value changed or repeat set for this position => return true to send command
     if( this->LastVal != oldVal || this->RepeatCmd[this->LastVal])
         return true;

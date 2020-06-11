@@ -36,21 +36,6 @@ bool ArduinoIncrementalThreePosToggleSwitchControl::ReadInput(){
     bitWrite(this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX], 0, _digitalRead(this->Pin1) == HIGH);
     bitWrite(this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX], 1, _digitalRead(this->Pin2) == HIGH);
 
-
-#ifdef DEBUG_CONTROL_STAT
-        Serial.print("Control Debug : Read IncrementalThreePosToggleSwitch[");
-        Serial.print(this->Pin1);
-        Serial.print(",");
-        Serial.print(this->Pin2);
-        Serial.print("] Stat : ");
-        Serial.print((this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX] != this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX]) ? "CHANGE !" : "NO CHANGE");
-        Serial.print(", Value : ");
-        Serial.print(this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX]);
-        Serial.print(",");
-        Serial.print(this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX]);
-        Serial.println(".");
-#endif
-
     //Status changed ?
     return this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX] != this->LastPinStatus[INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX];
 }

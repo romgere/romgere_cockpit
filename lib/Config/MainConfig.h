@@ -6,22 +6,6 @@
 #ifndef ROMGERE_COCKPIT_CONFIG_FILE
 #define ROMGERE_COCKPIT_CONFIG_FILE
 
-/*
- * Enable debug message on serial output.
- * Uncomment line to enable log.
- */
-//#define DEBUG_ETHERNET
-
-//#define DEBUG_CONTROL_COMMAND_REGISTER
-//#define DEBUG_CONTROL_STAT
-
-//#define DEBUG_LIBRARY
-//#define DEBUG_LIBRARY_LOOP
-
-//#define DEBUG_SLAVE_APP
-
-// Not recommended. I2C logs create I2C communication bugs
-//#define DEBUG_I2C
 
 /*
  * Automatically open serial port on Application Startup

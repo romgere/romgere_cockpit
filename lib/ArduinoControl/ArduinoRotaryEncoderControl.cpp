@@ -82,19 +82,17 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
 
     bool isStatusChanged = this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] != newVal;
 
-#ifdef DEBUG_CONTROL_STAT
-    Serial.print("Control Debug : Read RotaryEncoder[");
-    Serial.print(this->Pin1);
-    Serial.print(",");
-    Serial.print(this->Pin2);
-    Serial.print("] Stat : ");
-    Serial.print(isStatusChanged ? "CHANGE !" : "NO CHANGE");
-    Serial.print(", Value : ");
-    Serial.print(this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX]);
-    Serial.print(",");
-    Serial.print(newVal);
-    Serial.println(".");
-#endif
+    // Serial.print("Control Debug : Read RotaryEncoder[");
+    // Serial.print(this->Pin1);
+    // Serial.print(",");
+    // Serial.print(this->Pin2);
+    // Serial.print("] Stat : ");
+    // Serial.print(isStatusChanged ? "CHANGE !" : "NO CHANGE");
+    // Serial.print(", Value : ");
+    // Serial.print(this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX]);
+    // Serial.print(",");
+    // Serial.print(newVal);
+    // Serial.println(".");
 
 //"Secure“ mode (for cheap type 3 mouse encoder)
 #ifdef USE_SECURE_MODE_FOR_MOUSE_ENCODER
@@ -102,30 +100,22 @@ bool ArduinoRotaryEncoderControl::ReadInput(){
 
         //Current 0 => allow only new stat to 1 or 2
         if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 0 && newVal == 3 ){
-#ifdef DEBUG_CONTROL_STAT
-            Serial.print("Control Debug : Check RotaryEncoder, impossible stat 0 to 3 !");
-#endif
+            // Serial.print("Control Debug : Check RotaryEncoder, impossible stat 0 to 3 !");
             return false;
         }
         //Current 1 => allow only new stat to 0 or 3
         else if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 1 && newVal == 2 ){
-#ifdef DEBUG_CONTROL_STAT
-            Serial.print("Control Debug : Check RotaryEncoder, impossible stat 1 to 2 !");
-#endif
+            // Serial.print("Control Debug : Check RotaryEncoder, impossible stat 1 to 2 !");
             return false;
         }
         //Current 2 => allow only new stat to 0 or 3
         else if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 2 && newVal == 1 ){
-#ifdef DEBUG_CONTROL_STAT
-            Serial.print("Control Debug : Check RotaryEncoder, impossible stat 2 to 1 !");
-#endif
+            // Serial.print("Control Debug : Check RotaryEncoder, impossible stat 2 to 1 !");
             return false;
         }
         //Current 3 => allow only new stat to 1 or 2
         else if( this->LastPinStatus[ROTARY_ENC_OLD_STATUS_INDEX] == 3 && newVal == 0 ){
-#ifdef DEBUG_CONTROL_STAT
-            Serial.print("Control Debug : Check RotaryEncoder, impossible stat 3 to 0 !");
-#endif
+            // Serial.print("Control Debug : Check RotaryEncoder, impossible stat 3 to 0 !");
             return false;
         }
     }
