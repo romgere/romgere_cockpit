@@ -132,6 +132,6 @@ Change the line `#define ROTARY_SWITCH_TOLERANCE 0.15` to change the value.
 ### ACTIVE_MULTI_ARDUINO_BOARD_MODE
 Enable multiple board mode (Master and Slave(s) board with I2C communication).
 
-*Please read [Multiple boards documentation page](./7-multiple-board.md) for more informations on how multiple board mode works*
+*Please read [Multiple boards documentation page](./7-multiple-boards.md) for more informations on how multiple board mode works*
 
 Enable by uncomment the line `#define ACTIVE_MULTI_ARDUINO_BOARD_MODE`
