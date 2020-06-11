@@ -79,8 +79,35 @@ CockpitMainApplication::~CockpitMainApplication() {
 
 //Register an input control (switch, encode, ...) and bind it to one or more output command(s)
 void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
-                                                    XPlaneOutputCommand *cmd1,
-                                                    ... ){
+                                                    XPlaneOutputCommand *cmd1
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 1
+                                                    ,XPlaneOutputCommand *cmd2
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 2
+                                                    ,XPlaneOutputCommand *cmd3
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 3
+                                                    ,XPlaneOutputCommand *cmd4
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 4
+                                                    ,XPlaneOutputCommand *cmd5
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 5
+                                                    ,XPlaneOutputCommand *cmd6
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 6
+                                                    ,XPlaneOutputCommand *cmd7
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 7
+                                                    ,XPlaneOutputCommand *cmd8
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 8
+                                                    ,XPlaneOutputCommand *cmd9
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 9
+                                                    ,XPlaneOutputCommand *cmd10
+#endif
+                                                  ){
 
     if( InputControlCount >= MAX_INPUT_CONTROL_IN_APPLICATION)
         return;
@@ -102,76 +129,53 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
     assoc->Control = ctrl;
     assoc->OutputCommand[0] = cmd1;
 
-    va_list args;
-    va_start(args, cmd1);
-
-    XPlaneOutputCommand *nextCmd = NULL;
-    uint8_t nextIndex = 1;
-
-    //Additional command for multiple position input control (rotary switch, toggle switch ...)
-    while ((nextCmd = va_arg(args, XPlaneOutputCommand *)) != NULL) {
-
-        if ( nextIndex < MAX_COMMAND_FOR_ONE_CONTROLE ) {
-            assoc->OutputCommand[ nextIndex] = nextCmd;
-        }
-
-        ++nextIndex;
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 1
+    if( cmd2 != NULL ){
+      assoc->OutputCommand[1] = cmd2;
     }
-
-    va_end(args);
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 2
+    if( cmd3 != NULL ){
+      assoc->OutputCommand[2] = cmd3;
+    }
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 3
+    if( cmd4 != NULL ){
+      assoc->OutputCommand[3] = cmd4;
+    }
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 4
+    if( cmd5 != NULL ){
+      assoc->OutputCommand[4] = cmd5;
+    }
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 5
+    if( cmd6 != NULL ){
+      assoc->OutputCommand[5] = cmd6;
+    }
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 6
+    if( cmd7 != NULL ){
+      assoc->OutputCommand[6] = cmd7;
+    }
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 7
+    if( cmd8 != NULL ){
+      assoc->OutputCommand[7] = cmd8;
+    }
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 8
+    if( cmd9 != NULL ){
+      assoc->OutputCommand[8] = cmd9;
+    }
+#endif
+#if MAX_COMMAND_FOR_ONE_CONTROLE > 9
+    if( cmd10 != NULL ){
+      assoc->OutputCommand[9] = cmd10;
+    }
+#endif
 
     InputControlList[InputControlCount] = assoc;
-
-#ifdef DEBUG_CONTROL_COMMAND_REGISTER
-    Serial.print("CockpitMainApplication : Register INPUT control/command association, control : [");
-
-    switch( ctrl->getInputType() ){
-        case ArduinoInputControl::ITypePushButton :
-            Serial.print("Push Button");break;
-        case ArduinoInputControl::ITypeToggleSwitch:
-            Serial.print("Toggle Switch");break;
-        case ArduinoInputControl::ITypeRotarySwitch:
-            Serial.print("Rotary Switch");break;
-        case ArduinoInputControl::ITypeRotaryEncode:
-            Serial.print("Rotary Encoder");break;
-        case ArduinoInputControl::ITypePotentiometer:
-            Serial.print("Potentiometer");break;
-    }
-
-    Serial.print("] with command :");
-
-    for( int i=0; i < MAX_COMMAND_FOR_ONE_CONTROLE; i++){
-
-        if( assoc->OutputCommand[i] != NULL ){
-
-            switch( assoc->OutputCommand[i]->getType() ){
-
-                case XPlaneOutputCommand::TypeKeyCommand:
-                    Serial.print(" [Key Command:");
-                    Serial.print(assoc->OutputCommand[i]->toString());
-                    break;
-                case XPlaneOutputCommand::TypeSimpleCommand:
-                    Serial.print(" [Simple Commande:");
-                    Serial.print(assoc->OutputCommand[i]->toString());
-                    break;
-                case XPlaneOutputCommand::TypeDATACommand:
-                    Serial.print(" [DATA Command:");
-                    Serial.print(assoc->OutputCommand[i]->toString());
-                    break;
-                case XPlaneOutputCommand::TypeDREFCommand:
-                    Serial.print(" [DREF command");
-                    Serial.print(assoc->OutputCommand[i]->toString());
-                    break;
-                case XPlaneOutputCommand::TypeInternalCommand:
-                    Serial.print(" [Internal Command");
-                    Serial.print(assoc->OutputCommand[i]->toString());
-                    break;
-            }
-            Serial.print("]");
-        }
-    }
-    Serial.println(".");
-#endif // DEBUG_CONTROL_COMMAND_REGISTER
 
     InputControlCount++;
 }
@@ -235,7 +239,7 @@ void CockpitMainApplication::Loop(){
     Serial.println("...");
 #endif
 
-    #if NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
+#if NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE > 1
     if( LoopNumber % NUMBER_LOOP_SKIP_FOR_READ_DATA_FROM_XPLANE == 0){
 #endif
 
