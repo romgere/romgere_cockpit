@@ -7,60 +7,6 @@ All the library parameters are stored in `Config\MainConfig.h`. Feel free to edi
 # Parameters
 
 
-## Debug options
-
-Be careful when enable these parameters. The library could be slow down if too much debug message are printing on serial output.
-
-### DEBUG_ETHERNET
-Show debug information for Ethernet communication. Print received and sent datas.
-
-Enable by uncomment the line `#define DEBUG_ETHERNET`
-
-### DEBUG_CONTROL_COMMAND_REGISTER
-Show debug information when registering input/output control with output/input command.
-
-Enable by uncomment the line `#define DEBUG_CONTROL_COMMAND_REGISTER`
-
-### DEBUG_CONTROL_STAT
-Show debug information about controls state change.
-
-Enable by uncomment the line `#define DEBUG_CONTROL_STAT`
-
-### DEBUG_LIBRARY
-Show debug information about core library (init, start, ...).
-
-Enable by uncomment the line `#define DEBUG_LIBRARY`
-
-### DEBUG_LIBRARY_LOOP
-Show debug information about loop (lopp n°, read/write action, ...).
-
-Enable by uncomment the line `#define DEBUG_LIBRARY_LOOP`
-
-### DEBUG_SLAVE_APP
-Show debug information for slave application (init,  read/write on pin action, ...).
-
-Enable by uncomment the line `#define DEBUG_SLAVE_APP`
-
-### DEBUG_I2C
-Show debug information for I2C read/write actions.
-
-Enable by uncomment the line `#define DEBUG_I2C`
-
-*Not recommended. I2C logs can sometimes create I2C communication problems*
-
-### DEBUG_SERIAL_START
-Automatically open serial port on Application Startup.
-
-Enable by uncomment the line `#define DEBUG_SERIAL_START`
-
-### DEBUG_SERIAL_SPEED
-Defined the speed of serial port (use when "DEBUG_SERIAL_START" is enable).
-
-- **Default value :** 115200.
-
-Change the line `#define DEBUG_SERIAL_SPEED 115200` to change the value
-
-
 ## Management capacity
 
 These settings allow you to tune the maximum number of control and X-plane's data the library can manage. They have en direct impact on library memory consumption.

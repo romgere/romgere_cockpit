@@ -22,28 +22,24 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
 
     this->CreateBufferForI2C( buffer);
 
-#ifdef DEBUG_I2C
-    Serial.print("I2C : SEND TO ");
-    Serial.print(boardAddress);
-    Serial.print(" {");
-    Serial.print(buffer[0]);
-    Serial.print("-");
-    Serial.print(buffer[1]);
-    Serial.print("-");
-    Serial.print(buffer[2]);
-    Serial.print("-");
-    Serial.print(buffer[3]);
-    Serial.println("}.");
-#endif
+    // Serial.print("I2C : SEND TO ");
+    // Serial.print(boardAddress);
+    // Serial.print(" {");
+    // Serial.print(buffer[0]);
+    // Serial.print("-");
+    // Serial.print(buffer[1]);
+    // Serial.print("-");
+    // Serial.print(buffer[2]);
+    // Serial.print("-");
+    // Serial.print(buffer[3]);
+    // Serial.println("}.");
 
     //Send to slave board on I2C bus
     Wire.beginTransmission(boardAddress);
     Wire.write((uint8_t*)buffer, 4);
     Wire.endTransmission();
 
-#ifdef DEBUG_I2C
-    Serial.println("I2C : SEND OK.");
-#endif
+    // Serial.println("I2C : SEND OK.");
 }
 
 //Send a "GetPIN" command to slave board and wait return of slave board on I2C bus
@@ -53,11 +49,9 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
     I2CDataRCA conv;
 
-#ifdef DEBUG_I2C
-    Serial.print("I2C : REQ FROM ");
-    Serial.print(boardAddress);
-    Serial.println("...");
-#endif
+    // Serial.print("I2C : REQ FROM ");
+    // Serial.print(boardAddress);
+    // Serial.println("...");
 
     Wire.requestFrom( boardAddress, (uint8_t)2);
     uint8_t index = 0;
@@ -65,9 +59,7 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
     {
         //Too much data
         if( index >= 2){
-#ifdef DEBUG_I2C
-            Serial.println("I2C : TOO MUCH DATA RECEIVED FROM SLAVE.");
-#endif
+            // Serial.println("I2C : TOO MUCH DATA RECEIVED FROM SLAVE.");
             break;
         }
         conv.byteVal[index++]  = Wire.read();
@@ -75,17 +67,13 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
     //No enough data ! error
     if( index != 2 ){
-#ifdef DEBUG_I2C
-        Serial.println("I2C : NO ENOUGH DATA RECEIVED FROM SLAVE.");
-#endif
+        // Serial.println("I2C : NO ENOUGH DATA RECEIVED FROM SLAVE.");
         return 0;
     }
 
-#ifdef DEBUG_I2C
-    Serial.print("I2C : REQ/REC int : ");
-    Serial.print(conv.intVal);
-    Serial.println(".");
-#endif
+    // Serial.print("I2C : REQ/REC int : ");
+    // Serial.print(conv.intVal);
+    // Serial.println(".");
 
     //2 bytes received : OK, return the received value as an integer
     return conv.intVal;

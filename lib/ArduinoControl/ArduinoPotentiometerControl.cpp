@@ -27,20 +27,6 @@ bool ArduinoPotentiometerControl::ReadInput(){
 
   float newVal = ReadAndConvertInput();
   bool hasChange = this->currentValue != newVal;
-
-#ifdef DEBUG_CONTROL_STAT
-    Serial.print("Control Debug : Read Potentiometer[");
-    Serial.print(this->Pin1);
-    Serial.print("] Stat : ");
-    Serial.print(hasChange ? "CHANGE !" : "NO CHANGE");
-    Serial.print(", Old : ");
-    Serial.print(this->currentValue);
-    Serial.print(", New : ");
-    Serial.print(newVal);
-    Serial.println(".");
-#endif
-
-
   this->currentValue = newVal;
   return hasChange;
 }

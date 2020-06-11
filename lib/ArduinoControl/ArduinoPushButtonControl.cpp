@@ -19,18 +19,5 @@ ArduinoPushButtonControl::ArduinoPushButtonControl( uint8_t pin, uint8_t default
 }
 
 bool ArduinoPushButtonControl::ReadInput(){
-#ifdef DEBUG_CONTROL_STAT
-    int newVal = _digitalRead( this->Pin1);
-    Serial.print("Control Debug : Read PushButton[");
-    Serial.print(this->Pin1);
-    Serial.print("] Stat : ");
-    Serial.print(this->InitialPinStatus != newVal ? "CHANGE !" : "NO CHANGE");
-    Serial.print(", Value : ");
-    Serial.print(newVal);
-    Serial.println(".");
-
-	return this->InitialPinStatus != newVal;
-#else
     return this->InitialPinStatus != _digitalRead( this->Pin1);
-#endif
 }

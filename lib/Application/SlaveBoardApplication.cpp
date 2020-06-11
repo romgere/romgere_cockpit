@@ -29,38 +29,26 @@ void globalRequestEvent(){
 
 SlaveBoardApplication::SlaveBoardApplication( uint8_t adresse ) : BoardI2CAdresse(adresse), lastPinForValueSend(NULL){
 
-#ifdef DEBUG_SERIAL_START
-    Serial.begin(DEBUG_SERIAL_SPEED);
-#endif
-
-#ifdef DEBUG_SLAVE_APP
-    Serial.print("SlaveBoardApplication : I2C Initialisation on adresse ");
-    Serial.print( adresse);
-    Serial.println("...");
-#endif
+    // Serial.print("SlaveBoardApplication : I2C Initialisation on adresse ");
+    // Serial.print( adresse);
+    // Serial.println("...");
 
     //set global refence to our SlaveBoardApplication instance
     slaveAppInstance = this;
 
-#ifdef DEBUG_SLAVE_APP
-    Serial.println("SlaveBoardApplication : I2C Initialisation OK");
-#endif
+    // Serial.println("SlaveBoardApplication : I2C Initialisation OK");
 }
 
 //Register the board on I2C bus
 void SlaveBoardApplication::RegisterI2C(){
 
-#ifdef DEBUG_SLAVE_APP
-    Serial.print("SlaveBoardApplication : Register I2C...");
-#endif
+    // Serial.print("SlaveBoardApplication : Register I2C...");
 
     Wire.begin(BoardI2CAdresse);
     Wire.onReceive(globalReceivedData);
     Wire.onRequest(globalRequestEvent);
 
-#ifdef DEBUG_SLAVE_APP
-    Serial.println("OK.");
-#endif
+    // Serial.println("OK.");
 }
 
 SlaveBoardApplication::~SlaveBoardApplication(){
@@ -85,21 +73,14 @@ void SlaveBoardApplication::loop(){
 
             //Error !?
             if( masterCommand->PinMode == MasterToSlaveCommand::PINModeNotUsed ){
-
-#ifdef DEBUG_SLAVE_APP
-                Serial.println("SlaveBoardApplication : Init PIN Erreur, bad parameter.");
-#endif
-
+                // Serial.println("SlaveBoardApplication : Init PIN Erreur, bad parameter.");
             }
             else{
-
-#ifdef DEBUG_SLAVE_APP
-                Serial.print("SlaveBoardApplication : pinMode(");
-                Serial.print(masterCommand->PinNum);
-                Serial.print(",");
-                Serial.print(masterCommand->PinMode == MasterToSlaveCommand::PINModeInput ? INPUT : masterCommand->PinMode == MasterToSlaveCommand::PINModeIntputPullUp ? INPUT_PULLUP : OUTPUT);
-                Serial.println(").");
-#endif
+                // Serial.print("SlaveBoardApplication : pinMode(");
+                // Serial.print(masterCommand->PinNum);
+                // Serial.print(",");
+                // Serial.print(masterCommand->PinMode == MasterToSlaveCommand::PINModeInput ? INPUT : masterCommand->PinMode == MasterToSlaveCommand::PINModeIntputPullUp ? INPUT_PULLUP : OUTPUT);
+                // Serial.println(").");
 
                 pinMode( masterCommand->PinNum, masterCommand->PinMode == MasterToSlaveCommand::PINModeInput ? INPUT : masterCommand->PinMode == MasterToSlaveCommand::PINModeIntputPullUp ? INPUT_PULLUP : OUTPUT);
 
@@ -110,33 +91,25 @@ void SlaveBoardApplication::loop(){
 
             //Error !?
             if( masterCommand->RWMode == MasterToSlaveCommand::RWModeNotUsed ){
-
-#ifdef DEBUG_SLAVE_APP
-                Serial.println("SlaveBoardApplication : Set PIN Erreur, bad parameter.");
-#endif
-
+                // Serial.println("SlaveBoardApplication : Set PIN Erreur, bad parameter.");
             }
             else if( masterCommand->RWMode == MasterToSlaveCommand::RWModeAnalog ){
 
-#ifdef DEBUG_SLAVE_APP
-                Serial.print("SlaveBoardApplication : analogWrite(");
-                Serial.print(masterCommand->PinNum);
-                Serial.print(",");
-                Serial.print(masterCommand->ValueToSet);
-                Serial.println(").");
-#endif
+                // Serial.print("SlaveBoardApplication : analogWrite(");
+                // Serial.print(masterCommand->PinNum);
+                // Serial.print(",");
+                // Serial.print(masterCommand->ValueToSet);
+                // Serial.println(").");
 
                 analogWrite( masterCommand->PinNum, masterCommand->ValueToSet);
             }
             else{
 
-#ifdef DEBUG_SLAVE_APP
-                Serial.print("SlaveBoardApplication : digitalWrite(");
-                Serial.print(masterCommand->PinNum);
-                Serial.print(",");
-                Serial.print(masterCommand->ValueToSet);
-                Serial.println(").");
-#endif
+                // Serial.print("SlaveBoardApplication : digitalWrite(");
+                // Serial.print(masterCommand->PinNum);
+                // Serial.print(",");
+                // Serial.print(masterCommand->ValueToSet);
+                // Serial.println(").");
 
                 digitalWrite( masterCommand->PinNum, masterCommand->ValueToSet);
             }
@@ -149,9 +122,7 @@ void SlaveBoardApplication::loop(){
 //Parse data from master Board
 void SlaveBoardApplication::parseDataFromMaster( byte* data){
 
-#ifdef DEBUG_SLAVE_APP
-    Serial.println("Parse...");
-#endif
+    // Serial.println("Parse...");
 
     MasterToSlaveCommand *masterCommand = new MasterToSlaveCommand();
     masterCommand->ParseDataFromIC2( data);
@@ -164,9 +135,7 @@ void SlaveBoardApplication::parseDataFromMaster( byte* data){
         if( lastPinForValueSend != NULL )
             delete lastPinForValueSend;
 
-#ifdef DEBUG_SLAVE_APP
-        Serial.println("SlaveBoardApplication : get PIN ask.");
-#endif
+        // Serial.println("SlaveBoardApplication : get PIN ask.");
 
         //Keep the command (reference to arduino input PIN) to send it later when master board really ask for it (see "SlaveBoardApplication::requestEvent()")
         lastPinForValueSend = masterCommand;
@@ -189,15 +158,13 @@ void SlaveBoardApplication::receivedData( int dataSize){
     }
     data[index++] = Wire.read();
 
-#ifdef DEBUG_I2C
-    Serial.print("I2C rec ");
-    Serial.print(index);
-    Serial.print(" : ");
-    for (int i=0; i < 4; i++){
-        Serial.print((int)data[i]);Serial.print("-");
-    }
-    Serial.println(".");
-#endif // DEBUG_I2C4
+    // Serial.print("I2C rec ");
+    // Serial.print(index);
+    // Serial.print(" : ");
+    // for (int i=0; i < 4; i++){
+    //     Serial.print((int)data[i]);Serial.print("-");
+    // }
+    // Serial.println(".");
 
     parseDataFromMaster(data);
 }
@@ -205,10 +172,7 @@ void SlaveBoardApplication::receivedData( int dataSize){
 //Master board request a value
 void SlaveBoardApplication::requestEvent(){
 
-
-#ifdef DEBUG_I2C
-    Serial.println("I2C REQ");
-#endif
+    // Serial.println("I2C REQ");
 
     I2CDataRCA conv;
     conv.intVal = 0;
@@ -220,31 +184,23 @@ void SlaveBoardApplication::requestEvent(){
             if( lastPinForValueSend->RWMode == MasterToSlaveCommand::RWModeAnalog ){
 
                 conv.intVal = analogRead(lastPinForValueSend->PinNum);
-
-#ifdef DEBUG_SLAVE_APP
-                Serial.print("SlaveBoardApplication : analogRead(");
-                Serial.print(lastPinForValueSend->PinNum);
-                Serial.println(");");
-#endif
+                // Serial.print("SlaveBoardApplication : analogRead(");
+                // Serial.print(lastPinForValueSend->PinNum);
+                // Serial.println(");");
             }
             else if( lastPinForValueSend->RWMode == MasterToSlaveCommand::RWModeDigital ){
 
                 conv.intVal = digitalRead(lastPinForValueSend->PinNum);
 
-#ifdef DEBUG_SLAVE_APP
-                Serial.print("SlaveBoardApplication : digitalRead(");
-                Serial.print(lastPinForValueSend->PinNum);
-                Serial.println(");");
-#endif
+                // Serial.print("SlaveBoardApplication : digitalRead(");
+                // Serial.print(lastPinForValueSend->PinNum);
+                // Serial.println(");");
             }
         }
         //Error
         else{
 
-#ifdef DEBUG_I2C
-            Serial.println("I2C : REQ LAST DATA ERR");
-#endif
-
+            // Serial.println("I2C : REQ LAST DATA ERR");
             delete lastPinForValueSend;
             lastPinForValueSend = NULL;
             return;
@@ -254,11 +210,9 @@ void SlaveBoardApplication::requestEvent(){
         lastPinForValueSend = NULL;
     }
 
-#ifdef DEBUG_I2C
-    Serial.print("I2C SEND ");
-    Serial.print(conv.intVal);
-    Serial.println(".");
-#endif
+    // Serial.print("I2C SEND ");
+    // Serial.print(conv.intVal);
+    // Serial.println(".");
 
     //Send value on I2C Bus
     Wire.write((uint8_t*)conv.byteVal, 2);
