@@ -36,25 +36,9 @@ void SerialDebugInterface::SendKey( const char* key){
 }
 
 void SerialDebugInterface::SendDrefCommand( const  char *dref, float value){
-  
-    char DataOut[500];
-
-    //"sim/"
-    DataOut[0] = 's';
-    DataOut[1] = 'i';
-    DataOut[2] = 'm';
-    DataOut[3] = '/';
-
-    int i = 0;
-    while( dref[i] != 0 && i < 499 ){
-        DataOut[i+4] = dref[i];
-        i++;
-    }
-    DataOut[i] = 0;
-
-
     Serial.print("DebugInterface, SEND DREF : ");
-    Serial.print(DataOut);
+    Serial.print("sim/");
+    Serial.print(dref);
     Serial.print(" with data : {");
     Serial.print(value);
     Serial.println("}.");
