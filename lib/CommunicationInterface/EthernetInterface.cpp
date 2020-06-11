@@ -280,44 +280,15 @@ void EthernetInterface::SendCommand( const char* cmd) {
 //Send DREF command to X-Plane
 void EthernetInterface::SendDrefCommand( const char *dref, float value){
 
-    Serial.print("EthernetInterface::SendDrefCommand : Not implemented ");
-    return;
-
     if( ! this->IsClassInit )
         return;
 
-
-
-	  this->Udp.beginPacket( this->XPlaneAdress, this->XPlaneWritePort);
-    this->Udp.write("DREF0");
-
-#ifdef DEBUG_ETHERNET
-        Serial.print("Send DREF command [");
-#endif
-
-    //Convert & send DREF value
+    //Convert DREF value
     XPNetworkData tmpData;
     tmpData.floatVal = value;
-    for (int i=0; i<4; i++){
-        this->Udp.write( tmpData.byteVal[i]);
 
-#ifdef DEBUG_ETHERNET
-            Serial.print( data[i]);
-            if( i < 3 ) Serial.print(",");
-#endif
-    }
-
-    //Convert & send DREF value
-    XPNetworkData tmpData;
-    tmpData.floatVal = value;
-    for (int i=0; i<4; i++){
-        this->Udp.write( tmpData.byteVal[i]);
-    }
-
-    this->Udp.write("sim/");
-
-    //Send DREF name "sim/..."
-    char DataOut[496];
+    //build DREF name
+    char DataOut[497];
     int i = 0;
     while( dref[i] != 0 && i < 496 ){
         DataOut[i] = dref[i];
@@ -326,24 +297,17 @@ void EthernetInterface::SendDrefCommand( const char *dref, float value){
     for(; i < 496; i++  ){
         DataOut[i] = char(32);
     }
-    DataOut[496] = 0;
-
-#ifdef DEBUG_ETHERNET
-    Serial.print("] with command \"");
-    Serial.print(DataOut);
-    Serial.print("\" : ");
-#endif
-
-    int res = this->Udp.write(DataOut);
-
-#ifdef DEBUG_ETHERNET
-    if( res == 496 )
-        Serial.println("succes");
-    else
-        Serial.println("error");
-#endif // DEBUG
+    DataOut[i] = 0;
 
 
+    //Send datas
+    this->Udp.beginPacket( this->XPlaneAdress, this->XPlaneWritePort);
+    this->Udp.write("DREF0");
+    for (int i=0; i<4; i++){
+        this->Udp.write( tmpData.byteVal[i]);
+    }
+    this->Udp.write("sim/");
+    this->Udp.write(DataOut);
     this->Udp.endPacket();
 }
 
