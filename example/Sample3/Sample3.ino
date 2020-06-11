@@ -15,7 +15,7 @@ EthernetInterface       *ethernetInterface;
 
 void setup()
 {
-/*
+
   byte arduinoMAC[6]  = ARDUINO_MAC_ADDRESS;
 
   //Create & start Ethernet interface
@@ -30,16 +30,11 @@ void setup()
   
   //Create app with our Eternet interface
   cockpitApp = new CockpitMainApplication( ethernetInterface);
-*/
-  
-  cockpitApp = new CockpitMainApplication( new SerialDebugInterface());
-
   
   
-  cockpitApp->RegisterInputControl(    new ArduinoPotentiometerControl(5, 0.05, 0, 1),
-                                      new XPlaneDREFCommand("parking_brake_ratio[0]"),
-                                      new XPlaneDREFCommand("parking_brake_ratio[1]"),
-                                      new XPlaneDREFCommand("parking_brake_ratio[2]"));
+  cockpitApp->RegisterInputControl(    new ArduinoPotentiometerControl(15, 0.05, 0, 1),
+                                      new XPlaneDREFCommand("cockpit2/controls/parking_brake_ratio[0]"  )
+                                  );
 }
 
 void loop()
