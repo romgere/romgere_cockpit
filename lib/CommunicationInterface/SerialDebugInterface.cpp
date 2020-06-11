@@ -9,7 +9,7 @@
 
 
 SerialDebugInterface::SerialDebugInterface( int serialSpeed){
-    FakeData = new XPData();
+    FakeData = new XPGroupDatas();
 
     FakeData->data[0] = 0;
     FakeData->data[1] = 0;
@@ -35,8 +35,8 @@ void SerialDebugInterface::SendKey( const char* key){
     Serial.println(key);
 }
 
-void SerialDebugInterface::SendDrefCommand( const  char *dref, byte data[]){
-
+void SerialDebugInterface::SendDrefCommand( const  char *dref, float value){
+  
     char DataOut[500];
 
     //"sim/"
@@ -50,25 +50,18 @@ void SerialDebugInterface::SendDrefCommand( const  char *dref, byte data[]){
         DataOut[i+4] = dref[i];
         i++;
     }
-    for(; i < 498; i++  ){
-        DataOut[i] = char(32);
-    }
-    DataOut[499] = 0;
+    DataOut[i] = 0;
 
 
     Serial.print("DebugInterface, SEND DREF : ");
     Serial.print(DataOut);
     Serial.print(" with data : {");
-
-    for (int i=0; i<4; i++){
-        Serial.print( data[i]);
-        if( i < 3 ) Serial.print("-");
-    }
+    Serial.print(value);
     Serial.println("}.");
 }
 
 //Get an empty group datas (4 x 0 float value)
-XPData* SerialDebugInterface::GetData( float group ){
+XPGroupDatas* SerialDebugInterface::GetData( float group ){
     FakeData->group = group;
     return FakeData;
 }

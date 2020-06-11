@@ -108,6 +108,7 @@ class ArduinoInputControl : public ArduinoControl{
             ITypeToggleSwitch,
             ITypeRotarySwitch,
             ITypeRotaryEncode,
+            ITypePotentiometer
         }ArduinoInputControlType;
 
     private :

@@ -18,14 +18,13 @@ class EthernetInterface : public BaseCommunicationInterface{
 
 
     private :
-
-         typedef union{
-            byte byteVal[4];
-            float floatVal;
-        }XPGroupData;
+        typedef union{
+           byte byteVal[4];
+           float floatVal;
+        }XPNetworkData;
 
         //Last datas read from X-Plane
-        XPData* LastXPlaneDatas[MAX_INPUT_DATA_FROM_XPLANE];
+        XPGroupDatas* LastXPlaneDatas[MAX_INPUT_DATA_FROM_XPLANE];
 
         bool        IsClassInit;
 
@@ -52,10 +51,10 @@ class EthernetInterface : public BaseCommunicationInterface{
         void SendKey( const char* key);
 
         //Send DREF command to X-Plane
-        //void SendDrefCommand( const  char *dref, byte data[]);
+        void SendDrefCommand( const  char *dref, float value);
 
         //Get a datas received for a given group number
-        XPData* GetData( float group );
+        XPGroupDatas* GetData( float group );
 };
 
 

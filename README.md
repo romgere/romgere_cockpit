@@ -77,8 +77,10 @@ For more example, please see "example" folder.
 - [ ] Test and Fix Master/Slave board mode
 - [x] Create example for master/slave
 - [ ] Add some "todos" and/or open issues
-- [ ] Implements DREF and DATA command support
-- [ ] Implements analog control (input and ouput)
+- [x] Implements DREF
+- [ ] Implements DATA command support
+- [x] Implements input analog control
+- [x] Implements output analog control
 - [ ] X-plane 11 support
 
 # License

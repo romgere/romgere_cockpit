@@ -134,6 +134,8 @@ void CockpitMainApplication::RegisterInputControl(  ArduinoInputControl *ctrl,
             Serial.print("Rotary Switch");break;
         case ArduinoInputControl::ITypeRotaryEncode:
             Serial.print("Rotary Encoder");break;
+        case ArduinoInputControl::ITypePotentiometer:
+            Serial.print("Potentiometer");break;
     }
 
     Serial.print("] with command :");
@@ -306,7 +308,7 @@ void CockpitMainApplication::updateControlWithCommand( OutputControlAssociation*
     ArduinoOutputControl* outputControl = oca->Control;
 
     //get group data of control
-    XPData*  dataXplane = CommunicationInterface->GetData( inputData->getGroup() );
+    XPGroupDatas*  dataXplane = CommunicationInterface->GetData( inputData->getGroup() );
 
     //update control with data received from X-plane
     if( dataXplane != NULL ){
@@ -365,15 +367,15 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
         Serial.println("...");
 #endif
 
-		    //Digital control ()
 		    if( inputControl->getType() == ArduinoControl::DigitalControl ){
 
             //Command is defined from control value and InputControlAssociation's command tab
 			      if( val < MAX_COMMAND_FOR_ONE_CONTROLE)
 				        outputCmd = ica->OutputCommand[(uint8_t)val];
 		    }
-        // TODO : Analog control
 		    else{
+            // Always use first command for analog inputs
+            outputCmd = ica->OutputCommand[0];
 
 #ifdef DEBUG_LIBRARY_LOOP
             Serial.println("CockpitMainApplication : Loop, control type Analogic, not implemented!");
@@ -421,9 +423,19 @@ void CockpitMainApplication::doControlCommandProcess( InputControlAssociation* i
 
   				      //DREF / DATA command
   				      case XPlaneOutputCommand::TypeDREFCommand :
+
+  #ifdef DEBUG_LIBRARY_LOOP
+                    Serial.print("CockpitMainApplication : Loop, Process Dref Command [");
+                    Serial.print(outputCmd->toString());
+                    Serial.println("] for control.");
+  #endif
+
+                    CommunicationInterface->SendDrefCommand( outputCmd->toString(), val);
+                break;
+
   				      case XPlaneOutputCommand::TypeDATACommand :
 #ifdef DEBUG_LIBRARY_LOOP
-                    Serial.println("CockpitMainApplication : Loop, Command type DATA or DREF for control, not implemented!");
+                    Serial.println("CockpitMainApplication : Loop, Command type DATA for control, not implemented!");
 #endif
   		          break;
 

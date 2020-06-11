@@ -169,7 +169,7 @@ uint8_t EthernetInterface::ReadAllInput(){
             for (int i=5 ; i < readSize; i+=36) {
 
 
-                XPData *p = new XPData();
+                XPGroupDatas *p = new XPGroupDatas();
                 //First byte : Data's group
                 p->group = buffer[i];
 
@@ -182,12 +182,12 @@ uint8_t EthernetInterface::ReadAllInput(){
                 //Datas : table of 8 float value (8 x 4 bytes)
                 for (int j=0; j<8; j++){
 
-                    XPGroupData tmpData;
+                    XPNetworkData tmpData;
 
                     for (int k=0; k<4; k++){
                         tmpData.byteVal[k] = buffer[i + 4 + (j*4) + k];
                     }
-                    //Convert 4 byte array to float with XPGroupData union
+                    //Convert 4 byte array to float with XPNetworkData union
                     p->data[j] = tmpData.floatVal;
 
 #ifdef DEBUG_ETHERNET
@@ -278,21 +278,28 @@ void EthernetInterface::SendCommand( const char* cmd) {
 
 
 //Send DREF command to X-Plane
-/*
-void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
+void EthernetInterface::SendDrefCommand( const char *dref, float value){
+
+    Serial.print("EthernetInterface::SendDrefCommand : Not implemented ");
+    return;
 
     if( ! this->IsClassInit )
         return;
 
-	this->Udp.beginPacket( this->XPlaneAdress, this->XPlaneWritePort);
+
+
+	  this->Udp.beginPacket( this->XPlaneAdress, this->XPlaneWritePort);
     this->Udp.write("DREF0");
 
 #ifdef DEBUG_ETHERNET
         Serial.print("Send DREF command [");
 #endif
-    //Envoi des données
+
+    //Convert & send DREF value
+    XPNetworkData tmpData;
+    tmpData.floatVal = value;
     for (int i=0; i<4; i++){
-        this->Udp.write( data[i]);
+        this->Udp.write( tmpData.byteVal[i]);
 
 #ifdef DEBUG_ETHERNET
             Serial.print( data[i]);
@@ -300,24 +307,26 @@ void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
 #endif
     }
 
-    //Donnée à envoyer
-    char DataOut[500];
+    //Convert & send DREF value
+    XPNetworkData tmpData;
+    tmpData.floatVal = value;
+    for (int i=0; i<4; i++){
+        this->Udp.write( tmpData.byteVal[i]);
+    }
 
-    //"sim/"
-    DataOut[0] = 's';
-    DataOut[1] = 'i';
-    DataOut[2] = 'm';
-    DataOut[3] = '/';
+    this->Udp.write("sim/");
 
+    //Send DREF name "sim/..."
+    char DataOut[496];
     int i = 0;
-    while( dref[i] != 0 && i < 499 ){
-        DataOut[i+4] = dref[i];
+    while( dref[i] != 0 && i < 496 ){
+        DataOut[i] = dref[i];
         i++;
     }
-    for(; i < 498; i++  ){
+    for(; i < 496; i++  ){
         DataOut[i] = char(32);
     }
-    DataOut[499] = 0;
+    DataOut[496] = 0;
 
 #ifdef DEBUG_ETHERNET
     Serial.print("] with command \"");
@@ -328,7 +337,7 @@ void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
     int res = this->Udp.write(DataOut);
 
 #ifdef DEBUG_ETHERNET
-    if( res == 500 )
+    if( res == 496 )
         Serial.println("succes");
     else
         Serial.println("error");
@@ -338,10 +347,8 @@ void EthernetInterface::SendDrefCommand( const char *dref, byte data[]){
     this->Udp.endPacket();
 }
 
-*/
-
 //Get a datas received for a given group number
-XPData* EthernetInterface::GetData( float group ){
+XPGroupDatas* EthernetInterface::GetData( float group ){
 
     for( int i =0; i < MAX_INPUT_DATA_FROM_XPLANE; i++ ){
         if( this->LastXPlaneDatas[i] != NULL &&  this->LastXPlaneDatas[i]->group == group ){
