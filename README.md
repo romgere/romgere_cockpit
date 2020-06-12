@@ -80,7 +80,7 @@ For more example, please see "example" folder.
 - [x] Implements DREF
 - [ ] Implements DATA command support
 - [x] Implements input analog control
-- [x] Implements output analog control
+- [ ] Implements output analog control
 - [ ] X-plane 11 support
 
 # License
