@@ -166,5 +166,40 @@ Send X-Plane Data.
 
 ### `XPlaneDREFCommand`
 
-Send DREF data.
-*This type of command is not yet implemented*)
+Send DREF data to Xplane including a float value depending on input control bind to the command.
+
+Example of DREF "cockpit2/controls/parking_brake_ratio[0]".
+
+The `XPlaneDREFCommand` class take 1 argument:
+
+`XPlaneDREFCommand( const char* dref )`
+
+Argument definition :
+1. `const char* dref` : The dref to send (eg. "cockpit2/controls/parking_brake_ratio[0]")
+
+A complete list of all command can be found on the [Sim Innovations site](https://www.siminnovations.com/xplane/dataref/?name=&type=float&writable=y&units=&description=&submit=Search).
+
+Example :
+```cpp
+#include "src/RomgereCockpit/Application/CockpitMainApplication.h"
+#include "src/RomgereCockpit/CommunicationInterface/EthernetInterface.h"
+#include "src/RomgereCockpit/ArduinoControl/ArduinoPotentiometerControl.h"
+
+CockpitMainApplication  *cockpitApp;
+EthernetInterface       *ethernetInterface;
+
+void setup() {
+  ethernetInterface = new EthernetInterface( ... );
+  cockpitApp = new CockpitMainApplication(ethernetInterface);
+
+  //Declare a potentiometer on analog pin n°5 and bind it to a DREF to manage parking brake ratio
+  cockpitApp->RegisterInputControl(    
+      new ArduinoPotentiometerControl(5),
+      new XPlaneDREFCommand("cockpit2/controls/parking_brake_ratio[0]")
+  );
+}
+
+void loop() {
+  cockpitApp->Loop();
+}
+```
