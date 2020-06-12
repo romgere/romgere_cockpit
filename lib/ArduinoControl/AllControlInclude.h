@@ -16,3 +16,4 @@
 #include "ArduinoRotarySwitchControl.h"
 #include "ArduinoLEDControl.h"
 #include "ArduinoServoControl.h"
+#include "ArduinoPotentiometerControl.h"
