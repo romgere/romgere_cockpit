@@ -4,39 +4,51 @@
 //#include <Wire.h>
 
 #include "src/RomgereCockpit/Application/CockpitMainApplication.h"
+#include "src/RomgereCockpit/CommunicationInterface/SerialDebugInterface.h"
 #include "src/RomgereCockpit/CommunicationInterface/EthernetInterface.h"
-#include "src/RomgereCockpit/ArduinoControl/ArduinoToggleSwitchControl.h"
-#include "src/RomgereCockpit/ArduinoControl/ArduinoLEDControl.h"
-#include "src/RomgereCockpit/ArduinoControl/ArduinoPushButtonControl.h"
+#include "src/RomgereCockpit/ArduinoControl/AllControlInclude.h"
+
+#include "NetworkConfig.h"
 
 CockpitMainApplication  *cockpitApp;
 EthernetInterface       *ethernetInterface;
 
 void setup()
 {
-  //Create & start Ethernet interface + Create app with our Ethernet interface
-  byte arduinoMAC[6]  = { 0xDE, 0xAD, 0xBE, 0xEF, 0xEA, 0xED };
-  ethernetInterface = new EthernetInterface( 49001, 49000, { 192, 168, 1, 97 }, arduinoMAC, { 192, 168, 1, 21 });
-  cockpitApp = new CockpitMainApplication( ethernetInterface);
+    /*
+    cockpitApp = new CockpitMainApplication( new SerialDebugInterface());
+    /*/
+    byte arduinoMAC[6]  = ARDUINO_MAC_ADDRESS;
 
-  //Declare and bind control
-  cockpitApp->RegisterInputControl(
-    new ArduinoPushButtonControl(8), //Create push button on PIN 8 on Master board
-    new XPlaneSimpleCommand("sim/annunciator/test_all_annunciators") //Send "Test all annunciators" command to X-Plane
-  );
+    //Create & start Ethernet interface
+    ethernetInterface = new EthernetInterface(
+        XPLANE_READ_PORT,
+        XPLANE_WRITE_PORT,
+        ARDUINO_IP_ADDRESS,
+        arduinoMAC,
+        XPLANE_IP_ADDRESS,
+        WAIT_FOR_XPLANE_AT_STARTUP
+    );
+    //Create app with our Eternet interface
+    cockpitApp = new CockpitMainApplication( ethernetInterface);
+    //*/
 
-  //Declare and bind control
-  cockpitApp->RegisterOutputControl(
-    new ArduinoLEDControl(8, 1), //Create LED Control on PIN n°8 on Slave board n°1
-    new XPlaneInputData(67, 0)
-  );
+    cockpitApp->RegisterInputControl(
+        new ArduinoPotentiometerControl(0, 0.05, 0, 1, 1),
+        new XPlaneDREFCommand("cockpit2/controls/parking_brake_ratio[0]"  )
+    );
 
-  //Declare and bind control
-  cockpitApp->RegisterInputControl(
-    new ArduinoToggleSwitchControl(9, 1), //Create toggle switch Control on PIN n°9 on Slave board n°1
-    new XPlaneSimpleCommand("sim/systems/avionics_on"),
-    new XPlaneSimpleCommand("sim/systems/avionics_off")
-  );
+    cockpitApp->RegisterInputControl(
+        new ArduinoToggleSwitchControl(5, 1),
+        new XPlaneSimpleCommand("sim/lights/landing_lights_on"),
+        new XPlaneSimpleCommand("sim/lights/landing_lights_off")
+    );
+
+
+    cockpitApp->RegisterOutputControl(
+        new ArduinoLEDControl(7, 1, 1), //DWN
+        new XPlaneInputData(13, 4)
+    );
 }
 
 void loop()

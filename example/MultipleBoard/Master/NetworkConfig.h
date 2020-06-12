@@ -1,13 +1,13 @@
 /*
  * Adresse MAC
  */
-#define ARDUINO_MAC_ADDRESS { 0xDE, 0xAD, 0xBE, 0xEF, 0xEA, 0xED } //Arduino 2
+#define ARDUINO_MAC_ADDRESS { 0xDE, 0xAD, 0xBE, 0xEF, 0xEA, 0xED } //ARduino 1
 
 /*
  * Adresse IP
  * {0,0,0,0} pour utilisation du DHCP
  */
-#define ARDUINO_IP_ADDRESS { 192, 168, 1, 97 } //ARduino 2
+#define ARDUINO_IP_ADDRESS { 192, 168, 1, 97 } //ARduino 1
 
 /*
  * Adresse IP d'XPlane (mettre {0,0,0,0} pour une detection auto)
@@ -29,4 +29,3 @@
  * Port par lequel on envoi les donnée vers Xplane
  */
 #define XPLANE_WRITE_PORT 49000
-
