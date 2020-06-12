@@ -128,7 +128,7 @@ void MasterToSlaveCommand::ParseDataFromIC2( byte* data ){
     else if( data[0] & 0x00000004)
         this->TypeCommande = TypeCommandGetPINValue;
 
-    if( data[0] & 0x00000080)
+    if( data[0] & 0x00000008)
         this->PinMode = PINModeInput;
     else if( data[0] & 0x00000010)
         this->PinMode = PINModeOutput;

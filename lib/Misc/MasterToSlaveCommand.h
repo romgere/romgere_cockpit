@@ -14,7 +14,7 @@
 
 //For convertion between integer and the 2 bytes to send/received via I2C bus
 typedef union{
-    byte byteVal[4];
+    byte byteVal[2];
     int intVal;
 }I2CDataRCA;
 
@@ -36,7 +36,7 @@ public :
 
     //PIN Modes
     typedef enum{
-        PINModeNotUsed = 0, //For get/set command the PIN mode is unused
+        PINModeNotUsed = 0, //For init command the R/W mode is unused
         PINModeInput,
         PINModeOutput,
         PINModeIntputPullUp
@@ -44,7 +44,7 @@ public :
 
     //Read/Write Modes
     typedef enum{
-        RWModeNotUsed = 0, //For init command the R/W mode is unused
+        RWModeNotUsed = 0, //For get/set command the PIN mode is unused
         RWModeAnalog,
         RWModeDigital
     }MSCRWMode;

@@ -128,6 +128,14 @@ void SlaveBoardApplication::parseDataFromMaster( byte* data){
     masterCommand->ParseDataFromIC2( data);
 
 
+    // Serial.print("type");
+    // Serial.println(masterCommand->TypeCommande);
+    //     Serial.print("mode");
+    //     Serial.println(masterCommand->PinMode);
+    //         Serial.print("rwmode");
+    //         Serial.println(masterCommand->RWMode);
+    //             Serial.print("PinNum");
+    //             Serial.println(masterCommand->PinNum);
 
     //Master asking for PIN Value
     if( masterCommand->TypeCommande == MasterToSlaveCommand::TypeCommandGetPINValue ){
@@ -179,7 +187,12 @@ void SlaveBoardApplication::requestEvent(){
 
     if( lastPinForValueSend != NULL ){
 
-        if( lastPinForValueSend->TypeCommande == MasterToSlaveCommand::TypeCommandGetPINValue && (lastPinForValueSend->PinMode == MasterToSlaveCommand::PINModeInput || lastPinForValueSend->PinMode == MasterToSlaveCommand::PINModeIntputPullUp) ){
+        if( lastPinForValueSend->TypeCommande == MasterToSlaveCommand::TypeCommandGetPINValue
+            && (
+                lastPinForValueSend->RWMode == MasterToSlaveCommand::RWModeAnalog
+                || lastPinForValueSend->RWMode == MasterToSlaveCommand::RWModeDigital
+              )
+        ){
 
             if( lastPinForValueSend->RWMode == MasterToSlaveCommand::RWModeAnalog ){
 
