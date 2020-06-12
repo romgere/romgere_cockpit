@@ -27,8 +27,6 @@ const char* XPlaneKeyCommand::toString(){
 XPlaneSimpleCommand::XPlaneSimpleCommand( const char* cmd, const char* cmd2 ): XPlaneOutputCommand(TypeSimpleCommand), Command( cmd){
     if( cmd2 != NULL ){
         SecondCommand = new String( cmd2);
-        Serial.print("Twin command registered : ");
-        Serial.println(cmd2);
         twinCommand = true;
     }
     else{
