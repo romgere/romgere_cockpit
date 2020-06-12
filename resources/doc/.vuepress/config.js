@@ -25,7 +25,8 @@ module.exports = {
           ['controls/ctrl-incremental-3pos-toggle.md', 'ArduinoIncrementalThreePosToggleSwitchControl'],
           ['controls/ctrl-push-button.md', 'ArduinoPushButtonControl'],
           ['controls/ctrl-rotary-encoder.md', 'ArduinoRotaryEncoderControl'],
-          ['controls/ctrl-rotary-switch.md', 'ArduinoRotarySwitchControl']
+          ['controls/ctrl-rotary-switch.md', 'ArduinoRotarySwitchControl'],
+          ['controls/ctrl-potentiometer.md', 'ArduinoPotentiometerControl']
         ]
       },
 
