@@ -5,12 +5,11 @@ SlaveBoardApplication* slaveCockpit;
 
 void setup()
 {
-	slaveCockpit = new SlaveBoardApplication(1);
-	slaveCockpit->RegisterI2C();
+		slaveCockpit = new SlaveBoardApplication(1);
+		slaveCockpit->RegisterI2C();
 }
 
 void loop()
 {
-	delay(100);
-	slaveCockpit->loop();
+		slaveCockpit->loop();
 }

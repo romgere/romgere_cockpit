@@ -6,8 +6,6 @@ All the controls/commands registration are made on the master board. There is no
 
 For more information about how Master/Slave communication work, you can read Arduino "[Master Writer/Slave Receiver](https://www.arduino.cc/en/Tutorial/MasterWriter)" page.
 
-**Please note that the Slave/Master board mode does not seems to work properly.**
-
 ## Active multiple board mode
 
 To active multiple board support you need to enable [ACTIVE_MULTI_ARDUINO_BOARD_MODE](./1-configuration-reference.md#ACTIVE_MULTI_ARDUINO_BOARD_MODE) parameter when you compile the library.

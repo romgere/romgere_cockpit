@@ -74,7 +74,7 @@ For more example, please see "example" folder.
 - [x] Re-indent all pre-compilation conditional blocks
 - [x] Change example and delete all FSX references
 - [x] Write doc and Readme
-- [ ] Test and Fix Master/Slave board mode
+- [x] Test and Fix Master/Slave board mode
 - [x] Create example for master/slave
 - [ ] Add some "todos" and/or open issues
 - [x] Implements DREF

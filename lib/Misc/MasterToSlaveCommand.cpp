@@ -22,24 +22,10 @@ void MasterToSlaveCommand::SendDataToIC2( uint8_t boardAddress ){
 
     this->CreateBufferForI2C( buffer);
 
-    // Serial.print("I2C : SEND TO ");
-    // Serial.print(boardAddress);
-    // Serial.print(" {");
-    // Serial.print(buffer[0]);
-    // Serial.print("-");
-    // Serial.print(buffer[1]);
-    // Serial.print("-");
-    // Serial.print(buffer[2]);
-    // Serial.print("-");
-    // Serial.print(buffer[3]);
-    // Serial.println("}.");
-
     //Send to slave board on I2C bus
     Wire.beginTransmission(boardAddress);
     Wire.write((uint8_t*)buffer, 4);
     Wire.endTransmission();
-
-    // Serial.println("I2C : SEND OK.");
 }
 
 //Send a "GetPIN" command to slave board and wait return of slave board on I2C bus
@@ -49,17 +35,12 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
     I2CDataRCA conv;
 
-    // Serial.print("I2C : REQ FROM ");
-    // Serial.print(boardAddress);
-    // Serial.println("...");
-
     Wire.requestFrom( boardAddress, (uint8_t)2);
     uint8_t index = 0;
     while(Wire.available())
     {
         //Too much data
         if( index >= 2){
-            // Serial.println("I2C : TOO MUCH DATA RECEIVED FROM SLAVE.");
             break;
         }
         conv.byteVal[index++]  = Wire.read();
@@ -67,13 +48,8 @@ int MasterToSlaveCommand::RequestDataFromIC2( uint8_t boardAddress ){
 
     //No enough data ! error
     if( index != 2 ){
-        // Serial.println("I2C : NO ENOUGH DATA RECEIVED FROM SLAVE.");
         return 0;
     }
-
-    // Serial.print("I2C : REQ/REC int : ");
-    // Serial.print(conv.intVal);
-    // Serial.println(".");
 
     //2 bytes received : OK, return the received value as an integer
     return conv.intVal;
@@ -128,7 +104,7 @@ void MasterToSlaveCommand::ParseDataFromIC2( byte* data ){
     else if( data[0] & 0x00000004)
         this->TypeCommande = TypeCommandGetPINValue;
 
-    if( data[0] & 0x00000080)
+    if( data[0] & 0x00000008)
         this->PinMode = PINModeInput;
     else if( data[0] & 0x00000010)
         this->PinMode = PINModeOutput;
