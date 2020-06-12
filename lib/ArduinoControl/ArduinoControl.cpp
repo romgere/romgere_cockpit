@@ -17,7 +17,7 @@ void    ArduinoControl::_pinMode(uint8_t p, uint8_t m){
 
         //Create and send I2C command to init PIN on slave board
         MasterToSlaveCommand slaveCMD(  MasterToSlaveCommand::TypeCommandInitialisation,
-                                        (m == INPUT ? MasterToSlaveCommand::PINModeInput : (m == OUTPUT ? MasterToSlaveCommand::PINModeOutput : MasterToSlaveCommand::PINModeIntputPullUp)),
+                                        (m == INPUT ? MasterToSlaveCommand::PINModeInput : (m == INPUT_PULLUP ? MasterToSlaveCommand::PINModeIntputPullUp : MasterToSlaveCommand::PINModeOutput)),
                                         MasterToSlaveCommand::RWModeNotUsed,
                                         p,
                                         0 );
