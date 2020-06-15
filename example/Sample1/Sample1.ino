@@ -129,15 +129,22 @@ void setup()
   ////////////////////
   // Gear Indicator //
   ////////////////////
-  cockpitApp->RegisterOutputControl( new ArduinoLEDControl(32,0),
+  cockpitApp->RegisterOutputControl( new ArduinoLEDControl(32,1),
                                      new XPlaneInputData(67, 0));
-  cockpitApp->RegisterOutputControl( new ArduinoLEDControl(34,0),
+  cockpitApp->RegisterOutputControl( new ArduinoLEDControl(34,1),
                                      new XPlaneInputData(67, 1));
-  cockpitApp->RegisterOutputControl( new ArduinoLEDControl(36,0),
+  cockpitApp->RegisterOutputControl( new ArduinoLEDControl(36,1),
                                      new XPlaneInputData(67, 2));
   cockpitApp->RegisterOutputControl( new ArduinoLEDControl(38),
                                      new XPlaneInputData(67),
                                      inTransitGearManageFunction);
+
+  ////////////////////
+  // Gear Indicator //
+  ////////////////////
+  cockpitApp->RegisterInputControl( new ArduinoToggleSwitchControl(48),
+                                    new XPlaneSimpleCommand("sim/flight_controls/landing_gear_up"),
+                                    new XPlaneSimpleCommand("sim/flight_controls/landing_gear_down"));
 
 
   ////////////////
