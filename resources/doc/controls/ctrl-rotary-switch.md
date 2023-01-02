@@ -1,6 +1,6 @@
 # Case of use
 
-The `ArduinoRotarySwitchControl` allow you to use multiple position rotary switch (max position number depends on the value of [MAX_COMMAND_FOR_ONE_CONTROLE](./1-configuration-reference.md#MAX_COMMAND_FOR_ONE_CONTROLE) parameter). Each position send can send a different command and one or more command can be repeat as long as the position remains.
+The `ArduinoRotarySwitchControl` allow you to use multiple position rotary switch (max position number depends on the value of [MAX_COMMAND_FOR_ONE_CONTROLE](/1-configuration-reference.md#MAX_COMMAND_FOR_ONE_CONTROLE) parameter). Each position send can send a different command and one or more command can be repeat as long as the position remains.
 
 # Arduino connection
 
@@ -55,7 +55,7 @@ Here is the definition of the `ArduinoRotarySwitchControl` constructor :
 
 Arguments definition :
 1. `uint8_t pin` : PIN n° on which Rotary switch is plug.
-2. `uint8_t positionCount` : Number of available position on Rotary switch (Maximum value depends on the value of [MAX_COMMAND_FOR_ONE_CONTROLE](./1-configuration-reference.md#MAX_COMMAND_FOR_ONE_CONTROLE) parameter).
+2. `uint8_t positionCount` : Number of available position on Rotary switch (Maximum value depends on the value of [MAX_COMMAND_FOR_ONE_CONTROLE](/1-configuration-reference.md#MAX_COMMAND_FOR_ONE_CONTROLE) parameter).
 3. `int boardAddress` (default: -1) : Address of slave board on which xxxx is plug (-1 = plug on main board). *Available only if you previously enable the "multi board mode"*
 
 # Repeat mode
