@@ -41,13 +41,6 @@ module.exports = {
       {
         hostname: 'https://romgere-cockpit-arduino-lib.mestres.fr'
       }
-    ],
-    [
-      "vuepress-plugin-matomo",
-      {
-        'siteId': 3,
-        'trackerUrl': "https://stats.madgency.fr/"
-      },
     ]
   ]
 }
