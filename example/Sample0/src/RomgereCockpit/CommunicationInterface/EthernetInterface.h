@@ -12,54 +12,50 @@
 #include "../Config/MainConfig.h"
 #include "BaseCommunicationInterface.h"
 
+// Allows to send and received X-Plane datas on an ethernet network (Need a
+// board with an ethernet Shield)
+class EthernetInterface : public BaseCommunicationInterface {
 
-//Allows to send and received X-Plane datas on an ethernet network (Need a board with an ethernet Shield)
-class EthernetInterface : public BaseCommunicationInterface{
+private:
+  typedef union {
+    byte byteVal[4];
+    float floatVal;
+  } XPGroupData;
 
+  // Last datas read from X-Plane
+  XPData *LastXPlaneDatas[MAX_INPUT_DATA_FROM_XPLANE];
 
-    private :
+  bool IsClassInit;
 
-         typedef union{
-            byte byteVal[4];
-            float floatVal;
-        }XPGroupData;
+  bool IsXPlaneAdressInit;
+  IPAddress XPlaneAdress;
 
-        //Last datas read from X-Plane
-        XPData* LastXPlaneDatas[MAX_INPUT_DATA_FROM_XPLANE];
+  unsigned int XPlaneWritePort;
+  unsigned int XplaneReadPort;
 
-        bool        IsClassInit;
+  EthernetUDP Udp;
 
-        bool        IsXPlaneAdressInit;
-        IPAddress   XPlaneAdress;
+public:
+  EthernetInterface(unsigned int readPort, unsigned int writePort,
+                    IPAddress arduinoIP, uint8_t arduinoMAC[6],
+                    IPAddress xplaneIP, bool waitForXPlane = false);
+  ~EthernetInterface();
 
-        unsigned int XPlaneWritePort;
-        unsigned int XplaneReadPort;
+  // Read and parse datas received from X-Plane. Return : Number of packet read
+  // from x-Plane ()
+  uint8_t ReadAllInput();
 
-        EthernetUDP Udp;
+  // Send command to X-Plane
+  void SendCommand(const char *cmd);
 
-    public :
+  // Send a key to X-Plane
+  void SendKey(const char *key);
 
-        EthernetInterface(unsigned int readPort, unsigned int writePort, IPAddress arduinoIP, uint8_t arduinoMAC[6], IPAddress xplaneIP, bool waitForXPlane = false);
-        ~EthernetInterface();
+  // Send DREF command to X-Plane
+  // void SendDrefCommand( const  char *dref, byte data[]);
 
-        //Read and parse datas received from X-Plane. Return : Number of packet read from x-Plane ()
-        uint8_t ReadAllInput();
-
-        //Send command to X-Plane
-        void SendCommand(const char* cmd);
-
-        //Send a key to X-Plane
-        void SendKey( const char* key);
-
-        //Send DREF command to X-Plane
-        //void SendDrefCommand( const  char *dref, byte data[]);
-
-        //Get a datas received for a given group number
-        XPData* GetData( float group );
+  // Get a datas received for a given group number
+  XPData *GetData(float group);
 };
-
-
-
-
 
 #endif // XPLANENETWORKINGCLASS_H_INCLUDED

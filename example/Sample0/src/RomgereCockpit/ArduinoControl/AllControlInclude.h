@@ -3,16 +3,15 @@
  * @author jerome@mestres.fr
  */
 
+////////////////////////////////////////////////////////////////////////////
+// File allowing inclusion for all existing input/output controls types //
+////////////////////////////////////////////////////////////////////////////
 
- ////////////////////////////////////////////////////////////////////////////
- // File allowing inclusion for all existing input/output controls types //
- ////////////////////////////////////////////////////////////////////////////
-
-#include "ArduinoPushButtonControl.h"
-#include "ArduinoToggleSwitchControl.h"
-#include "ArduinoThreePosToggleSwitchControl.h"
 #include "ArduinoIncrementalThreePosToggleSwitchControl.h"
+#include "ArduinoLEDControl.h"
+#include "ArduinoPushButtonControl.h"
 #include "ArduinoRotaryEncoderControl.h"
 #include "ArduinoRotarySwitchControl.h"
-#include "ArduinoLEDControl.h"
 #include "ArduinoServoControl.h"
+#include "ArduinoThreePosToggleSwitchControl.h"
+#include "ArduinoToggleSwitchControl.h"

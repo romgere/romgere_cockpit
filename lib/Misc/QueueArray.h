@@ -57,169 +57,162 @@
 #include <Arduino.h>
 
 // the definition of the queue class.
-template<typename T>
-class QueueArray {
-  public:
-    // init the queue (constructor).
-    QueueArray ();
+template <typename T> class QueueArray {
+public:
+  // init the queue (constructor).
+  QueueArray();
 
-    // clear the queue (destructor).
-    ~QueueArray ();
+  // clear the queue (destructor).
+  ~QueueArray();
 
-    // add an item to the queue.
-    void enqueue (const T i);
-    
-    // remove an item from the queue.
-    T dequeue ();
+  // add an item to the queue.
+  void enqueue(const T i);
 
-    // push an item to the queue.
-    void push (const T i);
+  // remove an item from the queue.
+  T dequeue();
 
-    // pop an item from the queue.
-    T pop ();
+  // push an item to the queue.
+  void push(const T i);
 
-    // get the front of the queue.
-    T front () const;
+  // pop an item from the queue.
+  T pop();
 
-    // get an item from the queue.
-    T peek () const;
+  // get the front of the queue.
+  T front() const;
 
-    // check if the queue is empty.
-    bool isEmpty () const;
+  // get an item from the queue.
+  T peek() const;
 
-    // get the number of items in the queue.
-    int count () const;
+  // check if the queue is empty.
+  bool isEmpty() const;
 
-    // check if the queue is full.
-    bool isFull () const;
+  // get the number of items in the queue.
+  int count() const;
 
-    // set the printer of the queue.
-    void setPrinter (Print & p);
+  // check if the queue is full.
+  bool isFull() const;
 
-  private:
-    // resize the size of the queue.
-    void resize (const int s);
+  // set the printer of the queue.
+  void setPrinter(Print &p);
 
-    // exit report method in case of error.
-    void exit (const char * m) const;
+private:
+  // resize the size of the queue.
+  void resize(const int s);
 
-    // led blinking method in case of error.
-    void blink () const;
+  // exit report method in case of error.
+  void exit(const char *m) const;
 
-    // the initial size of the queue.
-    static const int initialSize = 2;
+  // led blinking method in case of error.
+  void blink() const;
 
-    // the pin number of the on-board led.
-    static const int ledPin = 13;
+  // the initial size of the queue.
+  static const int initialSize = 2;
 
-    Print * printer; // the printer of the queue.
-    T * contents;    // the array of the queue.
+  // the pin number of the on-board led.
+  static const int ledPin = 13;
 
-    int size;        // the size of the queue.
-    int items;       // the number of items of the queue.
+  Print *printer; // the printer of the queue.
+  T *contents;    // the array of the queue.
 
-    int head;        // the head of the queue.
-    int tail;        // the tail of the queue.
+  int size;  // the size of the queue.
+  int items; // the number of items of the queue.
+
+  int head; // the head of the queue.
+  int tail; // the tail of the queue.
 };
 
 // init the queue (constructor).
-template<typename T>
-QueueArray<T>::QueueArray () {
-  size = 0;       // set the size of queue to zero.
-  items = 0;      // set the number of items of queue to zero.
+template <typename T> QueueArray<T>::QueueArray() {
+  size = 0;  // set the size of queue to zero.
+  items = 0; // set the number of items of queue to zero.
 
-  head = 0;       // set the head of the queue to zero.
-  tail = 0;       // set the tail of the queue to zero.
+  head = 0; // set the head of the queue to zero.
+  tail = 0; // set the tail of the queue to zero.
 
   printer = NULL; // set the printer of queue to point nowhere.
 
   // allocate enough memory for the array.
-  contents = (T *) malloc (sizeof (T) * initialSize);
+  contents = (T *)malloc(sizeof(T) * initialSize);
 
   // if there is a memory allocation error.
   if (contents == NULL)
-    exit ("QUEUE: insufficient memory to initialize queue.");
+    exit("QUEUE: insufficient memory to initialize queue.");
 
   // set the initial size of the queue.
   size = initialSize;
 }
 
 // clear the queue (destructor).
-template<typename T>
-QueueArray<T>::~QueueArray () {
-  free (contents); // deallocate the array of the queue.
+template <typename T> QueueArray<T>::~QueueArray() {
+  free(contents); // deallocate the array of the queue.
 
   contents = NULL; // set queue's array pointer to nowhere.
   printer = NULL;  // set the printer of queue to point nowhere.
 
-  size = 0;        // set the size of queue to zero.
-  items = 0;       // set the number of items of queue to zero.
+  size = 0;  // set the size of queue to zero.
+  items = 0; // set the number of items of queue to zero.
 
-  head = 0;        // set the head of the queue to zero.
-  tail = 0;        // set the tail of the queue to zero.
+  head = 0; // set the head of the queue to zero.
+  tail = 0; // set the tail of the queue to zero.
 }
 
 // resize the size of the queue.
-template<typename T>
-void QueueArray<T>::resize (const int s) {
+template <typename T> void QueueArray<T>::resize(const int s) {
   // defensive issue.
   if (s <= 0)
-    exit ("QUEUE: error due to undesirable size for queue size.");
+    exit("QUEUE: error due to undesirable size for queue size.");
 
   // allocate enough memory for the temporary array.
-  T * temp = (T *) malloc (sizeof (T) * s);
+  T *temp = (T *)malloc(sizeof(T) * s);
 
   // if there is a memory allocation error.
   if (temp == NULL)
-    exit ("QUEUE: insufficient memory to initialize temporary queue.");
-  
+    exit("QUEUE: insufficient memory to initialize temporary queue.");
+
   // copy the items from the old queue to the new one.
   for (int i = 0; i < items; i++)
     temp[i] = contents[(head + i) % size];
 
   // deallocate the old array of the queue.
-  free (contents);
+  free(contents);
 
   // copy the pointer of the new queue.
   contents = temp;
 
   // set the head and tail of the new queue.
-  head = 0; tail = items;
+  head = 0;
+  tail = items;
 
   // set the new size of the queue.
   size = s;
 }
 
 // add an item to the queue.
-template<typename T>
-void QueueArray<T>::enqueue (const T i) {
+template <typename T> void QueueArray<T>::enqueue(const T i) {
   // check if the queue is full.
-  if (isFull ())
+  if (isFull())
     // double size of array.
-    resize (size * 2);
+    resize(size * 2);
 
   // store the item to the array.
   contents[tail++] = i;
-  
+
   // wrap-around index.
-  if (tail == size) tail = 0;
+  if (tail == size)
+    tail = 0;
 
   // increase the items.
   items++;
 }
 
 // push an item to the queue.
-template<typename T>
-void QueueArray<T>::push (const T i) {
-  enqueue(i);
-}
+template <typename T> void QueueArray<T>::push(const T i) { enqueue(i); }
 
 // remove an item from the queue.
-template<typename T>
-T QueueArray<T>::dequeue () {
+template <typename T> T QueueArray<T>::dequeue() {
   // check if the queue is empty.
-  if (isEmpty ())
-    exit ("QUEUE: can't pop item from queue: queue is empty.");
+  if (isEmpty())
+    exit("QUEUE: can't pop item from queue: queue is empty.");
 
   // fetch the item from the array.
   T item = contents[head++];
@@ -228,86 +221,68 @@ T QueueArray<T>::dequeue () {
   items--;
 
   // wrap-around index.
-  if (head == size) head = 0;
+  if (head == size)
+    head = 0;
 
   // shrink size of array if necessary.
-  if (!isEmpty () && (items <= size / 4))
-    resize (size / 2);
+  if (!isEmpty() && (items <= size / 4))
+    resize(size / 2);
 
   // return the item from the array.
   return item;
 }
 
 // pop an item from the queue.
-template<typename T>
-T QueueArray<T>::pop () {
-  return dequeue();
-}
+template <typename T> T QueueArray<T>::pop() { return dequeue(); }
 
 // get the front of the queue.
-template<typename T>
-T QueueArray<T>::front () const {
+template <typename T> T QueueArray<T>::front() const {
   // check if the queue is empty.
-  if (isEmpty ())
-    exit ("QUEUE: can't get the front item of queue: queue is empty.");
-    
+  if (isEmpty())
+    exit("QUEUE: can't get the front item of queue: queue is empty.");
+
   // get the item from the array.
   return contents[head];
 }
 
 // get an item from the queue.
-template<typename T>
-T QueueArray<T>::peek () const {
-  return front();
-}
+template <typename T> T QueueArray<T>::peek() const { return front(); }
 
 // check if the queue is empty.
-template<typename T>
-bool QueueArray<T>::isEmpty () const {
-  return items == 0;
-}
+template <typename T> bool QueueArray<T>::isEmpty() const { return items == 0; }
 
 // check if the queue is full.
-template<typename T>
-bool QueueArray<T>::isFull () const {
+template <typename T> bool QueueArray<T>::isFull() const {
   return items == size;
 }
 
 // get the number of items in the queue.
-template<typename T>
-int QueueArray<T>::count () const {
-  return items;
-}
+template <typename T> int QueueArray<T>::count() const { return items; }
 
 // set the printer of the queue.
-template<typename T>
-void QueueArray<T>::setPrinter (Print & p) {
-  printer = &p;
-}
+template <typename T> void QueueArray<T>::setPrinter(Print &p) { printer = &p; }
 
 // exit report method in case of error.
-template<typename T>
-void QueueArray<T>::exit (const char * m) const {
+template <typename T> void QueueArray<T>::exit(const char *m) const {
   // print the message if there is a printer.
   if (printer)
-    printer->println (m);
+    printer->println(m);
 
   // loop blinking until hardware reset.
-  blink ();
+  blink();
 }
 
 // led blinking method in case of error.
-template<typename T>
-void QueueArray<T>::blink () const {
+template <typename T> void QueueArray<T>::blink() const {
   // set led pin as output.
-  pinMode (ledPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
 
   // continue looping until hardware reset.
   while (true) {
-    digitalWrite (ledPin, HIGH); // sets the LED on.
-    delay (250);                 // pauses 1/4 of second.
-    digitalWrite (ledPin, LOW);  // sets the LED off.
-    delay (250);                 // pauses 1/4 of second.
+    digitalWrite(ledPin, HIGH); // sets the LED on.
+    delay(250);                 // pauses 1/4 of second.
+    digitalWrite(ledPin, LOW);  // sets the LED off.
+    delay(250);                 // pauses 1/4 of second.
   }
 
   // solution selected due to lack of exit() and assert().

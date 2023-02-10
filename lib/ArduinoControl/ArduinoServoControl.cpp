@@ -3,9 +3,6 @@
  * @author jerome@mestres.fr
  */
 
-
 #include "ArduinoServoControl.h"
-
-
 
 /* TODO Servo motor Control */

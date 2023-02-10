@@ -11,24 +11,25 @@
 #include "../Config/MainConfig.h"
 #include "ArduinoControl.h"
 
-//allows use of servo motor. Not implemented
-class ArduinoServoControl : public ArduinoOutputControl{
+// allows use of servo motor. Not implemented
+class ArduinoServoControl : public ArduinoOutputControl {
 
-    private :
-        uint8_t Pin1;
-        uint8_t Pin2;
-        float Val;
+private:
+  uint8_t Pin1;
+  uint8_t Pin2;
+  float Val;
 
-    public :
+public:
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-        ArduinoServoControl( uint8_t pin1, uint8_t pin2, float defaultVal, int boardAddress = -1);
+  ArduinoServoControl(uint8_t pin1, uint8_t pin2, float defaultVal,
+                      int boardAddress = -1);
 #else
-        ArduinoServoControl( uint8_t pin1, uint8_t pin2, float defaultVal);
+  ArduinoServoControl(uint8_t pin1, uint8_t pin2, float defaultVal);
 #endif
-        ~ArduinoServoControl();
+  ~ArduinoServoControl();
 
-        void WriteOutput();
-        bool setValue(float val);
+  void WriteOutput();
+  bool setValue(float val);
 };
 
 #endif // ARDUINSERVOCONTROLCLASS_H_INCLUDED

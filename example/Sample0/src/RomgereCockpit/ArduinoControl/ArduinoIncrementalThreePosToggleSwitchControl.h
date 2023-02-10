@@ -14,29 +14,29 @@
 #define INCREMENTAL_TOGGLESWITCH_CUR_STATUS_INDEX 0
 #define INCREMENTAL_TOGGLESWITCH_OLD_STATUS_INDEX 1
 
-//Allows use of 3 positions toggle switch with 2 incremental commands
-//The command sent when the toggle is switch to middle position is deduce by previous position
-class ArduinoIncrementalThreePosToggleSwitchControl : public ArduinoInputControl{
+// Allows use of 3 positions toggle switch with 2 incremental commands
+// The command sent when the toggle is switch to middle position is deduce by
+// previous position
+class ArduinoIncrementalThreePosToggleSwitchControl
+    : public ArduinoInputControl {
 
-  public :
+public:
+private:
+  uint8_t Pin1;
+  uint8_t Pin2;
 
-    private :
+  uint8_t LastPinStatus[2];
 
-        uint8_t Pin1;
-        uint8_t Pin2;
-
-        uint8_t LastPinStatus[2];
-
-    public :
+public:
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-        ArduinoIncrementalThreePosToggleSwitchControl( uint8_t pin1, uint8_t pin2, int boardAddress = -1);
+  ArduinoIncrementalThreePosToggleSwitchControl(uint8_t pin1, uint8_t pin2,
+                                                int boardAddress = -1);
 #else
-        ArduinoIncrementalThreePosToggleSwitchControl( uint8_t pin1, uint8_t pin2);
+  ArduinoIncrementalThreePosToggleSwitchControl(uint8_t pin1, uint8_t pin2);
 #endif
-        ~ArduinoIncrementalThreePosToggleSwitchControl();
-        bool ReadInput();
-        float getValue();
+  ~ArduinoIncrementalThreePosToggleSwitchControl();
+  bool ReadInput();
+  float getValue();
 };
-
 
 #endif // ARDUININCREMENTALTOGGLESWICTHCLASS_H_INCLUDED

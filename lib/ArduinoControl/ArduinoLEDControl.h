@@ -11,27 +11,25 @@
 #include "../Config/MainConfig.h"
 #include "ArduinoControl.h"
 
-//Allows use of LED
-class ArduinoLEDControl : public ArduinoOutputControl{
+// Allows use of LED
+class ArduinoLEDControl : public ArduinoOutputControl {
 
-    private :
-        uint8_t Pin;
-        float Val;
-        float HighVal;
+private:
+  uint8_t Pin;
+  float Val;
+  float HighVal;
 
-    public :
-
+public:
 #ifdef ACTIVE_MULTI_ARDUINO_BOARD_MODE
-        ArduinoLEDControl( uint8_t pin, float highLEDVal = 1, int boardAddress = -1);
+  ArduinoLEDControl(uint8_t pin, float highLEDVal = 1, int boardAddress = -1);
 #else
-        ArduinoLEDControl( uint8_t pin, float highLEDVal = 1);
+  ArduinoLEDControl(uint8_t pin, float highLEDVal = 1);
 #endif
-        ~ArduinoLEDControl();
+  ~ArduinoLEDControl();
 
-        void WriteOutput();
-        bool setValue(float val);
+  void WriteOutput();
+  bool setValue(float val);
 };
-
 
 /* TODO: Analogique LED control ? */
 
