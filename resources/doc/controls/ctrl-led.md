@@ -4,10 +4,9 @@ The `ArduinoLEDControl` class goal is to be bind with an input data (or group of
 
 # Arduino connection
 
-Board view | Sketch view
----------- | -----------
-![LED connection (board view)](../../img/led_bb.png?raw=true) | ![LED connection (sketch view)](../../img/led_sk.png?raw=true)
-
+| Board view                                                    | Sketch view                                                    |
+| ------------------------------------------------------------- | -------------------------------------------------------------- |
+| ![LED connection (board view)](../../img/led_bb.png?raw=true) | ![LED connection (sketch view)](../../img/led_sk.png?raw=true) |
 
 # Code sample
 
@@ -48,10 +47,10 @@ Here is the definition of the `ArduinoLEDControl` constructor :
 `ArduinoLEDControl( uint8_t pin, float highLEDVal = 1, int boardAddress = -1);`
 
 Arguments definition :
+
 1. `uint8_t pin` : PIN n° on which LED is plug.
 2. `float highLEDVal` (default: 1) : Value expected (from x-Plane) to pull on the LED.
-3. `int boardAddress ` (default: -1) : Address of slave board on which LED is plug (-1 = plug on main board). *Available only if you previously enable the "multi board mode"*
-
+3. `int boardAddress ` (default: -1) : Address of slave board on which LED is plug (-1 = plug on main board). _Available only if you previously enable the "multi board mode"_
 
 # Transformation function
 
@@ -61,4 +60,4 @@ In this case the `RegisterInputControl` method can take a "transformation functi
 
 The "transformation function" goal is to transform all datas of single group in one float value. This single float value will be pass to the `ArduinoLEDControl` to turn on/off the LED.
 
-For more information please see [transformation function documentation page](./6-transformation-function.md).
+For more information please see [transformation function documentation page](../6-transformation-function.md).
