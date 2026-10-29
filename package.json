@@ -18,12 +18,13 @@
   },
   "scripts": {
     "docs:dev": "vuepress dev resources/doc",
-    "docs:build": "vuepress build resources/doc"
+    "docs:build": "NODE_OPTIONS=--openssl-legacy-provider vuepress build resources/doc"
   },
   "devDependencies": {
     "@vuepress/plugin-back-to-top": "^1.2.0",
     "@vuepress/plugin-medium-zoom": "^1.2.0",
     "vuepress": "^1.2.0",
     "vuepress-plugin-sitemap": "^2.3.1"
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
