@@ -1,0 +1,11 @@
+{
+  "name": "romgere-cockpit",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./resources/doc/.vuepress/dist",
+    // VuePress génère une page 404.html : on la sert pour les URLs inconnues (comme Netlify)
+    "not_found_handling": "404-page"
+  },
+  "preview_urls": true,
+  "previews": {}
+}
